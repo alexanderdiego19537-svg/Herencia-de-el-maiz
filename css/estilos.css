@@ -883,48 +883,21 @@ img {
     }
 
     .universo-rueda {
-        width: 95vw;
-        height: 95vw;
-        max-width: 480px;
-        max-height: 480px;
+        width: 100vw;
+        height: 100vw;
+        max-width: 100vw;
+        overflow: hidden;
+        margin: 0 auto;
     }
 
-    .banda-1 {
-        width: 180px;
-        height: 180px;
-    }
-
-    .banda-2 {
-        width: 320px;
-        height: 320px;
-    }
-
-    .banda-3 {
-        width: 450px;
-        height: 450px;
-    }
-
-    .centro {
-        width: 110px;
-        height: 110px;
-    }
-
-    .cuadro {
-        width: 50px;
-        height: 90px;
-        padding: 5px 2px;
-    }
-
-    .cuadro span {
-        font-size: 0.42rem;
-    }
-
-    .nivel-razas {
-        --distancia: 105px;
-    }
-
-    .nivel-colores {
-        --distancia: 180px;
+    .contenedor-rueda {
+        width: 1250px;
+        height: 1250px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(calc(100vw / 1300));
+        transform-origin: center center;
     }
 
     .encabezado-principal h1 {
