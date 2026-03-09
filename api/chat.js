@@ -1,8 +1,16 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { createClient } from "@supabase/supabase-js";
 
 // Inicializar Google Gemini
-// Usar gemini-1.5-flash ya que admite imágenes y texto de forma rápida
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+
+// Inicializar Supabase SOLO si existen las variables de entorno
+const supabaseUrl = process.env.SUPABASE_URL || "";
+const supabaseKey = process.env.SUPABASE_ANON_KEY || "";
+let supabase = null;
+if (supabaseUrl && supabaseKey) {
+  supabase = createClient(supabaseUrl, supabaseKey);
+}
 
 export default async function handler(req, res) {
   // Solo permitimos peticiones POST
@@ -42,6 +50,18 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
     }
 
     const responseText = result.response.text();
+
+    // =============== SUPABASE (Registro en BD) ===============
+    // Ahora está seguro y no bloqueará el chat si no tienes clave
+    if (supabase) {
+      supabase.from('ia_consultas').insert([{
+        pregunta_usuario: prompt,
+        respuesta_ia: responseText,
+        tiene_imagen: !!image,
+        fecha: new Date().toISOString()
+      }]).catch(err => console.log("Advertencia de Supabase:", err.message));
+    }
+    // =========================================================
 
     return res.status(200).json({ reply: responseText });
 
