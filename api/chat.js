@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     }
 
     // Configurar el modelo principal
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // Instrucción de contexto (System Prompt)
     const contextPrompt = `Eres "ñu’mu", un experto, historiador y agrónomo sobre el maíz nativo de México, específicamente de la región de Ixtenco, Tlaxcala. 
