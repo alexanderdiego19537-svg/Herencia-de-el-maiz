@@ -52,14 +52,18 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
     const responseText = result.response.text();
 
     // =============== SUPABASE (Registro en BD) ===============
-    // Ahora está seguro y no bloqueará el chat si no tienes clave
+    // Ahora está seguro y usa await correctamente para que no de crash en Vercel
     if (supabase) {
-      supabase.from('ia_consultas').insert([{
-        pregunta_usuario: prompt,
-        respuesta_ia: responseText,
-        tiene_imagen: !!image,
-        fecha: new Date().toISOString()
-      }]).catch(err => console.log("Advertencia de Supabase:", err.message));
+      try {
+        await supabase.from('ia_consultas').insert([{
+          pregunta_usuario: prompt,
+          respuesta_ia: responseText,
+          tiene_imagen: !!image,
+          fecha: new Date().toISOString()
+        }]);
+      } catch (dbError) {
+        console.log("Advertencia de Supabase:", dbError.message);
+      }
     }
     // =========================================================
 
