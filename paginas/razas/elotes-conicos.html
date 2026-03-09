@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elotes Cónicos | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="hero-pagina">
+        <h1>Raza: Elotes Cónicos</h1>
+        <p>Especial para consumirse fresca, la delicia de los valles templados de Tlaxcala.</p>
+    </section>
+
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Descripción General</h2>
+            <p>La raza Elotes Cónicos se cultiva específicamente para consumirse como elote fresco o asado. Es común en
+                los valles templados a fríos de Tlaxcala y el centro de México. Su grano suave y dulce la hace ideal
+                para preparaciones directas al fuego.</p>
+        </section>
+
+        <div class="info-rapida">
+            <div class="info-item">
+                <strong>Forma de mazorca</strong>
+                <span>Cónica alargada, 12-16 hileras</span>
+            </div>
+            <div class="info-item">
+                <strong>Tipo de grano</strong>
+                <span>Suave, lechoso, dentado</span>
+            </div>
+            <div class="info-item">
+                <strong>Altura de planta</strong>
+                <span>Media</span>
+            </div>
+            <div class="info-item">
+                <strong>Adaptación</strong>
+                <span>Valles templados-fríos, 2000-2600 msnm</span>
+            </div>
+        </div>
+
+        <section class="seccion">
+            <h2>Colores del Grano</h2>
+            <div class="colores-grano">
+                <span class="chip-color" style="background:#fff; color:#333;">⚪ Blanco</span>
+                <span class="chip-color" style="background:#fcd76b; color:#5a4a3a;">🟡 Amarillo</span>
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Usos Tradicionales</h2>
+            <ul>
+                <li>Elotes frescos hervidos o asados con chile y limón</li>
+                <li>Esquites y preparaciones callejeras</li>
+                <li>Consumo directo en temporada de cosecha</li>
+            </ul>
+        </section>
+
+        <section class="seccion">
+            <h2>Galería de la Raza</h2>
+            <div class="espacio-imagen">Galería fotográfica de Elotes Cónicos — Próximamente</div>
+        </section>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../categorias/razas-ixtenco.html" class="boton-volver">⬅ Volver al Catálogo</a>
+        </div>
+    </main>
+
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>
+        function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); }
+        document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });
+    </script>
+</body>
+
+</html>

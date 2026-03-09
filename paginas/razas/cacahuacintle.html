@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cacahuacintle | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="hero-pagina" style="background: linear-gradient(135deg, #e76f00 0%, #fca311 100%);">
+        <h1>Raza: Cacahuacintle</h1>
+        <p>Grano grande y harinoso — base del pozole tradicional mexicano.</p>
+    </section>
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Descripción General</h2>
+            <p>El Cacahuacintle es la raza por excelencia para la elaboración del pozole. Su grano grande y harinoso
+                tiene la capacidad única de expandirse ("florecer") al cocerse en agua con cal. Es una de las razas más
+                emblemáticas de la gastronomía mexicana y su cultivo ha sido mantenido por generaciones de familias
+                otomíes.</p>
+        </section>
+        <section class="seccion">
+            <h2>🧪 Composición Química</h2>
+            <div class="info-rapida">
+                <div class="info-item"><strong>Almidón</strong><span>~75% (alto)</span></div>
+                <div class="info-item"><strong>Proteínas</strong><span>~8%</span></div>
+                <div class="info-item"><strong>Fibra</strong><span>Baja</span></div>
+                <div class="info-item"><strong>Textura</strong><span>Harinosa, expandible</span></div>
+            </div>
+        </section>
+        <div class="info-rapida">
+            <div class="info-item"><strong>Forma de mazorca</strong><span>Cilíndrica grande, 14-18 hileras, grano
+                    ancho</span></div>
+            <div class="info-item"><strong>Tipo de grano</strong><span>Harinoso, grande, blanco nacarado</span></div>
+            <div class="info-item"><strong>Altura de planta</strong><span>Alta (2.5-3 m)</span></div>
+            <div class="info-item"><strong>Adaptación</strong><span>Valles altos del centro de México</span></div>
+        </div>
+        <section class="seccion">
+            <h2>Colores del Grano</h2>
+            <div class="colores-grano">
+                <span class="chip-color" style="background:#fff; color:#333;">⚪ Blanco</span>
+                <span class="chip-color" style="background:#fffdd0; color:#5a4a3a;">🟡 Crema</span>
+            </div>
+        </section>
+        <section class="seccion">
+            <h2>Usos Tradicionales</h2>
+            <ul>
+                <li>Pozole tradicional — grano que "florece" al cocerse</li>
+                <li>Tamales de textura excepcional</li>
+                <li>Elotes grandes y dulces</li>
+                <li>Harina para tortillas especiales</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Galería de la Raza</h2>
+            <div class="espacio-imagen">Galería fotográfica — Próximamente</div>
+        </section>
+        <section class="seccion" style="font-size: 0.8rem; color: #888;">
+            <p>Referencia: Catálogo de razas de maíz nativo en México — CONABIO / INIFAP.</p>
+        </section>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../categorias/razas-ixtenco.html" class="boton-volver">⬅ Volver al Catálogo</a>
+        </div>
+    </main>
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); } document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });</script>
+</body>
+
+</html>

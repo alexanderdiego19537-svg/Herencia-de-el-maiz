@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cónico x Bolita | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="hero-pagina" style="background: linear-gradient(135deg, #0a0a14 0%, #1d6fa5 100%);">
+        <h1>Raza: Cónico x Bolita</h1>
+        <p>Cristalino redondo y precoz, especial para sembrar en laderas pobres de ciclo corto.</p>
+    </section>
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Descripción General</h2>
+            <p>El Cónico x Bolita es un maíz cristalino de grano redondo y pequeño. Su principal ventaja es la
+                precocidad: tiene un ciclo de crecimiento muy corto, lo que permite sembrarlo en laderas con suelos
+                pobres donde otras razas no logran completar su desarrollo.</p>
+        </section>
+        <div class="info-rapida">
+            <div class="info-item"><strong>Forma de mazorca</strong><span>Pequeña, compacta, 10-14 hileras</span></div>
+            <div class="info-item"><strong>Tipo de grano</strong><span>Cristalino, redondo, pequeño</span></div>
+            <div class="info-item"><strong>Altura de planta</strong><span>Baja a media</span></div>
+            <div class="info-item"><strong>Adaptación</strong><span>Laderas pobres, ciclo muy corto</span></div>
+        </div>
+        <section class="seccion">
+            <h2>Colores del Grano</h2>
+            <div class="colores-grano">
+                <span class="chip-color" style="background:#fff; color:#333;">⚪ Blanco</span>
+                <span class="chip-color" style="background:#fcd76b; color:#5a4a3a;">🟡 Amarillo</span>
+            </div>
+        </section>
+        <section class="seccion">
+            <h2>Usos Tradicionales</h2>
+            <ul>
+                <li>Tortillas de grano cristalino</li>
+                <li>Cultivo de subsistencia en terrenos difíciles</li>
+                <li>Grano para almacenamiento de largo plazo</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Galería de la Raza</h2>
+            <div class="espacio-imagen">Galería fotográfica — Próximamente</div>
+        </section>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../categorias/razas-ixtenco.html" class="boton-volver">⬅ Volver al Catálogo</a>
+        </div>
+    </main>
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); } document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });</script>
+</body>
+
+</html>

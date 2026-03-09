@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Las 16 Razas de Maíz en Ixtenco — Descubre la importancia genética, cultural y el catálogo completo de maíces nativos resguardados por esta comunidad campesina.">
+    <title>Razas en Ixtenco | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+    <style>
+        .catalogo-razas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tarjeta-raza {
+            background: #faf9f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            border-top: 6px solid var(--dorado);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tarjeta-raza:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tarjeta-raza h3 {
+            color: var(--centro);
+            font-size: 1.5rem;
+            margin: 0;
+            border-bottom: 2px solid rgba(201, 168, 76, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .tarjeta-raza p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #5a4a3a;
+            line-height: 1.6;
+        }
+
+        .tarjeta-raza strong {
+            color: var(--verde);
+            display: block;
+            margin-bottom: 0.2rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .boton-volver {
+            display: inline-block;
+            background-color: var(--verde);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .boton-volver:hover {
+            background-color: var(--centro);
+            border-color: var(--dorado);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ====== NAVEGACIÓN ====== -->
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="milpa.html">Sistema Milpa</a></li>
+                <li><a href="razas-ixtenco.html" class="activo">Razas en Ixtenco</a></li>
+                <li><a href="herencia.html">Herencia de Semillas</a></li>
+                <li><a href="ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ====== ENCABEZADO ====== -->
+    <section class="hero-pagina"
+        style="background: linear-gradient(135deg, var(--oro-maiz) 0%, var(--naranja-maiz) 100%);">
+        <h1>Las 16 Razas de Maíz en Ixtenco</h1>
+        <p>Un tesoro de colores y tamaños custodiado por familias campesinas y su herencia milenaria.</p>
+    </section>
+
+    <!-- ====== CONTENIDO ====== -->
+    <main class="contenido-pagina">
+
+        <section class="seccion">
+            <h2>¿Qué es una raza de maíz?</h2>
+            <p>El término raza se ha utilizado en el maíz y en las plantas cultivadas para agrupar individuos o
+                poblaciones que comparten características en común, de orden morfológico, ecológico, genético y de
+                historia de cultivo, que permiten diferenciarlas como grupo.</p>
+            <p>Las razas se agrupan a su vez en complejos raciales asociados a una región geográfica y climática
+                definida.</p>
+
+            <div class="cita-destacada"
+                style="background: rgba(201, 168, 76, 0.08); padding: 1.5rem 2rem; border-left: 4px solid var(--dorado); margin: 1.5rem 0; color: #5a4a3a; font-size: 0.95rem; line-height: 1.8;">
+                <p style="font-style: italic;">“En América Latina se han descrito cerca de 220 razas de maíz (Goodman y
+                    McK. Bird. 1977), de las cuales 64 (29%) se han identificado y descrito en su mayoría para México...
+                    De las 64 razas que se reportan para México, 59 se pueden considerar nativas.”</p>
+                <p style="text-align: right; margin-top: 1rem; font-size: 0.85rem; font-weight: bold;">— Comisión
+                    Nacional para el Conocimiento y Uso de la Biodiversidad [CONABIO], 2025.</p>
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Importancia Genética y Cultural</h2>
+            <p>México vive una crisis rural, mas las familias campesinas conservan heroicamente la diversidad del maíz.
+                Principalmente las mujeres son quienes seleccionan durante la cosecha la semilla para la siembra en el
+                siguiente ciclo agrícola.</p>
+            <p>Para la comunidad de Ixtenco, el maíz no solo representa una fuente de alimento, sino que mantienen una
+                estrecha relación con sus tradiciones religiosas y su espiritualidad. Esto los lleva a custodiar y
+                preservar preciosos mosaicos de granos blancos, rojos, amarillos, azules, negros y moteados.</p>
+            <p>Además de cubrir la alimentación familiar, estos maíces hermosos <strong>son utilizados para la
+                    elaboración de artesanías</strong> que generan un ingreso complementario vital. Los maíces blancos y
+                nacarados se destinan a las tortillas, mientras que el mítico "maíz ajo" representa un enorme logro
+                cultural para los productores que trabajan en su recuperación.</p>
+        </section>
+
+        <section class="seccion">
+            <h2>Galería y Ubicación Regional</h2>
+
+            <div class="espacio-imagen" style="margin-top: 2rem;">
+                [Espacio Reservado]: FOTOGRAFÍAS COMPARATIVAS DE COLORES Y TAMAÑOS (Inserta la galería de imágenes
+                aquí).
+            </div>
+
+            <div
+                style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30086.39!2d-97.8958!3d19.2461!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfa7b5c6a36db3%3A0x4e7e60f31d21c7a1!2sSan%20Juan%20Ixtenco%2C%20Tlax.!5e0!3m2!1ses!2smx!4v1709800000000!5m2!1ses!2smx"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <p style="text-align: center; font-size: 0.85rem; color: #7a6a5a; margin-top: 0.5rem; font-style: italic;">
+                Esta demarcación colinda al norte con Huamantla, al sur con Trinidad Sánchez Santos y al oriente con el
+                estado de Puebla (INEGI, 2014).
+            </p>
+        </section>
+
+        <section class="seccion">
+            <h2>Catálogo Visual: Las 16 Razas de Ixtenco</h2>
+            <p>El esfuerzo de las familias agricultoras permite que hoy conozcamos y disfrutemos de esta gran variedad.
+                Conoce las características de cada raza nativa:</p>
+
+            <div class="catalogo-razas">
+                <!-- Tarjeta 1 -->
+                <div class="tarjeta-raza">
+                    <h3>Cónico</h3>
+                    <p>Dominante en centro México; para tortillas, atoles y forraje; adaptada a altas elevaciones.</p>
+                    <a href="../razas/conico.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="tarjeta-raza">
+                    <h3>Elotes Cónicos</h3>
+                    <p>Para elotes frescos/asados; común en valles templados-fríos de Tlaxcala y México.</p>
+                    <a href="../razas/elotes-conicos.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="tarjeta-raza">
+                    <h3>Chalqueño</h3>
+                    <p>Vigorosa de ciclo largo; resistente, para grano en clima semiárido; nixtamal muy versátil.</p>
+                    <a href="../razas/chalqueno.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 4 -->
+                <div class="tarjeta-raza">
+                    <h3>Cacahuacintle</h3>
+                    <p>Grano expandible para pozole, tamales y elotes; originaria Altiplano, hojas antigranizo.</p>
+                    <a href="../razas/cacahuacintle.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 5 -->
+                <div class="tarjeta-raza">
+                    <h3>Chalqueño x Bolita</h3>
+                    <p>Híbrido local precoz; ideal para nixtamal en templados altos; muy productivo en laderas.</p>
+                    <a href="../razas/chalqueno-bolita.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 6 -->
+                <div class="tarjeta-raza">
+                    <h3>Chalqueño x Cacahuacintle</h3>
+                    <p>Harinosa grande para pozole; fértil y excelente en suelos volcánicos húmedos de Tlaxcala.</p>
+                    <a href="../razas/chalqueno-cacahuacintle.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 7 -->
+                <div class="tarjeta-raza">
+                    <h3>Chalqueño x Cónico</h3>
+                    <p>Robusto del centro; versátil para tortillas; de muy alta conservación en la zona de Ixtenco.</p>
+                    <a href="../razas/chalqueno-conico.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 8 -->
+                <div class="tarjeta-raza">
+                    <h3>Cónico x Elotes Cónico</h3>
+                    <p>Alargada para elotes; colores muy variados, preservada amorosamente en fincas locales.</p>
+                    <a href="../razas/conico-elotes-conicos.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 9 -->
+                <div class="tarjeta-raza">
+                    <h3>Cónico x Cacahuacintle</h3>
+                    <p>De grano expandible para pozole/elotes; adaptada perfectamente a elevaciones altas de Tlaxcala.
+                    </p>
+                    <a href="../razas/conico-cacahuacintle.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 10 -->
+                <div class="tarjeta-raza">
+                    <h3>Cónico x Bolita</h3>
+                    <p>Cristalino redondo precoz; especial para sembrar en laderas pobres, de ciclo muy corto.</p>
+                    <a href="../razas/conico-bolita.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 11 -->
+                <div class="tarjeta-raza">
+                    <h3>Cónico x Chalqueño</h3>
+                    <p>Muy frecuente (9.4% de muestras); mazorca fuerte para usos múltiples en el sur de Tlaxcala.</p>
+                    <a href="../razas/conico-chalqueno.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 12 -->
+                <div class="tarjeta-raza">
+                    <h3>Cónico x Pepitilla</h3>
+                    <p>Punta proteica para suelos pobres; alargada en laderas, posee un alto valor nutricional.</p>
+                    <a href="../razas/conico-pepitilla.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 13 -->
+                <div class="tarjeta-raza">
+                    <h3>Arrocillo</h3>
+                    <p>Chico y perlado; utilizado para atoles y valiosa decoración; común en altiplanos centrales.</p>
+                    <a href="../razas/arrocillo.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 14 -->
+                <div class="tarjeta-raza">
+                    <h3>Tunicata (Maíz Ajo)</h3>
+                    <p>Endémica de Ixtenco; cascarillada para fines rituales/decorativos; preservada por Don Simón
+                        Angoa.</p>
+                    <a href="../razas/tunicata.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 15 -->
+                <div class="tarjeta-raza">
+                    <h3>Azul</h3>
+                    <p>Violácea rica en antioxidantes (antocianinas); para tortillas pigmentadas y exquisitos atoles en
+                        Ixtenco.</p>
+                    <a href="../razas/azul.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+
+                <!-- Tarjeta 16 -->
+                <div class="tarjeta-raza">
+                    <h3>Negro</h3>
+                    <p>Oscuro para el tradicional atole agrio; variante local colorida, resistente en fincas
+                        tradicionales.</p>
+                    <a href="../razas/negro.html" class="boton-detalles">Ver Detalles Técnicos</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 4rem 0 2rem 0;">
+                <p style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #5a4a3a;">¿Terminaste de leer? Haz clic abajo
+                    para regresar al menú interactivo de la página inicial.</p>
+                <a href="../../index.html" class="boton-volver">🏠 Volver al Menú Principal</a>
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Fuentes y Bibliografía</h2>
+            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                <li
+                    style="padding: 0.5rem 0 0.5rem 1.5rem; font-size: 0.85rem; color: #7a6a5a; border-bottom: 1px solid rgba(201, 168, 76, 0.2);">
+                    Cajero, L. M., Eliosa-Martínez, E., & Turrent, L. (2018). Etnografía y prevalencia de maíces nativos
+                    en San Juan Ixtenco, Tlaxcala, con énfasis en maíz ajo (Zea mays var. tunicata A. St. Hil.).
+                    Agroproductividad, 11(4), 51-58. <a
+                        href="http://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S0187-73802018000400451"
+                        target="_blank"
+                        style="color: var(--azul); text-decoration: underline; word-break: break-all;">http://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S0187-73802018000400451</a>
+                </li>
+                <li style="padding: 0.5rem 0 0.5rem 1.5rem; font-size: 0.85rem; color: #7a6a5a;">
+                    Comisión Nacional para el Conocimiento y Uso de la Biodiversidad. (2025, 20 de enero). Razas de maíz
+                    de México. Biodiversidad Mexicana. <a
+                        href="https://www.biodiversidad.gob.mx/diversidad/alimentos/maices/razas-de-maiz"
+                        target="_blank"
+                        style="color: var(--azul); text-decoration: underline; word-break: break-all;">https://www.biodiversidad.gob.mx/diversidad/alimentos/maices/razas-de-maiz</a>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- ====== PIE DE PÁGINA ====== -->
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+
+    <!-- ====== SCRIPT PARA MENÚ MÓVIL ====== -->
+    <script>
+        function abrirMenu() {
+            document.getElementById('menuEnlaces').classList.toggle('abierto');
+        }
+        document.querySelectorAll('.navegacion-enlaces a').forEach(function (enlace) {
+            enlace.addEventListener('click', function () {
+                document.getElementById('menuEnlaces').classList.remove('abierto');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

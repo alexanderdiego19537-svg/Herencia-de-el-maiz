@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chalqueño x Cónico | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="hero-pagina">
+        <h1>Raza: Chalqueño x Cónico</h1>
+        <p>Robusto y versátil, uno de los más conservados en la zona de Ixtenco.</p>
+    </section>
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Descripción General</h2>
+            <p>El Chalqueño x Cónico es una cruza robusta del centro de México. Es extremadamente versátil para la
+                elaboración de tortillas y tiene una de las tasas más altas de conservación en la zona de Ixtenco, lo
+                que demuestra su importancia cultural y alimentaria.</p>
+        </section>
+        <div class="info-rapida">
+            <div class="info-item"><strong>Forma de mazorca</strong><span>Cónica-cilíndrica, 14-18 hileras</span></div>
+            <div class="info-item"><strong>Tipo de grano</strong><span>Semidentado, mediano</span></div>
+            <div class="info-item"><strong>Altura de planta</strong><span>Media-alta</span></div>
+            <div class="info-item"><strong>Adaptación</strong><span>Centro de México, alta conservación</span></div>
+        </div>
+        <section class="seccion">
+            <h2>Colores del Grano</h2>
+            <div class="colores-grano">
+                <span class="chip-color" style="background:#fff; color:#333;">⚪ Blanco</span>
+                <span class="chip-color" style="background:#fcd76b; color:#5a4a3a;">🟡 Amarillo</span>
+                <span class="chip-color" style="background:#c1121f; color:#fff;">🔴 Rojo</span>
+            </div>
+        </section>
+        <section class="seccion">
+            <h2>Usos Tradicionales</h2>
+            <ul>
+                <li>Tortillas artesanales de muy alta calidad</li>
+                <li>Nixtamal para diversas preparaciones</li>
+                <li>Grano para almacenamiento y venta</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Galería de la Raza</h2>
+            <div class="espacio-imagen">Galería fotográfica — Próximamente</div>
+        </section>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../categorias/razas-ixtenco.html" class="boton-volver">⬅ Volver al Catálogo</a>
+        </div>
+    </main>
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); } document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });</script>
+</body>
+
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Inteligencia Artificial Herencia de Maíz — Sube una foto de tu maíz y aprende todo sobre él con opciones de traducción en Otomí y Yuhmu.">
+    <title>Inteligencia Artificial | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_ia_v1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .ia-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--sombra-media);
+            border: 1px solid rgba(252, 163, 17, 0.3);
+        }
+
+        .ia-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--amarillo-maiz);
+            padding-bottom: 1rem;
+        }
+
+        .ia-header h2 {
+            color: var(--azul-maiz);
+            font-family: var(--fuente-titulo);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--azul-cielo);
+            border-radius: 12px;
+            padding: 2rem;
+            background: rgba(29, 111, 165, 0.05);
+            cursor: pointer;
+            transition: var(--transicion);
+        }
+
+        .upload-section:hover {
+            background: rgba(29, 111, 165, 0.1);
+            border-color: var(--azul-maiz);
+        }
+
+        .upload-section i {
+            font-size: 3rem;
+            color: var(--azul-cielo);
+            margin-bottom: 1rem;
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            display: none;
+            margin-top: 1rem;
+            box-shadow: var(--sombra-suave);
+        }
+
+        .chat-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 400px;
+        }
+
+        .chat-box {
+            flex: 1;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input-container input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            font-family: var(--fuente-cuerpo);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input-container input:focus {
+            border-color: var(--naranja-maiz);
+        }
+
+        .chat-input-container button {
+            background: linear-gradient(135deg, var(--naranja-maiz), var(--amarillo-maiz));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transicion);
+        }
+
+        .chat-input-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-suave);
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--azul-cielo);
+            color: #fff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background: #f1f1f1;
+            color: var(--texto);
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Hover translation tools */
+        .translation-tools {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: var(--sombra-media);
+            display: flex;
+            gap: 0.2rem;
+            padding: 0.2rem;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .message.ai:hover .translation-tools {
+            visibility: visible;
+            opacity: 1;
+            top: -45px;
+        }
+
+        .translation-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 3px;
+            color: var(--azul-maiz);
+            font-weight: 600;
+        }
+
+        .translation-btn:hover {
+            background: var(--naranja-maiz);
+            color: white;
+        }
+
+        .translation-btn i {
+            margin-right: 4px;
+        }
+
+        /* Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--naranja-maiz);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            align-self: center;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .translated-text-display {
+            font-style: italic;
+            color: var(--naranja-maiz);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            border-top: 1px dashed #ccc;
+            padding-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ====== NAVEGACIÓN ====== -->
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png"
+                    alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="ia-maiz.html" class="activo">Inteligencia Artificial</a></li>
+                <li><a href="nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="milpa.html">Sistema Milpa</a></li>
+                <li><a href="razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="herencia.html">Herencia de Semillas</a></li>
+                <li><a href="reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ====== ENCABEZADO ====== -->
+    <section class="hero-pagina"
+        style="background: linear-gradient(135deg, var(--azul-maiz) 0%, var(--naranja-maiz) 100%);">
+        <h1>Conoce tu Maíz con Inteligencia Artificial</h1>
+        <p>Sube una imagen de maíz para analizar su raza, o realiza cualquier pregunta histórica y cultural. Escucha la
+            sabiduría en Español, Otomí y Yuhmu de Ixtenco.</p>
+    </section>
+
+    <!-- ====== CONTENIDO ====== -->
+    <main class="contenido-pagina">
+
+        <section class="ia-container">
+            <div class="ia-header">
+                <h2>Analizador y Asistente Virtual</h2>
+                <p>Nuestra IA guarda el conocimiento milenario protegido en Ixtenco.</p>
+            </div>
+
+            <div class="upload-section" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p><strong>Haz clic para subir una foto de maíz</strong></p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">Archivos soportados: JPG, PNG, WEBP</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;"
+                    onchange="previewImage(event)">
+                <img id="imagePreview" alt="Vista previa del maíz">
+            </div>
+
+            <div class="chat-section">
+                <div class="chat-box" id="chatBox">
+                    <div class="message ai">
+                        ¡Hola! Soy el Guardián de las Semillas. Sube una foto de un maíz para decirte de qué raza se
+                        trata o hazme cualquier pregunta sobre su historia, nutrición o cultivo en Tlaxcala.
+                        <div class="translated-text-display"></div>
+                        <div class="translation-tools">
+                            <button class="translation-btn" onclick="translateAndSpeak(this, 'es')"><i
+                                    class="fas fa-volume-up"></i> Español</button>
+                            <button class="translation-btn" onclick="translateAndSpeak(this, 'otomi')"><i
+                                    class="fas fa-language"></i> Otomí</button>
+                            <button class="translation-btn" onclick="translateAndSpeak(this, 'yuhmu')"><i
+                                    class="fas fa-leaf"></i> Yuhmu (Ixtenco)</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="loader" id="loader"></div>
+                <div class="chat-input-container">
+                    <input type="text" id="userInput" placeholder="Escribe tu pregunta sobre el maíz aquí..."
+                        onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">Enviar <i class="fas fa-paper-plane"
+                            style="margin-left: 5px;"></i></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====== PIE DE PÁGINA ====== -->
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+
+    <!-- ====== SCRIPT ====== -->
+    <script>
+        // Funciones del Menú Móvil
+        function abrirMenu() {
+            document.getElementById('menuEnlaces').classList.toggle('abierto');
+        }
+
+        let currentImageBase64 = null;
+
+        // Preview de imagen
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    currentImageBase64 = e.target.result.split(',')[1];
+
+                    // Notificar al chat que se subió la imagen
+                    appendMessage("He subido una imagen de un maíz. ¿Puedes decirme qué raza es y darme información?", "user");
+                    processAIRequest("Analiza esta imagen de maíz e infórmame qué raza es, sus características y su historia en Ixtenco Tlaxcala.", currentImageBase64);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Manejo del chat
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function appendMessage(text, sender) {
+            const chatBox = document.getElementById('chatBox');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            if (sender === 'ai') {
+                // Formatear Markdown básico (negritas)
+                let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                messageDiv.innerHTML = `
+                    ${formattedText}
+                    <div class="translated-text-display"></div>
+                    <div class="translation-tools">
+                        <button class="translation-btn" title="Leer en Español" onclick="translateAndSpeak(this, 'es')"><i class="fas fa-volume-up"></i> ESP</button>
+                        <button class="translation-btn" title="Traducir y leer en Otomí" onclick="translateAndSpeak(this, 'otomi')"><i class="fas fa-language"></i> OTO</button>
+                        <button class="translation-btn" title="Traducir y leer en Yuhmu (Variante Ixtenco)" onclick="translateAndSpeak(this, 'yuhmu')"><i class="fas fa-leaf"></i> YUH</button>
+                    </div>
+                `;
+            } else {
+                messageDiv.textContent = text;
+            }
+
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+
+            if (text !== '') {
+                appendMessage(text, 'user');
+                input.value = '';
+                processAIRequest(text, null);
+            }
+        }
+
+        // Simulación o llamada real a Vercel Serverless (api/chat)
+        async function processAIRequest(prompt, imageBase64) {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+
+            try {
+                // AQUÍ USAREMOS LA FUNCIÓN SERVERLESS DE VERCEL MÁS ADELANTE
+                // Para propósitos de este código, apuntaremos a /api/chat
+
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        image: imageBase64
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    appendMessage(data.reply, 'ai');
+                } else {
+                    // Si el backend aún no existe, mostramos mensaje de prueba
+                    console.log("Backend not connected yet. Displaying mock data.");
+                    setTimeout(() => {
+                        appendMessage("Esta es una respuesta simulada. La Inteligencia artificial (Gemini) está siendo conectada. Tu maíz parece ser de la raza **Cónico**, muy común en la región de Ixtenco por su resistencia a las heladas.", 'ai');
+                        loader.style.display = 'none';
+                    }, 1500);
+                    return; // Retornamos temprano para no procesar el error visualmente aún
+                }
+            } catch (error) {
+                console.error("Error connected to AI api:", error);
+                setTimeout(() => {
+                    appendMessage("El maíz es un regalo divino de Ixtenco. (Respuesta simulada provisoria ya que /api/chat no está desplegada en Vercel aún).", 'ai');
+                }, 1000);
+            } finally {
+                loader.style.display = 'none';
+                currentImageBase64 = null; // Reset image
+            }
+        }
+
+        // Función para manejar la traducción y texto a voz (Texto a voz usa API del navegador)
+        function translateAndSpeak(buttonElement, languageStr) {
+            const messageDiv = buttonElement.closest('.message');
+            // Obtener el texto (clonamos para remover los botones y evitar leerlos)
+            const clone = messageDiv.cloneNode(true);
+            const translationTools = clone.querySelector('.translation-tools');
+            const translationDisplay = clone.querySelector('.translated-text-display');
+            if (translationTools) translationTools.remove();
+            if (translationDisplay) translationDisplay.remove();
+
+            let textToRead = clone.textContent.trim();
+            const realTranslationDisplay = messageDiv.querySelector('.translated-text-display');
+
+            if (languageStr === 'es') {
+                realTranslationDisplay.style.display = 'none';
+                speakText(textToRead, 'es-MX');
+            } else if (languageStr === 'otomi') {
+                // Simulación de traducción (Idealmente esto requiriría enviar otra consulta a Gemini)
+                realTranslationDisplay.innerHTML = "<strong>Otomí (Aprox):</strong> <em>Dänxu ra tähä (Simulación de traducción; requiriendo la API Gemini)</em>";
+                realTranslationDisplay.style.display = 'block';
+                // Pronunciamos la aproximación generada en español o el idioma más cercano soportado
+                speakText("Danxu ra taha", 'es-MX');
+            } else if (languageStr === 'yuhmu') {
+                realTranslationDisplay.innerHTML = "<strong>Yuhmu (Ixtenco):</strong> <em>Nhmü ra tähä Ixtenco (Simulación de traducción; requiriendo la API Gemini)</em>";
+                realTranslationDisplay.style.display = 'block';
+                speakText("Ñumhú ra taha Ixtenco", 'es-MX');
+            }
+        }
+
+        function speakText(text, lang) {
+            if ('speechSynthesis' in window) {
+                // Cancelar audios anteriores
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.95; // Un poco más lento para mejor dicción
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Tu navegador no soporta lectura en voz alta.");
+            }
+        }
+    </script>
+</body>
+
+</html>

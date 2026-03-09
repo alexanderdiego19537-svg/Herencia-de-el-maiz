@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunicata (Maíz Ajo) | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="hero-pagina" style="background: linear-gradient(135deg, #c1121f 0%, #14213d 100%);">
+        <h1>Raza: Tunicata (Maíz Ajo)</h1>
+        <p>Endémica de Ixtenco — un tesoro viviente preservado por Don Simón Angoa.</p>
+    </section>
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Descripción General</h2>
+            <p>La Tunicata, conocida localmente como "Maíz Ajo", es una de las razas más extraordinarias y raras del
+                maíz mexicano. Es endémica de Ixtenco y se caracteriza porque cada grano está individualmente envuelto
+                en su propia cascarilla (gluma), similar a los dientes de un ajo. Don Simón Angoa y su familia han sido
+                guardianes fundamentales en la preservación de esta raza única en el mundo.</p>
+        </section>
+        <div class="info-rapida">
+            <div class="info-item"><strong>Forma de mazorca</strong><span>Irregular, granos envueltos
+                    individualmente</span></div>
+            <div class="info-item"><strong>Tipo de grano</strong><span>Cascarillado (tunicado), como diente de
+                    ajo</span></div>
+            <div class="info-item"><strong>Guardián</strong><span>Don Simón Angoa y familia</span></div>
+            <div class="info-item"><strong>Estatus</strong><span>Endémica de Ixtenco, en recuperación</span></div>
+        </div>
+        <section class="seccion">
+            <h2>Colores del Grano</h2>
+            <div class="colores-grano">
+                <span class="chip-color" style="background:#fff; color:#333;">⚪ Blanco</span>
+                <span class="chip-color" style="background:#fcd76b; color:#5a4a3a;">🟡 Amarillo</span>
+                <span class="chip-color" style="background:#c1121f; color:#fff;">🔴 Rojo</span>
+                <span class="chip-color" style="background:#7b2d8e; color:#fff;">🟣 Morado</span>
+            </div>
+        </section>
+        <section class="seccion">
+            <h2>Importancia Cultural</h2>
+            <ul>
+                <li>Fines rituales y ceremoniales ancestrales</li>
+                <li>Artesanías decorativas únicas</li>
+                <li>Logro cultural enorme: su recuperación por los productores</li>
+                <li>Objeto de estudio científico por ser variedad primitiva</li>
+                <li>Símbolo viviente de la biodiversidad de Ixtenco</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Galería de la Raza</h2>
+            <div class="espacio-imagen">Galería fotográfica del Maíz Ajo — Próximamente</div>
+        </section>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../categorias/razas-ixtenco.html" class="boton-volver">⬅ Volver al Catálogo</a>
+        </div>
+    </main>
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); } document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });</script>
+</body>
+
+</html>

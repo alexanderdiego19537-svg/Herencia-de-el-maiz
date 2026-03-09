@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maíz Blanco | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="hero-pagina" style="background: linear-gradient(135deg, #1d6fa5 0%, #ddd 100%); color: #14213d;">
+        <h1 style="color: #14213d;">Maíz Color Blanco</h1>
+        <p style="color: #333;">Pureza y alimento b—sico — el más utilizado para la tortilla mexicana.</p>
+    </section>
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Significado Cultural</h2>
+            <p>El maíz blanco representa <strong>pureza y alimento b—sico</strong>. Es el color más com—n y fundamental
+                en la alimentación mexicana. En Ixtenco, los maíces blancos y nacarados son los que se destinan
+                principalmente a la elaboración de tortillas para consumo diario. Sus granos son grandes y harinosos.
+            </p>
+        </section>
+        <section class="seccion">
+            <h2>🏠 Composición Química</h2>
+            <div class="info-rapida">
+                <div class="info-item"><strong>Almidón</strong><span>~74% (predominante)</span></div>
+                <div class="info-item"><strong>Proteínas</strong><span>~9%</span></div>
+                <div class="info-item"><strong>Pigmentos</strong><span>Bajo contenido</span></div>
+                <div class="info-item"><strong>Textura</strong><span>Suave, ideal para nixtamalización</span></div>
+            </div>
+            <p>Predomina el almidón lo que le da excelente textura para la nixtamalización. Produce la masa más suave y
+                maleable, ideal para tortillas, tamales y todo tipo de antojitos mexicanos.</p>
+        </section>
+        <section class="seccion">
+            <h2>Razas que presentan este color</h2>
+            <ul>
+                <li>Cónico (predominante)</li>
+                <li>Chalqueño</li>
+                <li>Cacahuacintle</li>
+                <li>Casi todas las 14 razas tienen variantes blancas</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Usos Tradicionales</h2>
+            <ul>
+                <li>Tortillas de consumo diario</li>
+                <li>Pozole blanco</li>
+                <li>Tamales de masa blanca</li>
+                <li>Harinas y masas comerciales</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Galería Visual</h2>
+            <div class="espacio-imagen">Muestras de Maíz Blanco — Próximamente</div>
+        </section>
+        <section class="seccion" style="font-size: 0.8rem; color: #888;">
+            <p>Referencia: Estudios de caracterización fisicoquímica de maíces pigmentados (Zea mays L.) — CONABIO /
+                INIFAP.</p>
+        </section>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../../index.html" class="boton-volver">🏠 Volver al Inicio</a>
+        </div>
+    </main>
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); } document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });</script>
+</body>
+
+</html>

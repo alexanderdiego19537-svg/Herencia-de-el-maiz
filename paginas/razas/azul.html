@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azul | Herencia de Maíz</title>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_img_v3">
+</head>
+
+<body>
+    <nav class="navegacion">
+        <div class="navegacion-contenedor">
+            <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png" alt="Herencia de Maíz"></a>
+            <ul class="navegacion-enlaces" id="menuEnlaces">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../categorias/nutricion.html">Nutrición Mexicana</a></li>
+                <li><a href="../categorias/milpa.html">Sistema Milpa</a></li>
+                <li><a href="../categorias/razas-ixtenco.html">Razas en Ixtenco</a></li>
+                <li><a href="../categorias/herencia.html">Herencia de Semillas</a></li>
+                <li><a href="../categorias/ia-maiz.html">Inteligencia Artificial</a></li>
+                <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+            </ul>
+            <button class="boton-menu" onclick="abrirMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="hero-pagina" style="background: linear-gradient(135deg, #14213d 0%, #3a86ff 100%);">
+        <h1>Raza: Azul</h1>
+        <p>Violácea y rica en antioxidantes, un pilar de la salud y gastronomía de Ixtenco.</p>
+    </section>
+    <main class="contenido-pagina">
+        <section class="seccion">
+            <h2>Descripción General</h2>
+            <p>La raza Azul se distingue por su intenso color violáceo-azulado, producto de un alto contenido de
+                antocianinas (antioxidantes naturales). Es fundamental en la gastronomía de Ixtenco para la elaboración
+                de tortillas azules pigmentadas y exquisitos atoles.</p>
+        </section>
+        <div class="info-rapida">
+            <div class="info-item"><strong>Forma de mazorca</strong><span>Variable, 12-16 hileras</span></div>
+            <div class="info-item"><strong>Tipo de grano</strong><span>Semicristalino, pigmentado</span></div>
+            <div class="info-item"><strong>Nutrientes clave</strong><span>Alto en antocianinas y antioxidantes</span>
+            </div>
+            <div class="info-item"><strong>Adaptación</strong><span>Centro de México, valles altos</span></div>
+        </div>
+        <section class="seccion">
+            <h2>Colores del Grano</h2>
+            <div class="colores-grano">
+                <span class="chip-color" style="background:#1d6fa5; color:#fff;">🔵 Azul</span>
+                <span class="chip-color" style="background:#7b2d8e; color:#fff;">🟣 Morado</span>
+            </div>
+        </section>
+        <section class="seccion">
+            <h2>Usos Tradicionales</h2>
+            <ul>
+                <li>Tortillas azules de sabor dulce y terroso</li>
+                <li>Tlacoyos y quesadillas pigmentadas</li>
+                <li>Atoles de maíz azul</li>
+                <li>Artesanías con granos de color intenso</li>
+            </ul>
+        </section>
+        <section class="seccion">
+            <h2>Galería de la Raza</h2>
+            <div class="espacio-imagen">Galería fotográfica — Próximamente</div>
+        </section>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../categorias/razas-ixtenco.html" class="boton-volver">⬅ Volver al Catálogo</a>
+        </div>
+    </main>
+    <footer class="pie-pagina">
+        <p class="pie-titulo">Herencia de Maíz</p>
+        <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
+    </footer>
+    <script>function abrirMenu() { document.getElementById('menuEnlaces').classList.toggle('abierto'); } document.querySelectorAll('.navegacion-enlaces a').forEach(function (e) { e.addEventListener('click', function () { document.getElementById('menuEnlaces').classList.remove('abierto'); }); });</script>
+</body>
+
+</html>
