@@ -328,8 +328,8 @@ document.addEventListener("DOMContentLoaded", () => {
         messages.scrollTop = messages.scrollHeight;
 
         try {
-            // Se llamará al backend real cuando esté desplegado
-            const response = await fetch('/api/chat', {
+            // Se llamará al backend real con un cache-buster para evitar 304 Not Modified
+            const response = await fetch(`/api/chat?t=${Date.now()}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: text })
@@ -377,7 +377,7 @@ async function numuSpeak(btn, lang) {
         }
 
         try {
-            const response = await fetch('/api/chat', {
+            const response = await fetch(`/api/chat?t=${Date.now()}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
