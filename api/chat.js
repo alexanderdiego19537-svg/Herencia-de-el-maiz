@@ -1,5 +1,5 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { createClient } = require("@supabase/supabase-js");
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { createClient } from "@supabase/supabase-js";
 
 // Inicializar Google Gemini
 // Usar gemini-1.5-flash ya que admite imágenes y texto de forma rápida
