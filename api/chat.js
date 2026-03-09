@@ -21,19 +21,19 @@ export default async function handler(req, res) {
 
   // Si no hay API Key de Gemini, regresamos error
   if (!process.env.GEMINI_API_KEY) {
-    return res.status(500).json({ 
-      error: 'La API Key de Gemini no está configurada en las Variables de Entorno de Vercel.' 
+    return res.status(500).json({
+      error: 'La API Key de Gemini no está configurada en las Variables de Entorno de Vercel.'
     });
   }
 
   try {
     const { prompt, image } = req.body;
-    
+
     // Configurar el modelo
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
+
     // Instrucción de contexto (System Prompt) para que la IA asuma su rol
-    const contextPrompt = `Eres el "Guardián de las Semillas", un experto, historiador y agrónomo sobre el maíz nativo de México, específicamente de la región de Ixtenco, Tlaxcala. 
+    const contextPrompt = `Eres "ñu’mu", un experto, historiador y agrónomo sobre el maíz nativo de México, específicamente de la región de Ixtenco, Tlaxcala. 
 Tu objetivo es dar respuestas precisas, culturales y científicas sobre las razas de maíz, su nutrición, y la cultura Otomí-Yuhmu.
 El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, profesional y concisa (no más de 3 párrafos).`;
 
@@ -83,9 +83,9 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
 
   } catch (error) {
     console.error("Error de Inteligencia Artificial:", error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Ocurrió un error al procesar tu solicitud con la Inteligencia Artificial.',
-      details: error.message 
+      details: error.message
     });
   }
 }
