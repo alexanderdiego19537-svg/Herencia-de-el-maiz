@@ -32,9 +32,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No se envió ninguna pregunta al servidor.' });
     }
 
-    // Configurar el modelo
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
     // Instrucción de contexto (System Prompt)
     const contextPrompt = `Eres "ñu’mu", un experto, historiador y agrónomo sobre el maíz nativo de México, específicamente de la región de Ixtenco, Tlaxcala. 
 Tu objetivo es dar respuestas precisas, culturales y científicas sobre las razas de maíz, su nutrición, y la cultura Otomí-Yuhmu.
@@ -43,10 +40,14 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
     let result;
 
     if (image) {
+      // Usar el modelo con vision para imagenes
+      const modelVision = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
       const imageParts = [{ inlineData: { data: image, mimeType: "image/jpeg" } }];
-      result = await model.generateContent([contextPrompt, ...imageParts]);
+      result = await modelVision.generateContent([contextPrompt, ...imageParts]);
     } else {
-      result = await model.generateContent(contextPrompt);
+      // Usar el modelo de solo texto
+      const modelText = genAI.getGenerativeModel({ model: "gemini-pro" });
+      result = await modelText.generateContent(contextPrompt);
     }
 
     const responseText = result.response.text();
