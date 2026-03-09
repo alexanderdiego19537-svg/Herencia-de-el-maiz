@@ -385,9 +385,6 @@
             loader.style.display = 'block';
 
             try {
-                // AQUÍ USAREMOS LA FUNCIÓN SERVERLESS DE VERCEL MÁS ADELANTE
-                // Para propósitos de este código, apuntaremos a /api/chat
-
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {
@@ -403,27 +400,20 @@
                     const data = await response.json();
                     appendMessage(data.reply, 'ai');
                 } else {
-                    // Si el backend aún no existe, mostramos mensaje de prueba
-                    console.log("Backend not connected yet. Displaying mock data.");
-                    setTimeout(() => {
-                        appendMessage("Esta es una respuesta simulada. La Inteligencia artificial (Gemini) está siendo conectada. Tu maíz parece ser de la raza **Cónico**, muy común en la región de Ixtenco por su resistencia a las heladas.", 'ai');
-                        loader.style.display = 'none';
-                    }, 1500);
-                    return; // Retornamos temprano para no procesar el error visualmente aún
+                    const errorData = await response.json();
+                    appendMessage(`Error: ${errorData.error || 'Fallo de conexión. Revisa que tu API Key esté en Vercel y que haya comunicación.'}`, 'ai');
                 }
             } catch (error) {
                 console.error("Error connected to AI api:", error);
-                setTimeout(() => {
-                    appendMessage("El maíz es un regalo divino de Ixtenco. (Respuesta simulada provisoria ya que /api/chat no está desplegada en Vercel aún).", 'ai');
-                }, 1000);
+                appendMessage(`Error de red: No se pudo conectar con el servidor. Revisa tu conexión a internet o verifica que tu proyecto esté en línea en Vercel.`, 'ai');
             } finally {
                 loader.style.display = 'none';
                 currentImageBase64 = null; // Reset image
             }
         }
 
-        // Función para manejar la traducción y texto a voz (Texto a voz usa API del navegador)
-        function translateAndSpeak(buttonElement, languageStr) {
+        // Función para manejar la traducción usando IA y texto a voz
+        async function translateAndSpeak(buttonElement, languageStr) {
             const messageDiv = buttonElement.closest('.message');
             // Obtener el texto (clonamos para remover los botones y evitar leerlos)
             const clone = messageDiv.cloneNode(true);
@@ -438,16 +428,31 @@
             if (languageStr === 'es') {
                 realTranslationDisplay.style.display = 'none';
                 speakText(textToRead, 'es-MX');
-            } else if (languageStr === 'otomi') {
-                // Simulación de traducción (Idealmente esto requiriría enviar otra consulta a Gemini)
-                realTranslationDisplay.innerHTML = "<strong>Otomí (Aprox):</strong> <em>Dänxu ra tähä (Simulación de traducción; requiriendo la API Gemini)</em>";
+            } else {
+                const langName = languageStr === 'otomi' ? 'Otomí' : 'Yuhmu de Ixtenco';
+                realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>Traduciendo con IA... <i class="fas fa-spinner fa-spin"></i></em>`;
                 realTranslationDisplay.style.display = 'block';
-                // Pronunciamos la aproximación generada en español o el idioma más cercano soportado
-                speakText("Danxu ra taha", 'es-MX');
-            } else if (languageStr === 'yuhmu') {
-                realTranslationDisplay.innerHTML = "<strong>Yuhmu (Ixtenco):</strong> <em>Nhmü ra tähä Ixtenco (Simulación de traducción; requiriendo la API Gemini)</em>";
-                realTranslationDisplay.style.display = 'block';
-                speakText("Ñumhú ra taha Ixtenco", 'es-MX');
+
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            prompt: `Traduce el siguiente texto a ${langName}. Da solo la traducción, sin notas extra ni comillas:\n\n"${textToRead}"`
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const translation = data.reply;
+                        realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>${translation}</em>`;
+                        speakText(translation, 'es-MX');
+                    } else {
+                        realTranslationDisplay.innerHTML = `<strong>Error:</strong> <em>Fallo en Vercel/Gemini al traducir.</em>`;
+                    }
+                } catch (err) {
+                    realTranslationDisplay.innerHTML = `<strong>Error:</strong> <em>No se pudo conectar a internet para traducir.</em>`;
+                }
             }
         }
 

@@ -243,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="numu-messages" id="numuMessages">
                 <div class="numu-msg ai">
                     <div>¡Hola! Soy ñu'mu. Pregúntame sobre razas de maíz, su historia o nutrición en Ixtenco.</div>
+                    <div class="translated-text-display" style="font-style: italic; color: #1d6fa5; font-size: 0.8rem; margin-top: 5px; display: none;"></div>
                     <div class="numu-translation-box">
                         <button class="numu-lang-btn" onclick="numuSpeak(this, 'es')">ESP</button>
                         <button class="numu-lang-btn" onclick="numuSpeak(this, 'otomi')">OTO</button>
@@ -301,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             div.innerHTML = `
                 <div>${formatted}</div>
+                <div class="translated-text-display" style="font-style: italic; color: #1d6fa5; font-size: 0.8rem; margin-top: 5px; display: none;"></div>
                 <div class="numu-translation-box">
                     <button class="numu-lang-btn" onclick="numuSpeak(this, 'es')">ESP</button>
                     <button class="numu-lang-btn" onclick="numuSpeak(this, 'otomi')">OTO</button>
@@ -337,40 +339,68 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
                 appendMsg(data.reply, 'ai');
             } else {
-                setTimeout(() => {
-                    appendMsg("Soy ñu'mu. En este momento mi conexión con Vercel no está viva en producción, pero pronto podré responderte con conocimiento milenario.", 'ai');
-                }, 1000);
+                const errorData = await response.json();
+                appendMsg(`Error: ${errorData.error || 'Fallo de conexión con la IA.'}`, 'ai');
             }
         } catch (err) {
-            setTimeout(() => {
-                appendMsg("Soy ñu'mu. Parece que estoy desconectado de mi base de conocimiento. (Error de red).", 'ai');
-            }, 1000);
+            appendMsg(`Error de red: No se pudo conectar. Verifica tu internet y API Key en Vercel.`, 'ai');
         } finally {
             loader.style.display = 'none';
         }
     }
 });
 
-function numuSpeak(btn, lang) {
-    const parentMsg = btn.closest('.numu-msg').querySelector('div');
-    const text = parentMsg.textContent;
+async function numuSpeak(btn, lang) {
+    const parentMsg = btn.closest('.numu-msg');
+    const textElem = parentMsg.querySelector('div:first-child');
+    const text = textElem.textContent;
+    const realTranslationDisplay = parentMsg.querySelector('.translated-text-display');
 
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
+    }
 
-        let utteranceText = text;
-        let voiceLang = 'es-MX';
+    if (lang === 'es') {
+        if (realTranslationDisplay) realTranslationDisplay.style.display = 'none';
 
-        // Simulación básica de fonética para lectura si es indígena
-        if (lang === 'otomi') {
-            utteranceText = "Danxu ra taha. " + text.substring(0, 30) + "..."; // Aproximación
-        } else if (lang === 'yuhmu') {
-            utteranceText = "Ñumhú ra taha Ixtenco. " + text.substring(0, 30) + "...";
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-MX';
+            utterance.rate = 0.95;
+            window.speechSynthesis.speak(utterance);
+        }
+    } else {
+        const langName = lang === 'otomi' ? 'Otomí' : 'Yuhmu de Ixtenco';
+        if (realTranslationDisplay) {
+            realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>Traduciendo... <i class="fas fa-spinner fa-spin"></i></em>`;
+            realTranslationDisplay.style.display = 'block';
         }
 
-        const utterance = new SpeechSynthesisUtterance(utteranceText);
-        utterance.lang = voiceLang;
-        utterance.rate = 0.95;
-        window.speechSynthesis.speak(utterance);
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prompt: `Traduce el siguiente texto a ${langName}. Da solo la traducción, sin notas extra ni comillas:\n\n"${text}"`
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const translation = data.reply;
+                if (realTranslationDisplay) realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>${translation}</em>`;
+
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(translation);
+                    utterance.lang = 'es-MX'; // Aproximación
+                    utterance.rate = 0.95;
+                    window.speechSynthesis.speak(utterance);
+                }
+            } else {
+                if (realTranslationDisplay) realTranslationDisplay.innerHTML = `<strong>Error:</strong> <em>Fallo al traducir.</em>`;
+            }
+        } catch (err) {
+            if (realTranslationDisplay) realTranslationDisplay.innerHTML = `<strong>Error:</strong> <em>Fallo de red.</em>`;
+        }
     }
 }
