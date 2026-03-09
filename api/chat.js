@@ -16,23 +16,27 @@ if (supabaseUrl && supabaseKey) {
 export default async function handler(req, res) {
   // Solo permitimos peticiones POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  // Si no hay API Key de Gemini, regresamos error
-  if (!process.env.GEMINI_API_KEY) {
-    return res.status(500).json({
-      error: 'La API Key de Gemini no está configurada en las Variables de Entorno de Vercel.'
-    });
+    return res.status(405).json({ error: 'Metodo no permitido. Usa POST.' });
   }
 
   try {
+    // Si no hay API Key de Gemini, regresamos error
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({
+        error: 'Falta GEMINI_API_KEY en variables de entorno Vercel.'
+      });
+    }
+
     const { prompt, image } = req.body;
+
+    if (!prompt) {
+      return res.status(400).json({ error: 'No se envió ninguna pregunta al servidor.' });
+    }
 
     // Configurar el modelo
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Instrucción de contexto (System Prompt) para que la IA asuma su rol
+    // Instrucción de contexto (System Prompt)
     const contextPrompt = `Eres "ñu’mu", un experto, historiador y agrónomo sobre el maíz nativo de México, específicamente de la región de Ixtenco, Tlaxcala. 
 Tu objetivo es dar respuestas precisas, culturales y científicas sobre las razas de maíz, su nutrición, y la cultura Otomí-Yuhmu.
 El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, profesional y concisa (no más de 3 párrafos).`;
@@ -40,52 +44,36 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
     let result;
 
     if (image) {
-      // Si el usuario subió una imagen, la enviamos junto con el texto
-      const imageParts = [
-        {
-          inlineData: {
-            data: image, // Base64
-            mimeType: "image/jpeg" // Asumimos jpeg/png/webp
-          }
-        }
-      ];
+      const imageParts = [{ inlineData: { data: image, mimeType: "image/jpeg" } }];
       result = await model.generateContent([contextPrompt, ...imageParts]);
     } else {
-      // Si solo es texto
       result = await model.generateContent(contextPrompt);
     }
 
     const responseText = result.response.text();
 
     // =============== SUPABASE (Registro en BD) ===============
-    // Intentamos guardar la interacción en la base de datos si está configurada
     if (supabase) {
-      try {
-        await supabase
-          .from('ia_consultas')
-          .insert([
-            {
-              pregunta_usuario: prompt,
-              respuesta_ia: responseText,
-              tiene_imagen: !!image,
-              fecha: new Date().toISOString()
-            }
-          ]);
-      } catch (dbError) {
-        console.error("Error guardando en Supabase:", dbError);
-        // No fallamos la respuesta si Supabase falla
-      }
+      // Intentamos guardar, pero si falla no rompemos la app
+      supabase.from('ia_consultas').insert([{
+        pregunta_usuario: prompt,
+        respuesta_ia: responseText,
+        tiene_imagen: !!image,
+        fecha: new Date().toISOString()
+      }]).catch(err => console.log("Supabase log error ignorado:", err));
     }
     // =========================================================
 
-    // Devolvemos la respuesta
     return res.status(200).json({ reply: responseText });
 
   } catch (error) {
-    console.error("Error de Inteligencia Artificial:", error);
+    // CAPTURAMOS EL ERROR EXACTO PARA MOSTRARSELO AL FRONTEND Y SABER QUÉ ES
+    console.error("Vercel Catch Error:", error);
+
     return res.status(500).json({
-      error: 'Ocurrió un error al procesar tu solicitud con la Inteligencia Artificial.',
-      details: error.message
+      error: `Error interno: ${error.message}`,
+      name: error.name,
+      stack: error.stack
     });
   }
 }
