@@ -55,7 +55,7 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
     // Ahora está seguro y usa await correctamente para que no de crash en Vercel
     if (supabase) {
       try {
-        await supabase.from('ia_consultas').insert([{
+        await supabase.from('ia-consultas').insert([{
           pregunta_usuario: prompt,
           respuesta_ia: responseText,
           tiene_imagen: !!image,
