@@ -331,7 +331,8 @@ img {
     border-radius: 50%;
 }
 
-/* --- Cuadros / Tarjetas (Mazorca SVG) --- */
+/* --- TARJETAS INTERACTIVAS (Donde viven los maíces) --- */
+/* Esta clase es la base de cada mazorca en la rueda. Le dimos un filtro de sombra (drop-shadow) muy sutil para que el diseño se sienta premium y no quede plano en la pantalla. */
 .cuadro {
     position: absolute;
     top: 50%;
@@ -353,7 +354,8 @@ img {
     cursor: pointer;
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
 
-    /* Posicionamiento circular */
+    /* 📐 MAGIA MATEMÁTICA Y GEOMETRÍA: Posicionamiento Circular Perfecto */
+    /* ¡Aquí ocurre la ingeniería compleja! Usamos fórmulas matemáticas "--angulo: calc(...)" dentro de CSS para tomar cada tarjeta individual, rotarla en su propio eje, empujarla hacia los lados (usando traslación) y volver a enderezarla. Resultado: Un círculo dinámico perfecto 100% responsivo. */
     --angulo: calc(360deg / var(--total) * var(--i));
     transform: translate(-50%, -50%) rotate(var(--angulo)) translate(var(--distancia)) rotate(calc(-1 * var(--angulo)));
     will-change: transform;
@@ -427,7 +429,8 @@ img {
     line-height: 1.1;
 }
 
-/* --- Hover interactivo --- */
+/* --- EFECTO 3D DE FLOTACIÓN (Interacción del Usuario - Hover) --- */
+/* Cuando el visitante toca o pasa su cursor por encima de una tarjeta de maíz, activamos un efecto hiperrealista usando transformaciones: La tarjeta crece (scale), salta un poco (translateY), brilla más (brightness) y proyecta una sombra óptica profunda (Drop Shadow). Da la ilusión visual de que la web tiene relieve. */
 .cuadro:hover {
     z-index: 100;
     transform: translate(-50%, -50%) rotate(var(--angulo)) translate(var(--distancia)) rotate(calc(-1 * var(--angulo))) scale(1.15) translateY(-6px);
@@ -458,7 +461,8 @@ img {
     filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5)) brightness(1.2) saturate(1.15);
 }
 
-/* --- Distancias de niveles --- */
+/* --- RADIOS DE LOS ANILLOS (El Tamaño de las Órbitas) --- */
+/* Cada anillo interno gira más cerca o más lejos del centro de la pantalla. Usamos variables nativas CSS (--distancia) para calcular esto con precisión milimétrica. */
 .nivel-razas {
     --distancia: 290px;
     z-index: 20;
