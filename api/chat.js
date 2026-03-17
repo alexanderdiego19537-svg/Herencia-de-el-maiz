@@ -55,15 +55,23 @@ El usuario preguntará lo siguiente: "${prompt}". Responde de forma cálida, pro
     // Ahora está seguro y usa await correctamente para que no de crash en Vercel
     if (supabase) {
       try {
-        await supabase.from('ia-consultas').insert([{
+        const { error: sbError } = await supabase.from('ia-consultas').insert([{
           pregunta_usuario: prompt,
           respuesta_ia: responseText,
           tiene_imagen: !!image,
           fecha: new Date().toISOString()
         }]);
+        
+        if (sbError) {
+          console.error("Supabase Error al Insertar:", sbError);
+        } else {
+          console.log("Supabase: Conversación guardada exitosamente.");
+        }
       } catch (dbError) {
-        console.log("Advertencia de Supabase:", dbError.message);
+        console.log("Advertencia Excepcion Supabase:", dbError.message);
       }
+    } else {
+      console.log("Supabase NO está configurado. Faltan variables de entorno en Vercel.");
     }
     // =========================================================
 
