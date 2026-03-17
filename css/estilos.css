@@ -55,6 +55,7 @@ html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100vw;
+    box-sizing: border-box;
 }
 
 body {
@@ -67,6 +68,9 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     width: 100vw;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 a {
@@ -532,14 +536,15 @@ img {
 }
 
 /* ============================================
-   CONTENIDO DE PÁGINAS INTERNAS
+   CONTENIDO GENERAL Y SECCIONES
    ============================================ */
 .contenido-pagina {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
     flex: 1;
-    animation: aparecerAbajo 0.6s ease;
+    padding: 3rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .seccion {
