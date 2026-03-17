@@ -2,30 +2,37 @@ import os
 import glob
 import re
 
+# El corazón del proyecto, donde apuntamos a todas las carpetas
 directory = "d:/PAGINA MAIZ"
 
-# Find all HTML files
+# Buscamos absolutamente todas las páginas web (HTML) para actualizarlas de golpe mediante automatización
 html_files = glob.glob(f"{directory}/**/*.html", recursive=True)
 
 for filepath in html_files:
+    # Leemos todo el código interno (código fuente) de la página actual respetando los acentos en español
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # We want to insert the IA link right after Herencia de Semillas or before Reconocimiento
-    # Let's match the Reconocimiento link to extract its relative path
-    # Example: <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
+    # Queremos inyectar de forma inteligente el enlace hacia nuestro chat de la Inteligencia Artificial, 
+    # justo antes de la sección de "Reconocimiento" en la barra de navegación superior.
+    # Ejemplo de la guía visual que usa este script-robot para encontrar dónde inyectarlo: 
+    # <li><a href="../categorias/reconocimiento.html">Reconocimiento</a></li>
     match = re.search(r'<li><a href="([^"]*)reconocimiento\.html"(?: class="activo")?>Reconocimiento</a></li>', content)
     
     if match:
+        # El 'prefix' es la ruta matemática (los ../../ calculados) para que el enlace hacia la IA nunca se rompa
         prefix = match.group(1)
-        # New link
+        
+        # Construimos nuestro nuevo botón brillante para la Inteligencia Artificial
         new_link = f'<li><a href="{prefix}ia-maiz.html">Inteligencia Artificial</a></li>\n                {match.group(0)}'
         
-        # Replace the original line with the new line + original line
+        # Reemplazamos la vieja barra de navegación incrustando mágicamente nuestro nuevo eslabón de IA
         new_content = content.replace(match.group(0), new_link)
         
+        # Guardamos la página modificada
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(new_content)
-        print(f"Updated {filepath}")
+        print(f"Menú de navegación actualizado exitosamente con la IA en: {filepath}")
     else:
-        print(f"Match not found in {filepath}")
+        # Si una página en particular no tenía el botón o tenía otra estructura, el robot nos avisa
+        print(f"Advertencia: No se encontró la guía para insertar la IA en {filepath}")
