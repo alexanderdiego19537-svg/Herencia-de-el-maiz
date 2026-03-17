@@ -224,17 +224,34 @@
         }
 
         @media (max-width: 600px) {
-            .ia-container { padding: 1rem; }
-            .chat-section { height: 350px; }
-            .chat-input-container { flex-direction: column; }
-            .chat-input-container button { padding: 0.8rem; width: 100%; border-radius: 8px; }
-            .chat-input-container input { border-radius: 8px; }
-            .translation-tools { 
-                position: static; 
-                visibility: visible; 
-                opacity: 1; 
-                margin-top: 10px; 
-                flex-wrap: wrap; 
+            .ia-container {
+                padding: 1rem;
+            }
+
+            .chat-section {
+                height: 350px;
+            }
+
+            .chat-input-container {
+                flex-direction: column;
+            }
+
+            .chat-input-container button {
+                padding: 0.8rem;
+                width: 100%;
+                border-radius: 8px;
+            }
+
+            .chat-input-container input {
+                border-radius: 8px;
+            }
+
+            .translation-tools {
+                position: static;
+                visibility: visible;
+                opacity: 1;
+                margin-top: 10px;
+                flex-wrap: wrap;
                 box-shadow: none;
                 border: none;
                 background: transparent;
@@ -246,7 +263,7 @@
 <body>
 
     <!-- ====== BARRA DE NAVEGACIÓN (EL MENÚ PRINCIPAL) ====== -->
-        <!-- Aquí está el logo y todos los enlaces para viajar por la página. Usamos una etiqueta "nav" semántica para que los buscadores como Google la entiendan mejor. -->
+    <!-- Aquí está el logo y todos los enlaces para viajar por la página. Usamos una etiqueta "nav" semántica para que los buscadores como Google la entiendan mejor. -->
     <nav class="navegacion">
         <div class="navegacion-contenedor">
             <a href="../../index.html" class="navegacion-logo"><img src="../../imagenes/logo1.png"
@@ -321,7 +338,7 @@
     </main>
 
     <!-- ====== PIE DE PÁGINA (FOOTER INSTITUCIONAL) ====== -->
-        <!-- El cierre formal de nuestra web. Aquí ponemos derechos de autor y créditos. Se mantiene pequeño y minimalista para no robar protagonismo al maíz. -->
+    <!-- El cierre formal de nuestra web. Aquí ponemos derechos de autor y créditos. Se mantiene pequeño y minimalista para no robar protagonismo al maíz. -->
     <footer class="pie-pagina">
         <p class="pie-titulo">Herencia de Maíz</p>
         <p>Proyecto de Bachillerato — Ixtenco, Tlaxcala</p>
@@ -482,7 +499,7 @@
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = lang;
-                utterance.rate = 0.95; // Un poco más lento para mejor dicción
+                utterance.rate = 0.90; // Un poco más lento para mejor dicción
                 window.speechSynthesis.speak(utterance);
             } else {
                 alert("Tu navegador no soporta lectura en voz alta.");
@@ -491,7 +508,7 @@
     </script>
 
     <!-- ====== SISTEMA DE INTELIGENCIA ARTIFICIAL MÓDULO (IA ñu'mu) ====== -->
-        <!-- Importamos el cerebro de nuestra IA. Este script externo conecta la página local con servidores en la nube para responder preguntas del usuario en milisegundos usando procesamiento de lenguaje natural. -->
+    <!-- Importamos el cerebro de nuestra IA. Este script externo conecta la página local con servidores en la nube para responder preguntas del usuario en milisegundos usando procesamiento de lenguaje natural. -->
     <script src="../../js/widget-ia.js"></script>
 </body>
 
