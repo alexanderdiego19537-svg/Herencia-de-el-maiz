@@ -222,6 +222,24 @@
             padding-top: 0.5rem;
             display: none;
         }
+
+        @media (max-width: 600px) {
+            .ia-container { padding: 1rem; }
+            .chat-section { height: 350px; }
+            .chat-input-container { flex-direction: column; }
+            .chat-input-container button { padding: 0.8rem; width: 100%; border-radius: 8px; }
+            .chat-input-container input { border-radius: 8px; }
+            .translation-tools { 
+                position: static; 
+                visibility: visible; 
+                opacity: 1; 
+                margin-top: 10px; 
+                flex-wrap: wrap; 
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+        }
     </style>
 </head>
 
