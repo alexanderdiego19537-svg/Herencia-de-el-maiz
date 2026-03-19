@@ -505,22 +505,29 @@
         let isPaused = false;
         let lastSpokenText = "";
         let lastSpokenLang = "es-MX";
+        let isManualCancel = false;
+
+        function updatePlayBtn(state) {
+            const btn = document.getElementById('btn-play-pause');
+            if (!btn) return;
+            if (state === 'pause') btn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+            if (state === 'play') btn.innerHTML = '<i class="fas fa-play"></i> Reanudar';
+            if (state === 'repeat') btn.innerHTML = '<i class="fas fa-play"></i> Repetir';
+        }
 
         // Permite pausar, reanudar y repetir la lectura
         function togglePauseResume() {
-            const btn = document.getElementById('btn-play-pause');
             if (window.speechSynthesis.speaking) {
                 if (window.speechSynthesis.paused) {
                     window.speechSynthesis.resume();
                     isPaused = false;
-                    btn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+                    updatePlayBtn('pause');
                 } else {
                     window.speechSynthesis.pause();
                     isPaused = true;
-                    btn.innerHTML = '<i class="fas fa-play"></i> Reanudar';
+                    updatePlayBtn('play');
                 }
-            } else if (lastSpokenText) {
-                // Si la IA ya terminó de hablar, al presionar vuelva a repetir el último texto
+            } else if (lastSpokenText !== "") {
                 speakText(lastSpokenText, lastSpokenLang, false);
             }
         }
@@ -534,47 +541,66 @@
             document.getElementById('speed-display').innerText = currentSpeechRate.toFixed(1) + 'x';
             
             // Si está hablando, cortarla y recomenzar al instante con la nueva velocidad
-            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+            if (window.speechSynthesis.speaking) {
+                const wasPaused = window.speechSynthesis.paused;
+                isManualCancel = true; // Evitar que onend confunda al boton
                 window.speechSynthesis.cancel();
+                
+                // Chrome requiere un ligero retraso tras el cancel() o se buguea
                 setTimeout(() => {
-                    speakText(lastSpokenText, lastSpokenLang, false);
-                }, 50);
+                    executeSpeech(lastSpokenText, lastSpokenLang);
+                    if (wasPaused) {
+                        setTimeout(() => window.speechSynthesis.pause(), 50);
+                    }
+                }, 150);
             }
         }
 
         function speakText(text, lang, saveText = true) {
-            if ('speechSynthesis' in window) {
-                // Guardamos en memoria por si el usuario cambia de velocidad o repite
-                if (saveText) {
-                    lastSpokenText = text;
-                    lastSpokenLang = lang;
-                }
-                
-                // Mostramos el panel de botones de audio globalmente
-                const controls = document.getElementById('tts-controls');
-                if (controls) controls.style.display = 'flex';
-                
-                const btnPlayPause = document.getElementById('btn-play-pause');
-                if (btnPlayPause) btnPlayPause.innerHTML = '<i class="fas fa-pause"></i> Pausar';
-                isPaused = false;
-
-                // Cancelamos lecturas previas pisadas
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang;
-                utterance.rate = currentSpeechRate; 
-                
-                // Cambiar el botón cuando acabe de leer naturalmente
-                utterance.onend = function() {
-                    if (btnPlayPause && !isPaused) {
-                        btnPlayPause.innerHTML = '<i class="fas fa-play"></i> Repetir';
-                    }
-                };
-
-                window.speechSynthesis.speak(utterance);
-            } else {
+            if (!('speechSynthesis' in window)) {
                 alert("Tu navegador no soporta lectura en voz alta.");
+                return;
             }
+            // Guardamos en memoria por si el usuario cambia de velocidad o repite
+            if (saveText) {
+                lastSpokenText = text;
+                lastSpokenLang = lang;
+            }
+            
+            const controls = document.getElementById('tts-controls');
+            if (controls) controls.style.display = 'flex';
+            
+            // Cancelamos lecturas previas pisadas de forma segura
+            isManualCancel = true;
+            window.speechSynthesis.cancel();
+            
+            setTimeout(() => {
+                executeSpeech(lastSpokenText, lastSpokenLang);
+            }, 150);
+        }
+
+        function executeSpeech(text, lang) {
+            isManualCancel = false;
+            isPaused = false;
+            updatePlayBtn('pause');
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = currentSpeechRate; 
+            
+            // Cambiar el botón cuando acabe de leer naturalmente
+            utterance.onend = function() {
+                if (!isManualCancel) {
+                    updatePlayBtn('repeat');
+                    isPaused = false;
+                }
+            };
+            
+            utterance.onerror = function(e) {
+                // Ignoramos los errores que nosotros causamos intencionalmente al cancelar
+            };
+
+            window.speechSynthesis.speak(utterance);
         }
     </script>
 
