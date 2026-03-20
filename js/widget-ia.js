@@ -80,6 +80,34 @@ document.addEventListener("DOMContentLoaded", () => {
             margin-top: 2px;
         }
 
+        .numu-tts-controls {
+            display: none;
+            background: #fffcf5;
+            padding: 8px 15px;
+            border-bottom: 1px solid #e0d8c8;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .numu-tts-btn {
+            background: #e76f00;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .numu-tts-btn:hover { background: #c1121f; }
+        .numu-tts-btn.blue { background: #1d6fa5; }
+        .numu-tts-btn.blue:hover { background: #14213d; }
+
         .numu-close {
             background: none;
             border: none;
@@ -242,6 +270,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button class="numu-close" id="numuClose">&times;</button>
             </div>
             
+            <div class="numu-tts-controls" id="numuTtsControls">
+                <span style="color: #5a4a3a; font-weight: bold;"><i class="fas fa-volume-up"></i></span>
+                <button class="numu-tts-btn" id="numuBtnPlayPause"><i class="fas fa-pause"></i> Pausar</button>
+                <button class="numu-tts-btn blue" id="numuBtnSlow"><i class="fas fa-backward"></i></button>
+                <span id="numuSpeedDisplay" style="font-weight: bold; width: 30px; text-align: center; color: #1d6fa5;">0.9x</span>
+                <button class="numu-tts-btn blue" id="numuBtnFast"><i class="fas fa-forward"></i></button>
+            </div>
+            
             <div class="numu-messages" id="numuMessages">
                 <div class="numu-msg ai">
                     <div>¡Hola! Soy ñu'mu. Pregúntame sobre razas de maíz, su historia o nutrición en Ixtenco.</div>
@@ -295,6 +331,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     sendBtn.addEventListener('click', sendMsg);
+
+    const pbBtn = document.getElementById('numuBtnPlayPause');
+    const slowBtn = document.getElementById('numuBtnSlow');
+    const fastBtn = document.getElementById('numuBtnFast');
+    
+    if (pbBtn) pbBtn.addEventListener('click', numuTogglePauseResume);
+    if (slowBtn) slowBtn.addEventListener('click', () => numuChangeSpeechRate(-0.1));
+    if (fastBtn) fastBtn.addEventListener('click', () => numuChangeSpeechRate(0.1));
 
     function appendMsg(text, type) {
         const div = document.createElement('div');
@@ -352,25 +396,110 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+let numuSpeechRate = 0.95;
+let numuIsPaused = false;
+let numuLastSpokenText = "";
+let numuLastSpokenLang = "es-MX";
+let numuIsManualCancel = false;
+
+function numuUpdatePlayBtn(state) {
+    const btn = document.getElementById('numuBtnPlayPause');
+    if (!btn) return;
+    if (state === 'pause') btn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+    if (state === 'play') btn.innerHTML = '<i class="fas fa-play"></i> Reanudar';
+    if (state === 'repeat') btn.innerHTML = '<i class="fas fa-play"></i> Repetir';
+}
+
+function numuTogglePauseResume() {
+    if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+            numuIsPaused = false;
+            numuUpdatePlayBtn('pause');
+            setTimeout(() => {
+                if (!window.speechSynthesis.speaking && numuLastSpokenText !== "") {
+                    numuExecuteSpeech(numuLastSpokenText, numuLastSpokenLang);
+                }
+            }, 500);
+        } else {
+            window.speechSynthesis.pause();
+            numuIsPaused = true;
+            numuUpdatePlayBtn('play');
+        }
+    } else if (numuLastSpokenText !== "") {
+        numuSpeakText(numuLastSpokenText, numuLastSpokenLang, false);
+    }
+}
+
+function numuChangeSpeechRate(delta) {
+    numuSpeechRate += delta;
+    if (numuSpeechRate < 0.5) numuSpeechRate = 0.5;
+    if (numuSpeechRate > 2.0) numuSpeechRate = 2.0;
+    
+    const display = document.getElementById('numuSpeedDisplay');
+    if (display) display.innerText = numuSpeechRate.toFixed(1) + 'x';
+    
+    if (window.speechSynthesis.speaking) {
+        const wasPaused = window.speechSynthesis.paused;
+        numuIsManualCancel = true;
+        window.speechSynthesis.cancel();
+        
+        setTimeout(() => {
+            numuExecuteSpeech(numuLastSpokenText, numuLastSpokenLang);
+            if (wasPaused) {
+                setTimeout(() => window.speechSynthesis.pause(), 50);
+            }
+        }, 150);
+    }
+}
+
+function numuSpeakText(text, lang, saveText = true) {
+    if (!('speechSynthesis' in window)) return;
+    
+    if (saveText) {
+        numuLastSpokenText = text;
+        numuLastSpokenLang = lang;
+    }
+    
+    const controls = document.getElementById('numuTtsControls');
+    if (controls) controls.style.display = 'flex';
+    
+    numuIsManualCancel = true;
+    window.speechSynthesis.cancel();
+    
+    setTimeout(() => {
+        numuExecuteSpeech(numuLastSpokenText, numuLastSpokenLang);
+    }, 150);
+}
+
+function numuExecuteSpeech(text, lang) {
+    numuIsManualCancel = false;
+    numuIsPaused = false;
+    numuUpdatePlayBtn('pause');
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang || 'es-MX';
+    utterance.rate = numuSpeechRate;
+    
+    utterance.onend = function() {
+        if (!numuIsManualCancel) {
+            numuUpdatePlayBtn('repeat');
+            numuIsPaused = false;
+        }
+    };
+    
+    window.speechSynthesis.speak(utterance);
+}
+
 async function numuSpeak(btn, lang) {
     const parentMsg = btn.closest('.numu-msg');
     const textElem = parentMsg.querySelector('div:first-child');
     const text = textElem.textContent;
     const realTranslationDisplay = parentMsg.querySelector('.translated-text-display');
 
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-    }
-
     if (lang === 'es') {
         if (realTranslationDisplay) realTranslationDisplay.style.display = 'none';
-
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'es-MX';
-            utterance.rate = 0.95;
-            window.speechSynthesis.speak(utterance);
-        }
+        numuSpeakText(text, 'es-MX');
     } else {
         const langName = lang === 'otomi' ? 'Otomí' : 'Yuhmu de Ixtenco';
         if (realTranslationDisplay) {
@@ -390,14 +519,9 @@ async function numuSpeak(btn, lang) {
             if (response.ok) {
                 const data = await response.json();
                 const translation = data.reply;
-                if (realTranslationDisplay) realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>${translation}</em>`;
+                if (realTranslationDisplay) realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>${translation}</em><br><span style="font-size: 0.75rem; color: #888;">* Traducción generada por IA. Pronunciación fonética aproximada.</span>`;
 
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance(translation);
-                    utterance.lang = 'es-MX'; // Aproximación
-                    utterance.rate = 0.95;
-                    window.speechSynthesis.speak(utterance);
-                }
+                numuSpeakText(translation, 'es-MX');
             } else {
                 if (realTranslationDisplay) realTranslationDisplay.innerHTML = `<strong>Error:</strong> <em>Fallo al traducir.</em>`;
             }

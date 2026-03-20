@@ -490,7 +490,7 @@
                     if (response.ok) {
                         const data = await response.json();
                         const translation = data.reply;
-                        realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>${translation}</em>`;
+                        realTranslationDisplay.innerHTML = `<strong>${langName}:</strong> <em>${translation}</em><br><span style="font-size: 0.75rem; color: #888;">* Traducción generada por IA. Pronunciación fonética aproximada.</span>`;
                         speakText(translation, 'es-MX');
                     } else {
                         realTranslationDisplay.innerHTML = `<strong>Error:</strong> <em>Fallo en Vercel/Gemini al traducir.</em>`;
@@ -522,6 +522,13 @@
                     window.speechSynthesis.resume();
                     isPaused = false;
                     updatePlayBtn('pause');
+                    
+                    // Hack para navegadores (como Chrome) que pierden el audio tras pausas largas
+                    setTimeout(() => {
+                        if (!window.speechSynthesis.speaking && lastSpokenText !== "") {
+                            speakText(lastSpokenText, lastSpokenLang, false);
+                        }
+                    }, 500);
                 } else {
                     window.speechSynthesis.pause();
                     isPaused = true;
