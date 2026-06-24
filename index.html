@@ -4,20 +4,31 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description"
-                content="Herencia de Maíz — Conservación del maíz nativo en Ixtenco, Tlaxcala. 16 razas de maíz y la sabiduría de Simón Angoa.">
+        <meta name="description" content="Herencia de Maíz — Conservación del maíz nativo en Ixtenco, Tlaxcala. 16 razas de maíz y la sabiduría de Simón Angoa.">
+        <meta name="theme-color" content="#14213d">
         <title>Herencia de Maíz | Ixtenco, Tlaxcala</title>
-        <link rel="stylesheet" href="css/estilos.css?v=maiz_razas_v1">
+
+        <!-- Preconnect para fonts — carga más rápida -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <!-- CSS principal -->
+        <link rel="stylesheet" href="css/estilos.css?v=maiz_v3">
+
+        <!-- Open Graph -->
+        <meta property="og:title" content="Herencia de Maíz | Ixtenco, Tlaxcala">
+        <meta property="og:description" content="16 razas de maíz nativo, cultura Otomí y la sabiduría del campo tlaxcalteca.">
+        <meta property="og:type" content="website">
 </head>
 
 <body>
 
-        <!-- ====== BARRA DE NAVEGACIÓN (EL MENÚ PRINCIPAL) ====== -->
-        <!-- Aquí está el logo y todos los enlaces para viajar por la página. Usamos una etiqueta "nav" semántica para que los buscadores como Google la entiendan mejor. -->
+        <!-- ====== BARRA DE NAVEGACIÓN ====== -->
         <nav class="navegacion">
                 <div class="navegacion-contenedor">
-                        <a href="index.html" class="navegacion-logo"><img src="imagenes/logo1.png"
-                                        alt="Herencia de Maíz"></a>
+                        <a href="index.html" class="navegacion-logo">
+                                <img src="imagenes/logo1.png" alt="Herencia de Maíz" width="48" height="48">
+                        </a>
                         <ul class="navegacion-enlaces" id="menuEnlaces">
                                 <li><a href="index.html" class="activo">Inicio</a></li>
                                 <li><a href="paginas/categorias/nutricion.html">Nutrición Mexicana</a></li>
@@ -27,7 +38,7 @@
                                 <li><a href="paginas/categorias/ia-maiz.html">IA ñu'mu</a></li>
                                 <li><a href="paginas/categorias/reconocimiento.html">Reconocimiento</a></li>
                         </ul>
-                        <button class="boton-menu" onclick="abrirMenu()">
+                        <button class="boton-menu" id="botonMenu" onclick="abrirMenu()" aria-label="Abrir menú" aria-expanded="false">
                                 <span></span>
                                 <span></span>
                                 <span></span>
@@ -35,112 +46,237 @@
                 </div>
         </nav>
 
+        <!-- ====== ENCABEZADO PRINCIPAL ====== -->
         <header class="encabezado-principal">
                 <h1>Herencia de <span>Maíz</span></h1>
                 <p>Sin maíz no hay país, y en Ixtenco la semilla vive.</p>
         </header>
 
-        <!-- ====== LA MAGIA PRINCIPAL: RUEDA INTERACTIVA BIOCULTURAL ====== -->
-        <!-- Este bloque es el corazón de la página principal. Aquí creamos la rueda de maíz usando matemáticas en CSS, sin necesidad de imágenes planas. Todo es dinámico y calculado. -->
+        <!-- ====== DATO CURIOSO DEL DÍA ====== -->
+        <div class="dato-curioso-strip" id="datoCurioso">
+                <div class="dato-curioso-inner">
+                        <span class="dato-icon">🌽</span>
+                        <span class="dato-texto" id="datoTexto">Cargando dato curioso...</span>
+                        <button class="dato-refresh" id="datoRefresh" title="Otro dato">↺</button>
+                </div>
+        </div>
+
+        <!-- ====== LA RUEDA INTERACTIVA BIOCULTURAL ====== -->
         <div class="universo-rueda">
                 <div class="contenedor-rueda">
 
-                        <!-- Bandas circulares (los anillos de color) -->
+                        <!-- Bandas circulares -->
                         <div class="banda banda-1"></div>
                         <div class="banda banda-2"></div>
                         <div class="banda banda-3"></div>
 
                         <!-- Centro de la rueda -->
                         <div class="centro">
-                                <img src="imagenes/Imagen principal maiz.jpg" alt="Semilla de Maíz">
+                                <img src="imagenes/Imagen principal maiz.jpg" alt="Semilla de Maíz" loading="eager">
                         </div>
 
                         <!-- Nivel interior: 14 Razas de maíz -->
                         <div class="nivel nivel-razas">
-                                <a href="paginas/razas/arrocillo.html" class="cuadro" style="--i:1; --total:14;"><img src="imagenes/img-maiz-raza1.png" alt="Arrocillo"><span>Arrocillo</span></a>
-                                <a href="paginas/razas/conico.html" class="cuadro" style="--i:2; --total:14;"><img src="imagenes/img-maiz-raza2.png" alt="Cónico"><span>Cónico</span></a>
-                                <a href="paginas/razas/elotes-conicos.html" class="cuadro" style="--i:3; --total:14;"><img src="imagenes/img-maiz-raza3.png" alt="Elotes Cónicos"><span>Elotes Cónicos</span></a>
-                                <a href="paginas/razas/cacahuacintle.html" class="cuadro" style="--i:4; --total:14;"><img src="imagenes/img-maiz-raza4.png" alt="Cacahuacintle"><span>Cacahuacintle</span></a>
-                                <a href="paginas/razas/chalqueno.html" class="cuadro" style="--i:5; --total:14;"><img src="imagenes/img-maiz-raza5.png" alt="Chalqueño"><span>Chalqueño</span></a>
-                                <a href="paginas/razas/chalqueno-bolita.html" class="cuadro" style="--i:6; --total:14;"><img src="imagenes/img-maiz-raza6.png" alt="Chalqueño x Bolita"><span>Chalqueño x Bolita</span></a>
-                                <a href="paginas/razas/chalqueno-cacahuacintle.html" class="cuadro" style="--i:7; --total:14;"><img src="imagenes/img-maiz-raza7.png" alt="Chalqueño x Cacahuacintle"><span>Chalqueño x Cacahuacintle</span></a>
-                                <a href="paginas/razas/chalqueno-conico.html" class="cuadro" style="--i:8; --total:14;"><img src="imagenes/img-maiz-raza8.png" alt="Chalqueño x Cónico"><span>Chalqueño x Cónico</span></a>
-                                <a href="paginas/razas/conico-elotes-conicos.html" class="cuadro" style="--i:9; --total:14;"><img src="imagenes/img-maiz-raza9.png" alt="Cónico x Elotes Cónico"><span>Cónico x Elotes Cónico</span></a>
-                                <a href="paginas/razas/conico-cacahuacintle.html" class="cuadro" style="--i:10; --total:14;"><img src="imagenes/img-maiz-raza10.png" alt="Cónico x Cacahuacintle"><span>Cónico x Cacahuacintle</span></a>
-                                <a href="paginas/razas/conico-bolita.html" class="cuadro" style="--i:11; --total:14;"><img src="imagenes/img-maiz-raza11.png" alt="Cónico x Bolita"><span>Cónico x Bolita</span></a>
-                                <a href="paginas/razas/conico-chalqueno.html" class="cuadro" style="--i:12; --total:14;"><img src="imagenes/img-maiz-raza12.png" alt="Cónico x Chalqueño"><span>Cónico x Chalqueño</span></a>
-                                <a href="paginas/razas/conico-pepitilla.html" class="cuadro" style="--i:13; --total:14;"><img src="imagenes/img-maiz-raza13.png" alt="Cónico x Pepitilla"><span>Cónico x Pepitilla</span></a>
-                                <a href="paginas/razas/tunicata.html" class="cuadro" style="--i:14; --total:14;"><img src="imagenes/img-maiz-raza15.png" alt="Tunicata"><span>Tunicata</span></a>
+                                <a href="paginas/razas/arrocillo.html" class="cuadro" style="--i:1; --total:14;"><img src="imagenes/img-maiz-raza1.png" alt="Arrocillo" loading="lazy"><span>Arrocillo</span></a>
+                                <a href="paginas/razas/conico.html" class="cuadro" style="--i:2; --total:14;"><img src="imagenes/img-maiz-raza2.png" alt="Cónico" loading="lazy"><span>Cónico</span></a>
+                                <a href="paginas/razas/elotes-conicos.html" class="cuadro" style="--i:3; --total:14;"><img src="imagenes/img-maiz-raza3.png" alt="Elotes Cónicos" loading="lazy"><span>Elotes Cónicos</span></a>
+                                <a href="paginas/razas/cacahuacintle.html" class="cuadro" style="--i:4; --total:14;"><img src="imagenes/img-maiz-raza4.png" alt="Cacahuacintle" loading="lazy"><span>Cacahuacintle</span></a>
+                                <a href="paginas/razas/chalqueno.html" class="cuadro" style="--i:5; --total:14;"><img src="imagenes/img-maiz-raza5.png" alt="Chalqueño" loading="lazy"><span>Chalqueño</span></a>
+                                <a href="paginas/razas/chalqueno-bolita.html" class="cuadro" style="--i:6; --total:14;"><img src="imagenes/img-maiz-raza6.png" alt="Chalqueño x Bolita" loading="lazy"><span>Chalqueño x Bolita</span></a>
+                                <a href="paginas/razas/chalqueno-cacahuacintle.html" class="cuadro" style="--i:7; --total:14;"><img src="imagenes/img-maiz-raza7.png" alt="Chalqueño x Cacahuacintle" loading="lazy"><span>Chalqueño x Cacahuacintle</span></a>
+                                <a href="paginas/razas/chalqueno-conico.html" class="cuadro" style="--i:8; --total:14;"><img src="imagenes/img-maiz-raza8.png" alt="Chalqueño x Cónico" loading="lazy"><span>Chalqueño x Cónico</span></a>
+                                <a href="paginas/razas/conico-elotes-conicos.html" class="cuadro" style="--i:9; --total:14;"><img src="imagenes/img-maiz-raza9.png" alt="Cónico x Elotes Cónico" loading="lazy"><span>Cónico x Elotes Cónico</span></a>
+                                <a href="paginas/razas/conico-cacahuacintle.html" class="cuadro" style="--i:10; --total:14;"><img src="imagenes/img-maiz-raza10.png" alt="Cónico x Cacahuacintle" loading="lazy"><span>Cónico x Cacahuacintle</span></a>
+                                <a href="paginas/razas/conico-bolita.html" class="cuadro" style="--i:11; --total:14;"><img src="imagenes/img-maiz-raza11.png" alt="Cónico x Bolita" loading="lazy"><span>Cónico x Bolita</span></a>
+                                <a href="paginas/razas/conico-chalqueno.html" class="cuadro" style="--i:12; --total:14;"><img src="imagenes/img-maiz-raza12.png" alt="Cónico x Chalqueño" loading="lazy"><span>Cónico x Chalqueño</span></a>
+                                <a href="paginas/razas/conico-pepitilla.html" class="cuadro" style="--i:13; --total:14;"><img src="imagenes/img-maiz-raza13.png" alt="Cónico x Pepitilla" loading="lazy"><span>Cónico x Pepitilla</span></a>
+                                <a href="paginas/razas/tunicata.html" class="cuadro" style="--i:14; --total:14;"><img src="imagenes/img-maiz-raza15.png" alt="Tunicata" loading="lazy"><span>Tunicata</span></a>
                         </div>
 
-                        <!-- Nivel exterior: 12 Colores de maíz -->
+                        <!-- Nivel exterior: 10 Colores de maíz -->
                         <div class="nivel nivel-colores">
-                                <a href="paginas/colores/naranja.html" class="cuadro color-naranja"
-                                        style="--i:1; --total:10;"><img src="imagenes/img-maiz-color1.png"
-                                                alt="Maíz Naranja"><span>Naranja</span></a>
-                                <a href="paginas/colores/ocre.html" class="cuadro color-ocre"
-                                        style="--i:2; --total:10;"><img src="imagenes/img-maiz-color3.png"
-                                                alt="Maíz Ocre"><span>Ocre</span></a>
-                                <a href="paginas/colores/jaspe.html" class="cuadro color-jaspe"
-                                        style="--i:3; --total:10;"><img src="imagenes/img-maiz-color4.png"
-                                                alt="Maíz Jaspe"><span>Jaspe</span></a>
-                                <a href="paginas/colores/tinto.html" class="cuadro color-tinto"
-                                        style="--i:4; --total:10;"><img src="imagenes/img-maiz-color5.png"
-                                                alt="Maíz Tinto"><span>Tinto</span></a>
-                                <a href="paginas/colores/azul.html" class="cuadro color-azul"
-                                        style="--i:5; --total:10;"><img src="imagenes/img-maiz-color6.png"
-                                                alt="Maíz Azul"><span>Azul</span></a>
-                                <a href="paginas/colores/negro.html" class="cuadro color-negro"
-                                        style="--i:6; --total:10;"><img src="imagenes/img-maiz-color7.png"
-                                                alt="Maíz Negro"><span>Negro</span></a>
-                                <a href="paginas/colores/pinto.html" class="cuadro color-pinto"
-                                        style="--i:7; --total:10;"><img src="imagenes/img-maiz-color8.png"
-                                                alt="Maíz Pinto"><span>Pinto</span></a>
-                                <a href="paginas/colores/blanco.html" class="cuadro color-blanco"
-                                        style="--i:8; --total:10;"><img src="imagenes/img-maiz-color9.png"
-                                                alt="Maíz Blanco"><span>Blanco</span></a>
-                                <a href="paginas/colores/crema.html" class="cuadro color-crema"
-                                        style="--i:9; --total:10;"><img src="imagenes/img-maiz-color10.png"
-                                                alt="Maíz Crema"><span>Crema</span></a>
-                                <a href="paginas/colores/rojo.html" class="cuadro color-rojo"
-                                        style="--i:10; --total:10;"><img src="imagenes/img-maiz-color11.png"
-                                                alt="Maíz Rojo"><span>Rojo</span></a>
+                                <a href="paginas/colores/naranja.html" class="cuadro color-naranja" style="--i:1; --total:10;"><img src="imagenes/img-maiz-color1.png" alt="Maíz Naranja" loading="lazy"><span>Naranja</span></a>
+                                <a href="paginas/colores/ocre.html" class="cuadro color-ocre" style="--i:2; --total:10;"><img src="imagenes/img-maiz-color3.png" alt="Maíz Ocre" loading="lazy"><span>Ocre</span></a>
+                                <a href="paginas/colores/jaspe.html" class="cuadro color-jaspe" style="--i:3; --total:10;"><img src="imagenes/img-maiz-color4.png" alt="Maíz Jaspe" loading="lazy"><span>Jaspe</span></a>
+                                <a href="paginas/colores/tinto.html" class="cuadro color-tinto" style="--i:4; --total:10;"><img src="imagenes/img-maiz-color5.png" alt="Maíz Tinto" loading="lazy"><span>Tinto</span></a>
+                                <a href="paginas/colores/azul.html" class="cuadro color-azul" style="--i:5; --total:10;"><img src="imagenes/img-maiz-color6.png" alt="Maíz Azul" loading="lazy"><span>Azul</span></a>
+                                <a href="paginas/colores/negro.html" class="cuadro color-negro" style="--i:6; --total:10;"><img src="imagenes/img-maiz-color7.png" alt="Maíz Negro" loading="lazy"><span>Negro</span></a>
+                                <a href="paginas/colores/pinto.html" class="cuadro color-pinto" style="--i:7; --total:10;"><img src="imagenes/img-maiz-color8.png" alt="Maíz Pinto" loading="lazy"><span>Pinto</span></a>
+                                <a href="paginas/colores/blanco.html" class="cuadro color-blanco" style="--i:8; --total:10;"><img src="imagenes/img-maiz-color9.png" alt="Maíz Blanco" loading="lazy"><span>Blanco</span></a>
+                                <a href="paginas/colores/crema.html" class="cuadro color-crema" style="--i:9; --total:10;"><img src="imagenes/img-maiz-color10.png" alt="Maíz Crema" loading="lazy"><span>Crema</span></a>
+                                <a href="paginas/colores/rojo.html" class="cuadro color-rojo" style="--i:10; --total:10;"><img src="imagenes/img-maiz-color11.png" alt="Maíz Rojo" loading="lazy"><span>Rojo</span></a>
                         </div>
 
                 </div>
         </div>
 
-        <!-- Contenido y texto movidos a páginas internas -->
-        <main class="contenido-pagina" style="padding-bottom: 1rem;">
-        </main>
+        <!-- ====== SECCIÓN DE ESTADÍSTICAS VIVAS ====== -->
+        <section class="stats-vivas" aria-label="Datos del proyecto">
+                <div class="stats-grid">
+                        <div class="stat-card">
+                                <div class="stat-numero" id="contRazas">14</div>
+                                <div class="stat-label">Razas de Maíz</div>
+                                <div class="stat-sub">documentadas en Ixtenco</div>
+                        </div>
+                        <div class="stat-card stat-card--destaque">
+                                <div class="stat-numero" id="contColores">10</div>
+                                <div class="stat-label">Colores Nativos</div>
+                                <div class="stat-sub">biodiversidad viva</div>
+                        </div>
+                        <div class="stat-card">
+                                <div class="stat-numero">+7,000</div>
+                                <div class="stat-label">Años de Historia</div>
+                                <div class="stat-sub">del maíz en México</div>
+                        </div>
+                        <div class="stat-card">
+                                <div class="stat-numero">1</div>
+                                <div class="stat-label">Guardián</div>
+                                <div class="stat-sub">Simón Angoa, Ixtenco</div>
+                        </div>
+                </div>
+        </section>
 
-        <!-- ====== PIE DE PÁGINA (FOOTER INSTITUCIONAL) ====== -->
-        <!-- El cierre formal de nuestra web. Aquí ponemos derechos de autor y créditos. Se mantiene pequeño y minimalista para no robar protagonismo al maíz. -->
+        <!-- ====== ACCESO RÁPIDO ====== -->
+        <section class="acceso-rapido" aria-label="Explorar secciones">
+                <h2 class="acceso-titulo">Explora el Proyecto</h2>
+                <div class="acceso-grid">
+                        <a href="paginas/categorias/razas-ixtenco.html" class="acceso-card" data-color="orange">
+                                <div class="acceso-icon">🌽</div>
+                                <div class="acceso-info">
+                                        <strong>Razas en Ixtenco</strong>
+                                        <span>Las 14 razas documentadas</span>
+                                </div>
+                        </a>
+                        <a href="paginas/categorias/nutricion.html" class="acceso-card" data-color="green">
+                                <div class="acceso-icon">🥗</div>
+                                <div class="acceso-info">
+                                        <strong>Nutrición Mexicana</strong>
+                                        <span>Valor nutricional del maíz</span>
+                                </div>
+                        </a>
+                        <a href="paginas/categorias/milpa.html" class="acceso-card" data-color="blue">
+                                <div class="acceso-icon">🌱</div>
+                                <div class="acceso-info">
+                                        <strong>Sistema Milpa</strong>
+                                        <span>Agricultura ancestral</span>
+                                </div>
+                        </a>
+                        <a href="paginas/categorias/ia-maiz.html" class="acceso-card" data-color="purple">
+                                <div class="acceso-icon">🤖</div>
+                                <div class="acceso-info">
+                                        <strong>IA ñu'mu</strong>
+                                        <span>Pregunta a la inteligencia artificial</span>
+                                </div>
+                        </a>
+                        <a href="paginas/categorias/herencia.html" class="acceso-card" data-color="red">
+                                <div class="acceso-icon">🏺</div>
+                                <div class="acceso-info">
+                                        <strong>Herencia de Semillas</strong>
+                                        <span>Tradición y conservación</span>
+                                </div>
+                        </a>
+                        <a href="paginas/categorias/reconocimiento.html" class="acceso-card" data-color="gold">
+                                <div class="acceso-icon">🏆</div>
+                                <div class="acceso-info">
+                                        <strong>Reconocimiento</strong>
+                                        <span>Premios y logros</span>
+                                </div>
+                        </a>
+                </div>
+        </section>
+
+        <!-- ====== PIE DE PÁGINA ====== -->
         <footer class="pie-pagina">
                 <p class="pie-titulo">Herencia de Maíz</p>
                 <p>Proyecto-Tlaxcala</p>
+                <p style="margin-top:0.5rem; font-size:0.8rem; opacity:0.5;">
+                        <a href="paginas/categorias/ia-maiz.html" style="color:inherit;">Habla con ñu'mu IA</a>
+                        &nbsp;·&nbsp; Ixtenco, Tlaxcala
+                </p>
         </footer>
 
-        <!-- ====== EL CEREBRO DE LA PÁGINA: JAVASCRIPT PARA EL MENÚ MÓVIL ====== -->
-        <!-- Estos comandos le enseñan a nuestra página cómo ser inteligente. Cuando detecta que el usuario está en un celular, este script "escucha" los clics y abre o cierra el menú táctil como por arte de magia. -->
+        <!-- ====== SCRIPTS ====== -->
         <script>
-                /* Esta función abre y cierra el menú en celulares */
+                /* Menú móvil */
                 function abrirMenu() {
-                        document.getElementById('menuEnlaces').classList.toggle('abierto');
+                        const menu = document.getElementById('menuEnlaces');
+                        const btn  = document.getElementById('botonMenu');
+                        const open = menu.classList.toggle('abierto');
+                        btn.setAttribute('aria-expanded', open);
                 }
 
-                /* Cierra el menú cuando se hace clic en un enlace */
-                document.querySelectorAll('.navegacion-enlaces a').forEach(function (enlace) {
-                        enlace.addEventListener('click', function () {
+                /* Cerrar menú al hacer clic en enlace */
+                document.querySelectorAll('.navegacion-enlaces a').forEach(enlace => {
+                        enlace.addEventListener('click', () => {
                                 document.getElementById('menuEnlaces').classList.remove('abierto');
+                                document.getElementById('botonMenu').setAttribute('aria-expanded', 'false');
                         });
                 });
+
+                /* ── Dato curioso del día ── */
+                const DATOS = [
+                        "El maíz fue domesticado en México hace más de 9,000 años a partir del teocintle.",
+                        "México tiene más de 64 razas nativas de maíz, la mayor diversidad del mundo.",
+                        "En Ixtenco, Tlaxcala, se conservan 14 razas únicas gracias a guardianes de semillas.",
+                        "El maíz azul contiene antocianinas, antioxidantes con propiedades antiinflamatorias.",
+                        "La tortilla de maíz nixtamalizado tiene más calcio que la leche entera.",
+                        "El sistema milpa combina maíz, frijol y calabaza: la 'trinidad' alimentaria mesoamericana.",
+                        "En Otomí, el maíz se llama 'ñu'mu', que también significa 'nuestra vida'.",
+                        "El maíz cacahuacintle es el que se usa para el pozole y el atole.",
+                        "Cada mazorca de maíz tiene exactamente el mismo número de hileras en cada lado.",
+                        "El maíz es la base del 40% de los alimentos tradicionales mexicanos.",
+                        "La nixtamalización, proceso ancestral, aumenta un 900% la biodisponibilidad de niacina.",
+                        "El maíz negro tunicata de Ixtenco es considerado ancestral y raro a nivel mundial.",
+                        "Un campesino indígena puede distinguir hasta 30 variedades de maíz solo viendo el grano.",
+                        "El maíz fue llevado a Europa por Cristóbal Colón en 1493 desde las Antillas.",
+                        "En México se consumen más de 700 platillos distintos derivados del maíz."
+                ];
+
+                function mostrarDatoAleatorio() {
+                        const el = document.getElementById('datoTexto');
+                        if (!el) return;
+                        el.style.opacity = '0';
+                        setTimeout(() => {
+                                el.textContent = DATOS[Math.floor(Math.random() * DATOS.length)];
+                                el.style.opacity = '1';
+                        }, 250);
+                }
+
+                document.addEventListener('DOMContentLoaded', () => {
+                        mostrarDatoAleatorio();
+                        document.getElementById('datoRefresh')?.addEventListener('click', mostrarDatoAleatorio);
+                });
+
+                /* ── Contador animado de stats ── */
+                function animarContador(el, target, duration = 1200) {
+                        let start = 0;
+                        const step = (timestamp) => {
+                                if (!start) start = timestamp;
+                                const progress = Math.min((timestamp - start) / duration, 1);
+                                el.textContent = Math.floor(progress * target);
+                                if (progress < 1) requestAnimationFrame(step);
+                                else el.textContent = target;
+                        };
+                        requestAnimationFrame(step);
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(e => {
+                                if (e.isIntersecting) {
+                                        animarContador(document.getElementById('contRazas'), 14);
+                                        animarContador(document.getElementById('contColores'), 10);
+                                        observer.disconnect();
+                                }
+                        });
+                }, { threshold: 0.3 });
+
+                const statsEl = document.querySelector('.stats-vivas');
+                if (statsEl) observer.observe(statsEl);
         </script>
 
+        <!-- Widget IA — carga diferida para no bloquear el render inicial -->
+        <script src="js/widget-ia.js" defer></script>
 
-        <!-- ====== SISTEMA DE INTELIGENCIA ARTIFICIAL MÓDULO (IA ñu'mu) ====== -->
-        <!-- Importamos el cerebro de nuestra IA. Este script externo conecta la página local con servidores en la nube para responder preguntas del usuario en milisegundos usando procesamiento de lenguaje natural. -->
-        <script src="js/widget-ia.js"></script>
 </body>
 
 </html>

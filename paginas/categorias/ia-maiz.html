@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Inteligencia Artificial Herencia de Maíz — Sube una foto de tu maíz y aprende todo sobre él con opciones de traducción en Otomí y Yuhmu.">
+    <meta name="theme-color" content="#14213d">
     <title>Inteligencia Artificial | Herencia de Maíz</title>
-    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_ia_v1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_ia_v3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
 
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -416,28 +419,31 @@
         function sendMessage() {
             const input = document.getElementById('userInput');
             const text = input.value.trim();
+            const modeEl = document.getElementById('iaModeSelect');
+            const mode = modeEl ? modeEl.value : 'normal';
 
             if (text !== '') {
                 appendMessage(text, 'user');
                 input.value = '';
-                processAIRequest(text, null);
+                processAIRequest(text, null, mode);
             }
         }
 
-        // Simulación o llamada real a Vercel Serverless (api/chat)
-        async function processAIRequest(prompt, imageBase64) {
+        // Llamada real a Vercel Serverless (api/chat)
+        async function processAIRequest(prompt, imageBase64, mode = 'normal') {
             const loader = document.getElementById('loader');
             loader.style.display = 'block';
 
             try {
-                const response = await fetch('/api/chat', {
+                const response = await fetch(`/api/chat?t=${Date.now()}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         prompt: prompt,
-                        image: imageBase64
+                        image: imageBase64,
+                        mode: mode
                     })
                 });
 
@@ -445,15 +451,14 @@
                     const data = await response.json();
                     appendMessage(data.reply, 'ai');
                 } else {
-                    const errorData = await response.json();
-                    appendMessage(`Error: ${errorData.error || 'Fallo de conexión. Revisa que tu API Key esté en Vercel y que haya comunicación.'}`, 'ai');
+                    const errorData = await response.json().catch(() => ({}));
+                    appendMessage(`No pude responder: ${errorData.error || 'Error de conexión.'}`, 'ai');
                 }
             } catch (error) {
-                console.error("Error connected to AI api:", error);
-                appendMessage(`Error de red: No se pudo conectar con el servidor. Revisa tu conexión a internet o verifica que tu proyecto esté en línea en Vercel.`, 'ai');
+                appendMessage('Sin conexión. Verifica tu internet e inténtalo de nuevo.', 'ai');
             } finally {
                 loader.style.display = 'none';
-                currentImageBase64 = null; // Reset image
+                currentImageBase64 = null;
             }
         }
 
@@ -611,9 +616,8 @@
         }
     </script>
 
-    <!-- ====== SISTEMA DE INTELIGENCIA ARTIFICIAL MÓDULO (IA ñu'mu) ====== -->
-    <!-- Importamos el cerebro de nuestra IA. Este script externo conecta la página local con servidores en la nube para responder preguntas del usuario en milisegundos usando procesamiento de lenguaje natural. -->
-    <script src="../../js/widget-ia.js"></script>
+    <!-- Widget IA flotante -->
+    <script src="../../js/widget-ia.js" defer></script>
 </body>
 
 </html>

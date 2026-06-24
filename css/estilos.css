@@ -5,7 +5,7 @@
    ============================================ */
 
 /* --- Tipografía de Google --- */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* --- Variables --- */
 :root {
@@ -689,14 +689,257 @@ img {
 }
 
 /* ============================================
+   DATO CURIOSO STRIP
+   ============================================ */
+.dato-curioso-strip {
+    background: linear-gradient(90deg, #14213d 0%, #1d6fa5 50%, #14213d 100%);
+    padding: 0.7rem 1.5rem;
+    text-align: center;
+    border-top: 2px solid rgba(231,111,0,0.4);
+    border-bottom: 2px solid rgba(231,111,0,0.4);
+}
+
+.dato-curioso-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    color: rgba(255,255,255,0.92);
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.dato-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.dato-texto {
+    flex: 1;
+    transition: opacity 0.25s ease;
+    max-width: 700px;
+    font-style: italic;
+    font-size: 0.84rem;
+}
+
+.dato-refresh {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.dato-refresh:hover {
+    background: rgba(231,111,0,0.4);
+    transform: rotate(180deg);
+}
+
+/* ============================================
+   STATS VIVAS
+   ============================================ */
+.stats-vivas {
+    padding: 2.5rem 1.5rem;
+    background: linear-gradient(135deg, rgba(20,33,61,0.04), rgba(29,111,165,0.04));
+    border-top: 1px solid rgba(231,111,0,0.1);
+    border-bottom: 1px solid rgba(231,111,0,0.1);
+}
+
+.stats-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid rgba(231,111,0,0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--naranja-maiz), var(--amarillo-maiz));
+}
+
+.stat-card--destaque::before {
+    background: linear-gradient(90deg, var(--azul-cielo), var(--azul-maiz));
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+}
+
+.stat-numero {
+    font-family: var(--fuente-titulo);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--azul-maiz);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.stat-card--destaque .stat-numero {
+    color: var(--azul-cielo);
+}
+
+.stat-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 0.2rem;
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    color: #8a7a6a;
+    line-height: 1.3;
+}
+
+/* ============================================
+   ACCESO RÁPIDO GRID
+   ============================================ */
+.acceso-rapido {
+    padding: 2.5rem 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.acceso-titulo {
+    font-family: var(--fuente-titulo);
+    font-size: 1.6rem;
+    color: var(--azul-maiz);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.acceso-titulo::after {
+    content: '';
+    display: block;
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--naranja-maiz), var(--amarillo-maiz));
+    border-radius: 3px;
+    margin: 0.4rem auto 0;
+}
+
+.acceso-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.acceso-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1.1rem 1.3rem;
+    background: white;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.07);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    text-decoration: none;
+    color: var(--texto);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.acceso-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+    transition: width 0.2s ease;
+}
+
+.acceso-card[data-color="orange"]::before { background: var(--naranja-maiz); }
+.acceso-card[data-color="green"]::before  { background: var(--verde); }
+.acceso-card[data-color="blue"]::before   { background: var(--azul-cielo); }
+.acceso-card[data-color="purple"]::before { background: #7c3aed; }
+.acceso-card[data-color="red"]::before    { background: var(--rojo-maiz); }
+.acceso-card[data-color="gold"]::before   { background: var(--amarillo-maiz); }
+
+.acceso-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    border-color: rgba(231,111,0,0.2);
+}
+
+.acceso-card:hover::before { width: 6px; }
+
+.acceso-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20,33,61,0.05);
+    border-radius: 10px;
+}
+
+.acceso-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.acceso-info strong {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--azul-maiz);
+    line-height: 1.2;
+}
+
+.acceso-info span {
+    font-size: 0.75rem;
+    color: #8a7a6a;
+    line-height: 1.3;
+}
+
+/* ============================================
    PIE DE PÁGINA
    ============================================ */
 .pie-pagina {
     background: linear-gradient(135deg, #0a0a14, #14213d);
     color: rgba(255, 255, 255, 0.7);
     text-align: center;
-    padding: 1.2rem 1rem;
-    margin-top: 3rem;
+    padding: 1.5rem 1rem;
+    margin-top: 0;
     border-top: 3px solid var(--naranja-maiz);
 }
 
@@ -873,22 +1116,47 @@ img {
     }
 }
 
+/* ─── Responsive: Tablet ─── */
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .acceso-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ─── Responsive: Móvil grande ─── */
 @media (max-width: 768px) {
     .navegacion-enlaces {
         display: none;
         position: absolute;
-        top: 60px;
+        top: 65px;
         left: 0;
         right: 0;
         background: rgba(10, 10, 20, 0.98);
+        backdrop-filter: blur(12px);
         flex-direction: column;
-        padding: 0.8rem;
-        gap: 0.3rem;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        padding: 0.6rem;
+        gap: 0.2rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        z-index: 999;
     }
 
     .navegacion-enlaces.abierto {
         display: flex;
+        animation: slideDown 0.2s ease;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .navegacion-enlaces li a {
+        padding: 0.65rem 1rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
     }
 
     .boton-menu {
@@ -912,50 +1180,76 @@ img {
         transform: translate(-50%, -50%) scale(1.0);
         transform-origin: center center;
     }
+
+    .dato-curioso-inner {
+        font-size: 0.8rem;
+        gap: 8px;
+    }
+
+    .acceso-rapido { padding: 2rem 1rem; }
+    .stats-vivas   { padding: 2rem 1rem; }
+
+    .stat-numero {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 650px) {
-    .contenedor-rueda {
-        transform: translate(-50%, -50%) scale(0.85);
-    }
+    .contenedor-rueda { transform: translate(-50%, -50%) scale(0.85); }
+    .acceso-grid { grid-template-columns: 1fr; }
+    .stats-grid  { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 550px) {
-    .contenedor-rueda {
-        transform: translate(-50%, -50%) scale(0.72);
+    .contenedor-rueda { transform: translate(-50%, -50%) scale(0.72); }
+
+    .encabezado-principal h1 { font-size: 2.1rem; }
+    .encabezado-principal p  { font-size: 0.88rem; }
+
+    .dato-curioso-strip { padding: 0.6rem 1rem; }
+    .dato-texto { font-size: 0.78rem; }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
     }
+    .stat-card { padding: 1.1rem 0.7rem; }
+    .stat-numero { font-size: 1.8rem; }
+    .stat-label  { font-size: 0.8rem; }
+    .stat-sub    { font-size: 0.7rem; }
+
+    .acceso-card { padding: 0.9rem 1rem; }
+    .acceso-icon { width: 38px; height: 38px; font-size: 1.4rem; }
+    .acceso-info strong { font-size: 0.84rem; }
 }
 
 @media (max-width: 450px) {
-    .contenedor-rueda {
-        transform: translate(-50%, -50%) scale(0.66);
-    }
+    .contenedor-rueda { transform: translate(-50%, -50%) scale(0.66); }
 }
 
 @media (max-width: 380px) {
-    .contenedor-rueda {
-        transform: translate(-50%, -50%) scale(0.55);
-    }
+    .contenedor-rueda { transform: translate(-50%, -50%) scale(0.55); }
+    .navegacion-enlaces li a { font-size: 0.88rem; }
 }
 
 @media (max-width: 320px) {
-    .contenedor-rueda {
-        transform: translate(-50%, -50%) scale(0.48);
-    }
+    .contenedor-rueda { transform: translate(-50%, -50%) scale(0.48); }
 
-    .encabezado-principal h1 {
-        font-size: 1.8rem;
-    }
+    .encabezado-principal h1 { font-size: 1.7rem; }
 
     .hero-pagina {
-        padding: 2.5rem 1.5rem 2rem;
+        padding: 2.5rem 1rem 2rem;
     }
 
-    .hero-pagina h1 {
-        font-size: 1.7rem;
-    }
+    .hero-pagina h1 { font-size: 1.5rem; }
 
     .info-rapida {
         grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
