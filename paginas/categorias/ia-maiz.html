@@ -680,7 +680,7 @@
         </div>
 
         <!-- Preguntas rápidas -->
-        <div class="ia-section" style="flex:1; overflow-y:auto;">
+        <div class="ia-section">
             <div class="ia-section-title">Preguntas rápidas</div>
             <div class="quick-list">
                 <button class="quick-btn" onclick="quickQ(this)">🌽 ¿Cuántas razas de maíz hay en Ixtenco?</button>
@@ -758,7 +758,26 @@
                 <input class="ia-input" id="iaInput" type="text"
                     placeholder="Pregunta algo sobre el maíz..."
                     autocomplete="off" maxlength="600"
-                    onkeydown="onKey(event)" oninput="onInput()">
+                     onkeydown="onKey(event)" oninput="onInput()">
+                <button class="send-btn" id="sendBtn" onclick="send()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="input-hint">
+                <span>Enter para enviar · <span id="modeHint">Modo Normal</span></span>
+                <span><span id="charCount">0</span>/600</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="pie-pagina">
+    <p class="pie-titulo">Herencia de Maíz</p>
+    <p>Proyecto-Tlaxcala · ñu'mu IA</p>
+</footer>
+
 <script>
 // ─── Estado ────────────────────────────────────────────────────────────
 let currentMode  = 'normal';
@@ -847,33 +866,44 @@ function startNewChat() {
     
     // Limpiar pantalla y agregar mensaje de bienvenida
     const container = document.getElementById('messages');
-    container.innerHTML = `
-        <div class="msg ai" data-text="Hola, soy ñu'mu. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.">
-            <div class="msg-header">
-                <div class="avatar-ia"><i class="fas fa-microchip" style="font-size:0.7rem;"></i></div>
-                <span>ñu'mu</span>
+    if (container) {
+        container.innerHTML = `
+            <div class="msg ai" data-text="Hola, soy ñu'mu. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.">
+                <div class="msg-header">
+                    <div class="avatar-ia"><i class="fas fa-microchip" style="font-size:0.7rem;"></i></div>
+                    <span>ñu'mu</span>
+                </div>
+                <div class="bubble">
+                    Hola, soy <strong>ñu'mu</strong>. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.
+                </div>
+                <div class="translation-box"></div>
+                <div class="msg-actions">
+                    <button class="action-btn" onclick="listenMsg(this)"><i class="fas fa-volume-up"></i> Escuchar</button>
+                    <button class="action-btn" onclick="translateMsg(this,'otomi')"><i class="fas fa-globe"></i> Otomí</button>
+                    <button class="action-btn" onclick="translateMsg(this,'yuhmu')"><i class="fas fa-leaf"></i> Yuhmu</button>
+                </div>
             </div>
-            <div class="bubble">
-                Hola, soy <strong>ñu'mu</strong>. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.
-            </div>
-            <div class="translation-box"></div>
-            <div class="msg-actions">
-                <button class="action-btn" onclick="listenMsg(this)"><i class="fas fa-volume-up"></i> Escuchar</button>
-                <button class="action-btn" onclick="translateMsg(this,'otomi')"><i class="fas fa-globe"></i> Otomí</button>
-                <button class="action-btn" onclick="translateMsg(this,'yuhmu')"><i class="fas fa-leaf"></i> Yuhmu</button>
-            </div>
-        </div>
-    `;
+        `;
+    }
     
     // Deseleccionar semilla del mosaico
     document.querySelectorAll('.mosaic-item').forEach(b => b.classList.remove('active'));
-    document.getElementById('seedDetailTitle').innerHTML = `Explora Semillas`;
-    document.getElementById('seedDetailDesc').textContent = `Haz clic en los granos de colores de arriba para explorar sus secretos nutricionales e históricos.`;
-    document.getElementById('seedPromptBtn').style.display = 'none';
+    
+    const seedTitle = document.getElementById('seedDetailTitle');
+    if (seedTitle) seedTitle.innerHTML = `Explora Semillas`;
+    
+    const seedDesc = document.getElementById('seedDetailDesc');
+    if (seedDesc) seedDesc.textContent = `Haz clic en los granos de colores de arriba para explorar sus secretos nutricionales e históricos.`;
+    
+    const seedPrompt = document.getElementById('seedPromptBtn');
+    if (seedPrompt) seedPrompt.style.display = 'none';
+    
     selectedSeedData = null;
 
     renderHistoryList();
-    document.getElementById('iaInput').focus();
+    
+    const input = document.getElementById('iaInput');
+    if (input) input.focus();
 }
 
 function loadChat(id) {
@@ -887,7 +917,9 @@ function loadChat(id) {
     
     // Limpiar pantalla
     const container = document.getElementById('messages');
-    container.innerHTML = '';
+    if (container) {
+        container.innerHTML = '';
+    }
     
     // Renderizar mensajes guardados
     chat.messages.forEach(msg => {
@@ -906,11 +938,11 @@ function saveCurrentMessage(text, type, mode) {
         activeChatId = Date.now().toString();
         // El título es el primer mensaje del usuario (cortado a 25 caracteres)
         let title = type === 'usr' ? text : 'Conversación de ñu\'mu';
-        if (title.length > 25) title = title.slice(0, 25) + '...';
+        if (title && title.length > 25) title = title.slice(0, 25) + '...';
         
         const newChat = {
             id: activeChatId,
-            title: title,
+            title: title || 'Nueva conversación',
             messages: [{ text, type, mode }]
         };
         chats.unshift(newChat); // Colocar al principio
@@ -944,7 +976,8 @@ function deleteChat(id, event) {
 }
 
 function escapeHtml(text) {
-    return text
+    if (!text) return '';
+    return String(text)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -956,20 +989,28 @@ function escapeHtml(text) {
 function selectSeed(btn, id, name, desc, prompt) {
     // Quitar active de todos
     document.querySelectorAll('.mosaic-item').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
 
     // Guardar datos de la semilla
     selectedSeedData = { id, name, desc, prompt };
 
     // Mostrar detalle
-    document.getElementById('seedDetailTitle').innerHTML = `🌽 ${name}`;
-    document.getElementById('seedDetailDesc').textContent = desc;
-    document.getElementById('seedPromptBtn').style.display = 'block';
+    const seedTitle = document.getElementById('seedDetailTitle');
+    if (seedTitle) seedTitle.innerHTML = `🌽 ${name}`;
+    
+    const seedDesc = document.getElementById('seedDetailDesc');
+    if (seedDesc) seedDesc.textContent = desc;
+    
+    const seedPrompt = document.getElementById('seedPromptBtn');
+    if (seedPrompt) seedPrompt.style.display = 'block';
 }
 
 function askAboutSeed() {
     if (!selectedSeedData || busy) return;
-    document.getElementById('iaInput').value = selectedSeedData.prompt;
+    const input = document.getElementById('iaInput');
+    if (input) {
+        input.value = selectedSeedData.prompt;
+    }
     send();
 }
 
@@ -1062,10 +1103,15 @@ function send() {
 // ─── API ──────────────────────────────────────────────────────────────
 async function callIA(prompt, image, mode) {
     busy = true;
-    document.getElementById('sendBtn').disabled = true;
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn) sendBtn.disabled = true;
+    
     const th = document.getElementById('thinking');
-    document.getElementById('thinkTxt').textContent = thinkLabels[mode] || thinkLabels.normal;
-    th.style.display = 'block';
+    if (th) th.style.display = 'block';
+    
+    const thinkTxt = document.getElementById('thinkTxt');
+    if (thinkTxt) thinkTxt.textContent = thinkLabels[mode] || thinkLabels.normal;
+    
     scrollDown();
 
     try {
@@ -1084,10 +1130,11 @@ async function callIA(prompt, image, mode) {
     } catch {
         addMsg('Sin conexión. Verifica tu internet e inténtalo de nuevo.', 'ai');
     } finally {
-        th.style.display = 'none';
+        if (th) th.style.display = 'none';
         busy = false;
-        document.getElementById('sendBtn').disabled = false;
-        document.getElementById('iaInput').focus();
+        if (sendBtn) sendBtn.disabled = false;
+        const input = document.getElementById('iaInput');
+        if (input) input.focus();
     }
 }
 
