@@ -10,47 +10,41 @@ if (supabaseUrl && supabaseKey) {
   supabase = createClient(supabaseUrl, supabaseKey);
 }
 
-// Instrucciones de personalidad base — conversacional y natural
-const BASE_PERSONA = `Eres ñu'mu, una IA especializada en maíz nativo mexicano, la cultura de Ixtenco, Tlaxcala, y las lenguas Otomí/Yuhmu. También tienes conocimiento general sobre cualquier tema.
+// Personalidad base — conversacional y natural
+const BASE_PERSONA = `Eres ñu'mu, una IA especializada en maíz nativo mexicano, la cultura de Ixtenco, Tlaxcala, y las lenguas Otomí/Yuhmu. También tienes conocimiento general.
 
-Tu forma de hablar:
-- Eres directo, claro y natural. Como si hablaras con alguien de verdad, no como un manual.
-- Usas español fluido y cotidiano, sin ser informal en exceso.
-- No empiezas respuestas con "¡Claro!" ni "Por supuesto!" ni "Excelente pregunta". Simplemente responde.
-- No repites la pregunta del usuario al inicio de tu respuesta.
-- Si es una pregunta simple, responde simple. Si es compleja, das más detalle.
-- Cuando no sabes algo con certeza, lo dices honestamente.
-- Si el tema es sobre maíz, Ixtenco, o lenguas originarias, eres especialmente preciso y apasionado.`;
+Forma de hablar:
+- Natural y directo. Como si hablaras con alguien de verdad.
+- No empiezas con "¡Claro!", "Por supuesto!" o "Excelente pregunta". Solo responde.
+- No repites la pregunta del usuario.
+- Si no sabes algo con certeza, lo dices.
+- CRÍTICO: Siempre termina tus oraciones completas. Nunca dejes una frase a la mitad.`;
 
-// Configuraciones por modo
+// Instrucciones por modo — la brevedad la controla el PROMPT, no los tokens
 const MODOS = {
   flash: {
     instruccion: `${BASE_PERSONA}
 
-MODO: Rápido.
-Responde en máximo 2 oraciones. Solo lo esencial, nada de relleno. Directo al punto.`,
-    maxTokens: 150
+MODO RÁPIDO: Da UNA respuesta corta y completa. Máximo 2 oraciones bien terminadas. Sin listas, sin puntos. Solo lo más importante, directo y claro. Asegúrate de que la última oración quede cerrada correctamente.`,
+    temperature: 0.7
   },
   normal: {
     instruccion: `${BASE_PERSONA}
 
-MODO: Normal.
-Responde de forma conversacional en 3-5 oraciones. Da la información clave sin extenderte demasiado. Natural y fluido.`,
-    maxTokens: 400
+MODO NORMAL: Responde de forma conversacional en 3-5 oraciones completas. Información clave, fluida y natural. Termina todas tus oraciones correctamente.`,
+    temperature: 0.85
   },
   deep: {
     instruccion: `${BASE_PERSONA}
 
-MODO: Profundo.
-Desarrolla una respuesta completa con contexto, detalles relevantes y matices importantes. Puedes usar párrafos o una estructura clara si el tema lo requiere. Tómate el tiempo necesario para explicar bien.`,
-    maxTokens: 1000
+MODO PROFUNDO: Desarrolla una respuesta completa con contexto y detalles importantes. Usa párrafos o estructura clara. Termina todas las ideas correctamente.`,
+    temperature: 0.9
   },
   expert: {
     instruccion: `${BASE_PERSONA}
 
-MODO: Experto.
-Respuesta detallada y académicamente rigurosa. Incluye datos específicos, contexto histórico o científico, referencias culturales cuando aplique. Usa estructura clara. Es el análisis más completo que puedes dar sobre el tema.`,
-    maxTokens: 2000
+MODO EXPERTO: Respuesta rigurosa y académica. Incluye datos específicos, contexto histórico o científico, y referencias culturales cuando aplique. Estructura clara. Completa todas las ideas.`,
+    temperature: 0.5
   }
 };
 
@@ -61,9 +55,7 @@ export default async function handler(req, res) {
 
   try {
     if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({
-        error: 'Falta GEMINI_API_KEY en variables de entorno Vercel.'
-      });
+      return res.status(500).json({ error: 'Falta GEMINI_API_KEY en variables de entorno Vercel.' });
     }
 
     const { prompt, image, mode = 'normal' } = req.body;
@@ -72,23 +64,25 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No se envió ninguna pregunta.' });
     }
 
-    // Seleccionar configuración del modo
     const modoConfig = MODOS[mode] || MODOS.normal;
 
+    // Sin maxOutputTokens — la brevedad la controla el prompt, no el límite de tokens
+    // Esto evita que las respuestas se corten a la mitad
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: modoConfig.maxTokens,
-        temperature: mode === 'flash' ? 0.7 : mode === 'expert' ? 0.3 : 0.9,
+        temperature: modoConfig.temperature,
+        stopSequences: [],
       }
     });
 
-    // Si es traducción, override todo con prompt especializado
-    const esTraduccion = prompt.toLowerCase().includes('traduce') || prompt.toLowerCase().includes('en otomí') || prompt.toLowerCase().includes('en yuhmu');
-    
+    const esTraduccion = prompt.toLowerCase().includes('traduce') ||
+                         prompt.toLowerCase().includes('en otomí') ||
+                         prompt.toLowerCase().includes('en yuhmu');
+
     let finalPrompt;
     if (esTraduccion) {
-      finalPrompt = `Eres un traductor certificado de Otomí y Yuhmu (lengua de Ixtenco, Tlaxcala). Traduce de forma precisa y fiel. Solo usa términos documentados, nunca inventes palabras. Entrega únicamente la traducción solicitada, sin explicaciones adicionales a menos que el usuario las pida.
+      finalPrompt = `Eres un traductor certificado de Otomí y Yuhmu (lengua de Ixtenco, Tlaxcala). Sé preciso y fiel. Solo usa términos documentados. Entrega únicamente la traducción, sin explicaciones adicionales.
 
 ${prompt}`;
     } else {
@@ -107,7 +101,7 @@ El usuario pregunta: "${prompt}"`;
 
     const responseText = result.response.text();
 
-    // Guardar en Supabase (no bloquea la respuesta)
+    // Guardar en Supabase de forma no bloqueante
     if (supabase) {
       supabase.from('ia-consultas').insert([{
         pregunta_usuario: prompt,
@@ -123,10 +117,7 @@ El usuario pregunta: "${prompt}"`;
     return res.status(200).json({ reply: responseText, mode });
 
   } catch (error) {
-    console.error("Vercel Catch Error:", error);
-    return res.status(500).json({
-      error: `Error interno: ${error.message}`,
-      name: error.name
-    });
+    console.error("Error:", error);
+    return res.status(500).json({ error: `Error interno: ${error.message}` });
   }
 }

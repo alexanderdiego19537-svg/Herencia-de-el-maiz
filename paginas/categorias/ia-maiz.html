@@ -1,1231 +1,1250 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ñu'mu IA — Inteligencia Artificial del Maíz. Analiza razas, pregunta sobre cultura Otomí, traduce al Yuhmu de Ixtenco.">
+    <meta name="description" content="ñu'mu IA — Inteligencia Artificial del Maíz Nativo de Ixtenco, Tlaxcala.">
     <meta name="theme-color" content="#0a0a14">
     <title>ñu'mu IA | Herencia de Maíz</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_ia_v4">
+    <link rel="stylesheet" href="../../css/estilos.css?v=maiz_ia_v5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
 
     <style>
-        /* ─── Variables y reset específicos de esta página ─── */
-        :root {
-            --ia-bg: #0d0f1a;
-            --ia-surface: rgba(255,255,255,0.04);
-            --ia-border: rgba(255,255,255,0.08);
-            --ia-orange: #e76f00;
-            --ia-blue: #1d6fa5;
-            --ia-gold: #fca311;
-            --ia-dark: #14213d;
-            --ia-text: rgba(255,255,255,0.9);
-            --ia-muted: rgba(255,255,255,0.45);
-            --ia-msg-ai: rgba(255,255,255,0.06);
-            --ia-msg-user: linear-gradient(135deg, #14213d, #1d3a6a);
-            --ia-radius: 18px;
-            --ia-glow: 0 0 40px rgba(231,111,0,0.15);
-        }
+        /* ── Reset para modo dark ── */
+        body { background: #0d0f1a; color: #f0f0f0; }
 
-        /* Override navegacion en modo dark */
         .navegacion {
             background: rgba(10,10,20,0.98) !important;
             backdrop-filter: blur(20px);
         }
 
-        /* ─── Layout principal ─── */
-        .ia-page {
-            min-height: 100vh;
-            background: var(--ia-bg);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ─── Hero compacto ─── */
+        /* ── Hero ── */
         .ia-hero {
-            background: linear-gradient(135deg, #0a0a14 0%, #14213d 50%, #0f1f2e 100%);
-            padding: 2.5rem 1.5rem 2rem;
+            background: linear-gradient(135deg, #0a0a14 0%, #0d1b2e 60%, #111827 100%);
+            padding: 2rem 1.5rem 1.5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
             border-bottom: 1px solid rgba(231,111,0,0.2);
         }
-
         .ia-hero::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(231,111,0,0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(29,111,165,0.08) 0%, transparent 60%);
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(231,111,0,0.07) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, rgba(29,111,165,0.07) 0%, transparent 60%);
             pointer-events: none;
         }
-
-        .ia-hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(231,111,0,0.12);
-            border: 1px solid rgba(231,111,0,0.3);
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 0.75rem;
-            color: var(--ia-gold);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
+        .ia-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(231,111,0,0.1); border: 1px solid rgba(231,111,0,0.25);
+            border-radius: 20px; padding: 4px 14px;
+            font-size: 0.72rem; color: #fca311; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.8rem;
         }
-
         .ia-hero h1 {
-            font-family: var(--fuente-titulo);
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.6rem;
-            position: relative;
-            z-index: 1;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700; color: white; margin-bottom: 0.5rem;
         }
-
         .ia-hero h1 span {
-            background: linear-gradient(135deg, var(--ia-orange), var(--ia-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(135deg, #e76f00, #fca311);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .ia-hero p {
-            color: var(--ia-muted);
-            font-size: 0.95rem;
-            max-width: 520px;
-            margin: 0 auto;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
+            color: rgba(255,255,255,0.5); font-size: 0.9rem;
+            max-width: 480px; margin: 0 auto; line-height: 1.6;
         }
-
-        /* ─── Chips de capacidades ─── */
         .ia-caps {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1.2rem;
-            position: relative;
-            z-index: 1;
+            display: flex; gap: 8px; justify-content: center;
+            flex-wrap: wrap; margin-top: 1rem;
         }
+        .ia-cap { display: flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 0.72rem; color: rgba(255,255,255,0.55); }
 
-        .ia-cap-chip {
+        /* ── Layout ── */
+        .ia-layout {
             display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.7);
-        }
-
-        /* ─── Workspace principal ─── */
-        .ia-workspace {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 340px 1fr;
-            max-width: 1200px;
-            width: 100%;
+            height: calc(100vh - 130px);
+            min-height: 500px;
+            max-width: 1280px;
             margin: 0 auto;
-            gap: 0;
-            height: calc(100vh - 200px);
-            min-height: 560px;
-        }
-
-        /* ─── Panel izquierdo ─── */
-        .ia-sidebar {
-            background: rgba(255,255,255,0.025);
-            border-right: 1px solid var(--ia-border);
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            overflow: hidden;
-        }
-
-        .ia-sidebar-section {
-            padding: 1.2rem;
-            border-bottom: 1px solid var(--ia-border);
-        }
-
-        .ia-sidebar-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--ia-muted);
-            margin-bottom: 0.8rem;
-        }
-
-        /* ─── Selector de Modo ─── */
-        .ia-mode-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-        }
-
-        .ia-mode-card {
-            background: var(--ia-surface);
-            border: 1.5px solid var(--ia-border);
-            border-radius: 12px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            font-family: inherit;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .ia-mode-card:hover {
-            border-color: rgba(231,111,0,0.4);
-            background: rgba(231,111,0,0.06);
-            color: white;
-        }
-
-        .ia-mode-card.active {
-            border-color: var(--ia-orange);
-            background: linear-gradient(135deg, rgba(231,111,0,0.12), rgba(252,163,17,0.06));
-            color: white;
-            box-shadow: 0 0 16px rgba(231,111,0,0.15);
-        }
-
-        .ia-mode-card .mode-icon {
-            font-size: 1.2rem;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .ia-mode-card .mode-name {
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: block;
-        }
-
-        .ia-mode-card .mode-desc {
-            font-size: 0.65rem;
-            opacity: 0.6;
-            margin-top: 2px;
-            display: block;
-            line-height: 1.2;
-        }
-
-        .ia-mode-card.active .mode-desc { opacity: 0.8; }
-
-        /* ─── Upload zone ─── */
-        .ia-upload-zone {
-            border: 1.5px dashed rgba(29,111,165,0.4);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: rgba(29,111,165,0.04);
-            position: relative;
-        }
-
-        .ia-upload-zone:hover {
-            border-color: var(--ia-orange);
-            background: rgba(231,111,0,0.05);
-        }
-
-        .ia-upload-zone.has-image {
-            border-style: solid;
-            border-color: rgba(231,111,0,0.5);
-        }
-
-        .ia-upload-icon {
-            font-size: 1.8rem;
-            color: var(--ia-blue);
-            margin-bottom: 0.4rem;
-            display: block;
-        }
-
-        .ia-upload-zone p {
-            font-size: 0.78rem;
-            color: var(--ia-muted);
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        .ia-upload-zone strong {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.82rem;
-        }
-
-        #imagePreview {
             width: 100%;
-            max-height: 140px;
-            object-fit: cover;
-            border-radius: 8px;
-            display: none;
-            margin-top: 0.8rem;
         }
 
-        .ia-clear-img {
-            background: rgba(193,18,31,0.15);
-            border: 1px solid rgba(193,18,31,0.3);
-            color: #ff6b6b;
-            border-radius: 8px;
-            padding: 4px 10px;
-            font-size: 0.72rem;
-            cursor: pointer;
-            margin-top: 6px;
-            display: none;
-            font-family: inherit;
-            transition: background 0.2s;
-        }
-
-        .ia-clear-img:hover { background: rgba(193,18,31,0.25); }
-
-        /* ─── Sugerencias rápidas ─── */
-        .ia-quick-list {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .ia-quick-btn {
-            background: var(--ia-surface);
-            border: 1px solid var(--ia-border);
-            border-radius: 10px;
-            padding: 8px 10px;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.65);
-            cursor: pointer;
-            text-align: left;
-            font-family: inherit;
-            transition: all 0.18s;
-            line-height: 1.3;
-        }
-
-        .ia-quick-btn:hover {
-            border-color: rgba(231,111,0,0.4);
-            background: rgba(231,111,0,0.06);
-            color: white;
-        }
-
-        /* ─── Historial / Stats ─── */
-        .ia-stats-mini {
-            display: flex;
-            gap: 8px;
-            margin-top: auto;
-        }
-
-        .ia-stat-mini {
-            flex: 1;
-            background: var(--ia-surface);
-            border: 1px solid var(--ia-border);
-            border-radius: 10px;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .ia-stat-mini .snum {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--ia-gold);
-            font-family: var(--fuente-titulo);
-        }
-
-        .ia-stat-mini .slabel {
-            font-size: 0.62rem;
-            color: var(--ia-muted);
-            margin-top: 2px;
-            display: block;
-        }
-
-        /* ─── Panel derecho: Chat ─── */
-        .ia-chat-panel {
-            display: flex;
-            flex-direction: column;
-            background: transparent;
-            overflow: hidden;
-        }
-
-        /* TTS barra */
-        .ia-tts-bar {
-            display: none;
-            background: rgba(255,255,255,0.04);
-            border-bottom: 1px solid var(--ia-border);
-            padding: 8px 16px;
-            align-items: center;
-            gap: 10px;
+        /* ── Sidebar ── */
+        .ia-sidebar {
+            width: 300px;
             flex-shrink: 0;
-        }
-
-        .ia-tts-bar.visible { display: flex; }
-
-        .ia-tts-label {
-            font-size: 0.72rem;
-            color: var(--ia-muted);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .ia-tts-btn {
-            background: rgba(231,111,0,0.15);
-            border: 1px solid rgba(231,111,0,0.3);
-            border-radius: 20px;
-            color: var(--ia-gold);
-            padding: 4px 12px;
-            font-size: 0.72rem;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
-            transition: background 0.18s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .ia-tts-btn:hover { background: rgba(231,111,0,0.25); }
-
-        .ia-tts-btn.blue {
-            background: rgba(29,111,165,0.15);
-            border-color: rgba(29,111,165,0.3);
-            color: #7ecfff;
-        }
-
-        .ia-tts-btn.blue:hover { background: rgba(29,111,165,0.25); }
-
-        #ttsSpeedDisplay {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--ia-gold);
-            width: 32px;
-            text-align: center;
-        }
-
-        /* ─── Mensajes ─── */
-        .ia-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-right: 1px solid rgba(255,255,255,0.06);
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .ia-sidebar::-webkit-scrollbar { width: 3px; }
+        .ia-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+
+        .ia-section {
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .ia-section-title {
+            font-size: 0.62rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: rgba(255,255,255,0.3); margin-bottom: 0.7rem;
+        }
+
+        /* ── Modos ── */
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .mode-card {
+            background: rgba(255,255,255,0.03);
+            border: 1.5px solid rgba(255,255,255,0.07);
+            border-radius: 10px; padding: 9px 6px;
+            cursor: pointer; text-align: center;
+            font-family: inherit; color: rgba(255,255,255,0.5);
+            transition: all 0.18s; font-size: 0.75rem;
+        }
+        .mode-card:hover { border-color: rgba(231,111,0,0.4); color: white; background: rgba(231,111,0,0.06); }
+        .mode-card.active {
+            border-color: #e76f00;
+            background: linear-gradient(135deg, rgba(231,111,0,0.14), rgba(252,163,17,0.05));
+            color: white;
+            box-shadow: 0 0 12px rgba(231,111,0,0.12);
+        }
+        .mode-icon { font-size: 1.1rem; display: block; margin-bottom: 3px; }
+        .mode-name { font-size: 0.72rem; font-weight: 600; display: block; }
+        .mode-desc { font-size: 0.62rem; opacity: 0.5; display: block; line-height: 1.2; margin-top: 2px; }
+        .mode-card.active .mode-desc { opacity: 0.75; }
+
+        /* ── Upload ── */
+        .upload-zone {
+            border: 1.5px dashed rgba(29,111,165,0.35);
+            border-radius: 10px; padding: 1rem;
+            text-align: center; cursor: pointer;
+            transition: all 0.2s; background: rgba(29,111,165,0.04);
+        }
+        .upload-zone:hover { border-color: #e76f00; background: rgba(231,111,0,0.05); }
+        .upload-zone.has-img { border-style: solid; border-color: rgba(231,111,0,0.4); }
+        .upload-icon { font-size: 1.6rem; color: #1d6fa5; display: block; margin-bottom: 6px; }
+        .upload-zone strong { color: rgba(255,255,255,0.7); font-size: 0.78rem; display: block; }
+        .upload-zone small { color: rgba(255,255,255,0.3); font-size: 0.68rem; }
+        #imgPreview { width: 100%; max-height: 120px; object-fit: cover;
+            border-radius: 7px; display: none; margin-top: 0.7rem; }
+        .clear-btn {
+            background: rgba(193,18,31,0.12); border: 1px solid rgba(193,18,31,0.25);
+            color: #ff6b6b; border-radius: 7px; padding: 4px 10px;
+            font-size: 0.7rem; cursor: pointer; margin-top: 6px;
+            display: none; width: 100%; font-family: inherit; transition: background 0.18s;
+        }
+        .clear-btn:hover { background: rgba(193,18,31,0.22); }
+
+        /* ── Quick questions ── */
+        .quick-list { display: flex; flex-direction: column; gap: 5px; }
+        .quick-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px; padding: 7px 10px;
+            font-size: 0.73rem; color: rgba(255,255,255,0.55);
+            cursor: pointer; text-align: left; font-family: inherit;
+            transition: all 0.15s; line-height: 1.35;
+        }
+        .quick-btn:hover { border-color: rgba(231,111,0,0.35); color: white; background: rgba(231,111,0,0.05); }
+
+        /* ── Chat panel ── */
+        .ia-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        /* TTS bar */
+        .tts-bar {
+            display: none; background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 7px 16px; align-items: center; gap: 8px;
+            flex-shrink: 0; flex-wrap: wrap;
+        }
+        .tts-bar.on { display: flex; }
+        .tts-label { font-size: 0.7rem; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 4px; }
+        .tts-btn {
+            background: rgba(231,111,0,0.12); border: 1px solid rgba(231,111,0,0.25);
+            border-radius: 16px; color: #fca311; padding: 3px 10px;
+            font-size: 0.7rem; cursor: pointer; font-family: inherit;
+            font-weight: 600; transition: background 0.15s; display: flex; align-items: center; gap: 3px;
+        }
+        .tts-btn:hover { background: rgba(231,111,0,0.22); }
+        .tts-btn.blue { background: rgba(29,111,165,0.12); border-color: rgba(29,111,165,0.25); color: #7ecfff; }
+        .tts-btn.blue:hover { background: rgba(29,111,165,0.22); }
+        .tts-btn.stop { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); margin-left: auto; }
+        #ttsSpeed { font-size: 0.7rem; font-weight: 700; color: #fca311; width: 30px; text-align: center; }
+
+        /* Mensajes */
+        .messages {
+            flex: 1; overflow-y: auto; padding: 1.2rem 1.4rem;
+            display: flex; flex-direction: column; gap: 16px;
             scroll-behavior: smooth;
         }
+        .messages::-webkit-scrollbar { width: 4px; }
+        .messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 4px; }
 
-        .ia-messages::-webkit-scrollbar { width: 4px; }
-        .ia-messages::-webkit-scrollbar-track { background: transparent; }
-        .ia-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        /* Mensaje */
+        .msg { display: flex; flex-direction: column; max-width: 80%; animation: msgIn 0.22s ease; }
+        @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .msg.ai  { align-self: flex-start; }
+        .msg.usr { align-self: flex-end; }
 
-        .ia-msg {
-            max-width: 82%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            animation: msgSlide 0.25s ease;
+        .msg-header {
+            display: flex; align-items: center; gap: 6px;
+            margin-bottom: 5px; font-size: 0.67rem; color: rgba(255,255,255,0.3);
         }
+        .msg.usr .msg-header { justify-content: flex-end; }
 
-        @keyframes msgSlide {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
+        /* Avatar de IA — símbolo de circuito/robot */
+        .avatar-ia {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: linear-gradient(135deg, #e76f00, #fca311);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(231,111,0,0.3);
         }
-
-        .ia-msg.user { align-self: flex-end; }
-        .ia-msg.ai   { align-self: flex-start; }
-
-        .ia-msg-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.68rem;
-            color: var(--ia-muted);
-            padding: 0 4px;
-        }
-
-        .ia-msg-avatar {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        .ia-msg.ai .ia-msg-avatar {
-            background: linear-gradient(135deg, var(--ia-orange), var(--ia-gold));
-        }
-
-        .ia-msg.user .ia-msg-avatar {
+        .avatar-usr {
+            width: 24px; height: 24px; border-radius: 50%;
             background: rgba(29,111,165,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; flex-shrink: 0;
+            border: 1px solid rgba(29,111,165,0.3);
         }
 
-        .ia-msg-bubble {
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: var(--ia-text);
+        .bubble {
+            padding: 11px 15px; border-radius: 14px;
+            font-size: 0.875rem; line-height: 1.65; color: rgba(255,255,255,0.9);
         }
-
-        .ia-msg.ai .ia-msg-bubble {
-            background: var(--ia-msg-ai);
-            border: 1px solid var(--ia-border);
+        .msg.ai .bubble {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.07);
             border-top-left-radius: 4px;
         }
-
-        .ia-msg.user .ia-msg-bubble {
-            background: var(--ia-msg-user);
+        .msg.usr .bubble {
+            background: linear-gradient(135deg, #14213d, #1b3a5c);
             border: 1px solid rgba(29,111,165,0.2);
             border-top-right-radius: 4px;
-            align-self: flex-end;
+        }
+        .bubble strong { color: #fca311; font-weight: 600; }
+        .bubble em { opacity: 0.8; font-style: italic; }
+
+        .mode-tag {
+            display: inline-block; font-size: 0.6rem;
+            background: rgba(231,111,0,0.12); color: #fca311;
+            border-radius: 6px; padding: 1px 6px;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;
+            margin-bottom: 5px;
         }
 
-        .ia-msg-bubble strong { color: var(--ia-gold); font-weight: 600; }
-        .ia-msg-bubble em { opacity: 0.8; }
-
-        .ia-mode-badge {
-            display: inline-block;
-            font-size: 0.62rem;
-            background: rgba(231,111,0,0.15);
-            color: var(--ia-gold);
-            border-radius: 8px;
-            padding: 1px 7px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+        /* Acciones del mensaje */
+        .msg-actions { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; padding: 0 2px; }
+        .action-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 8px; padding: 4px 9px; font-size: 0.68rem;
+            color: rgba(255,255,255,0.4); cursor: pointer; font-family: inherit;
+            transition: all 0.15s; display: flex; align-items: center; gap: 4px;
         }
-
-        /* Acciones del mensaje IA */
-        .ia-msg-actions {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            padding: 0 4px;
-        }
-
-        .ia-action-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            padding: 4px 10px;
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.5);
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .ia-action-btn:hover {
-            background: rgba(231,111,0,0.12);
-            border-color: rgba(231,111,0,0.3);
-            color: var(--ia-gold);
-        }
+        .action-btn:hover { background: rgba(231,111,0,0.1); border-color: rgba(231,111,0,0.25); color: #fca311; }
 
         /* Traducción inline */
-        .ia-translation {
-            background: rgba(29,111,165,0.08);
-            border: 1px solid rgba(29,111,165,0.2);
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            font-style: italic;
-            color: #7ecfff;
-            margin-top: 4px;
+        .translation-box {
+            background: rgba(29,111,165,0.07); border: 1px solid rgba(29,111,165,0.15);
+            border-radius: 9px; padding: 8px 12px; font-size: 0.8rem;
+            font-style: italic; color: #7ecfff; margin-top: 6px;
+            display: none; line-height: 1.5;
+        }
+        .translation-box.show { display: block; }
+
+        /* Loader */
+        .thinking { align-self: flex-start; display: none; }
+        .thinking-bubble {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px; border-top-left-radius: 4px;
+            padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+        }
+        .dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            animation: bounce 1.2s infinite ease-in-out both;
+        }
+        .dot:nth-child(1) { background: #fca311; animation-delay: -0.32s; }
+        .dot:nth-child(2) { background: #e76f00; animation-delay: -0.16s; }
+        .dot:nth-child(3) { background: #1d6fa5; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0.45); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+        .thinking-txt { font-size: 0.7rem; color: rgba(255,255,255,0.25); font-style: italic; }
+
+        /* Input área */
+        .input-area {
+            padding: 12px 14px; background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;
+        }
+        .input-row { display: flex; gap: 8px; align-items: flex-end; }
+        .ia-input {
+            flex: 1; background: rgba(255,255,255,0.06);
+            border: 1.5px solid rgba(255,255,255,0.09);
+            border-radius: 12px; padding: 11px 14px; color: white;
+            font-size: 0.875rem; font-family: inherit; outline: none; transition: border-color 0.2s;
+        }
+        .ia-input::placeholder { color: rgba(255,255,255,0.25); }
+        .ia-input:focus { border-color: rgba(231,111,0,0.45); background: rgba(255,255,255,0.07); }
+        .send-btn {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: linear-gradient(135deg, #e76f00, #c1121f);
+            border: none; color: white; font-size: 0.95rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 3px 10px rgba(231,111,0,0.3);
+        }
+        .send-btn:hover { transform: scale(1.06); box-shadow: 0 5px 14px rgba(231,111,0,0.4); }
+        .send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+        .input-hint { display: flex; justify-content: space-between; font-size: 0.65rem; color: rgba(255,255,255,0.25); }
+        #modeHint { color: #fca311; }
+
+        /* ── Mobile top bar (visible solo en móvil) ── */
+        .mobile-bar {
             display: none;
-            line-height: 1.5;
-        }
-
-        .ia-translation.visible { display: block; }
-
-        /* ─── Loader ─── */
-        .ia-thinking {
-            align-self: flex-start;
-            display: none;
-        }
-
-        .ia-thinking-bubble {
-            background: var(--ia-msg-ai);
-            border: 1px solid var(--ia-border);
-            border-radius: 16px;
-            border-top-left-radius: 4px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ia-thinking-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--ia-orange);
-            animation: thinkBounce 1.2s infinite ease-in-out both;
-        }
-
-        .ia-thinking-dot:nth-child(1) { animation-delay: -0.32s; background: var(--ia-gold); }
-        .ia-thinking-dot:nth-child(2) { animation-delay: -0.16s; }
-        .ia-thinking-dot:nth-child(3) { background: var(--ia-blue); }
-
-        @keyframes thinkBounce {
-            0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-
-        .ia-thinking-label {
-            font-size: 0.72rem;
-            color: var(--ia-muted);
-            font-style: italic;
-        }
-
-        /* ─── Input área ─── */
-        .ia-input-area {
-            padding: 14px 16px;
             background: rgba(255,255,255,0.02);
-            border-top: 1px solid var(--ia-border);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 8px 12px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 6px;
+            align-items: center;
             flex-shrink: 0;
         }
-
-        .ia-input-row {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
+        .mobile-bar::-webkit-scrollbar { display: none; }
+        .mob-label { font-size: 0.65rem; color: rgba(255,255,255,0.3); white-space: nowrap; flex-shrink: 0; }
+        .mob-mode {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px; padding: 5px 12px;
+            font-size: 0.72rem; color: rgba(255,255,255,0.5);
+            cursor: pointer; white-space: nowrap; font-family: inherit; flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .mob-mode.active { background: rgba(231,111,0,0.14); border-color: #e76f00; color: #fca311; }
+        .mob-upload {
+            background: rgba(29,111,165,0.1);
+            border: 1px solid rgba(29,111,165,0.25);
+            border-radius: 16px; padding: 5px 12px;
+            font-size: 0.72rem; color: #7ecfff;
+            cursor: pointer; white-space: nowrap; font-family: inherit; flex-shrink: 0;
+            transition: all 0.15s;
         }
 
-        .ia-input-wrap {
-            flex: 1;
-            position: relative;
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+            .ia-layout { height: calc(100vh - 120px); }
+            .ia-sidebar { width: 260px; }
         }
 
-        .ia-input {
+        @media (max-width: 700px) {
+            .ia-sidebar { display: none; }
+            .mobile-bar { display: flex; }
+            .ia-layout { height: calc(100vh - 112px); }
+            .ia-hero { padding: 1.2rem 1rem 1rem; }
+            .ia-hero h1 { font-size: 1.6rem; }
+            .ia-hero p { font-size: 0.82rem; }
+            .ia-caps { display: none; }
+            .messages { padding: 1rem; gap: 12px; }
+            .msg { max-width: 92%; }
+            .bubble { font-size: 0.84rem; padding: 9px 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .ia-layout { height: calc(100vh - 108px); }
+            .messages { padding: 0.8rem; }
+            .input-area { padding: 8px 10px; }
+            .ia-input { padding: 10px 12px; font-size: 0.84rem; }
+            .send-btn { width: 40px; height: 40px; }
+            .msg { max-width: 95%; }
+        }
+
+        /* ── Historial de Conversaciones ── */
+        .new-chat-btn {
             width: 100%;
-            background: rgba(255,255,255,0.06);
-            border: 1.5px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: 12px 16px;
-            color: white;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s;
-            resize: none;
-            line-height: 1.4;
-        }
-
-        .ia-input::placeholder { color: rgba(255,255,255,0.3); }
-
-        .ia-input:focus {
-            border-color: rgba(231,111,0,0.5);
-            background: rgba(255,255,255,0.07);
-        }
-
-        .ia-send-btn {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--ia-orange), #c1121f);
-            border: none;
-            color: white;
-            font-size: 1rem;
+            background: transparent;
+            border: 1px dashed rgba(231,111,0,0.5);
+            color: #fca311;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            transition: transform 0.18s, box-shadow 0.18s;
-            box-shadow: 0 4px 12px rgba(231,111,0,0.3);
+            gap: 6px;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-bottom: 8px;
         }
-
-        .ia-send-btn:hover {
-            transform: scale(1.06);
-            box-shadow: 0 6px 16px rgba(231,111,0,0.4);
+        .new-chat-btn:hover {
+            background: rgba(231,111,0,0.08);
+            border-style: solid;
+            color: white;
+            box-shadow: 0 0 8px rgba(231,111,0,0.15);
         }
-
-        .ia-send-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 2px;
+            margin-bottom: 4px;
         }
-
-        .ia-input-hints {
+        .history-list::-webkit-scrollbar {
+            width: 3px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.06);
+            border-radius: 2px;
+        }
+        .history-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.68rem;
-            color: var(--ia-muted);
-        }
-
-        .ia-char-count { font-size: 0.66rem; }
-
-        /* ─── Responsive ─── */
-        @media (max-width: 900px) {
-            .ia-workspace {
-                grid-template-columns: 1fr;
-                height: auto;
-                min-height: auto;
-            }
-
-            .ia-sidebar {
-                border-right: none;
-                border-bottom: 1px solid var(--ia-border);
-                flex-direction: row;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                gap: 0;
-            }
-
-            .ia-sidebar-section {
-                min-width: 200px;
-                border-bottom: none;
-                border-right: 1px solid var(--ia-border);
-            }
-
-            .ia-sidebar-section:last-child { border-right: none; }
-
-            .ia-chat-panel {
-                height: 500px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .ia-hero h1 { font-size: 1.9rem; }
-            .ia-caps { display: none; }
-            .ia-sidebar { display: none; }
-            .ia-workspace { grid-template-columns: 1fr; }
-            .ia-chat-panel { height: calc(100vh - 280px); min-height: 400px; }
-            .ia-mobile-controls {
-                display: flex !important;
-            }
-        }
-
-        .ia-mobile-controls {
-            display: none;
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid var(--ia-border);
-            padding: 8px 12px;
-            gap: 6px;
-            overflow-x: auto;
-            flex-shrink: 0;
-        }
-
-        .ia-mobile-mode-btn {
-            background: var(--ia-surface);
-            border: 1px solid var(--ia-border);
-            border-radius: 20px;
-            padding: 5px 12px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
             font-size: 0.72rem;
-            color: rgba(255,255,255,0.6);
             cursor: pointer;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.15s;
+            gap: 8px;
+        }
+        .history-item:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(231,111,0,0.25);
+            color: white;
+        }
+        .history-item.active {
+            background: rgba(231,111,0,0.1);
+            border-color: #e76f00;
+            color: #fca311;
+            font-weight: 500;
+        }
+        .history-item-title {
+            flex: 1;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            pointer-events: none;
+            text-align: left;
+        }
+        .history-item-del {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.2);
+            cursor: pointer;
+            font-size: 0.65rem;
+            padding: 2px;
+            transition: color 0.15s;
+        }
+        .history-item-del:hover {
+            color: #ff6b6b;
+        }
+
+        /* ── Mosaico de Semillas Ancestrales ── */
+        .mosaic-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .mosaic-item {
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+            padding: 0;
+        }
+        .mosaic-item:hover {
+            transform: scale(1.15) translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .mosaic-item.active {
+            transform: scale(1.1);
+            border-color: #fca311;
+            box-shadow: 0 0 10px rgba(252,163,17,0.4);
+        }
+        .seed-azul { background: radial-gradient(circle, #2e4466 0%, #03045e 100%); }
+        .seed-rojo { background: radial-gradient(circle, #b72e3a 0%, #5c0f11 100%); }
+        .seed-blanco { background: radial-gradient(circle, #ffffff 0%, #cbd5e1 100%); }
+        .seed-morado { background: radial-gradient(circle, #7d26cd 0%, #2a004d 100%); }
+        .seed-jaspe { background: radial-gradient(circle, #ffb703 0%, #e76f00 60%, #5c0f11 100%); }
+
+        .seed-detail-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.2s;
+        }
+        .seed-detail-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fca311;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .seed-detail-desc {
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.4;
+            text-align: left;
+        }
+        .seed-prompt-btn {
+            width: 100%;
+            background: rgba(29,111,165,0.12);
+            border: 1px solid rgba(29,111,165,0.25);
+            color: #7ecfff;
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 0.68rem;
+            cursor: pointer;
+            margin-top: 8px;
             font-family: inherit;
+            font-weight: 600;
             transition: all 0.15s;
         }
-
-        .ia-mobile-mode-btn.active {
-            background: rgba(231,111,0,0.15);
-            border-color: var(--ia-orange);
-            color: var(--ia-gold);
+        .seed-prompt-btn:hover {
+            background: rgba(29,111,165,0.22);
+            color: white;
         }
+
+        /* ── Audio Wave Visualizer ── */
+        .tts-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 14px;
+            margin-left: 10px;
+        }
+        .wave-bar {
+            width: 2.5px;
+            height: 3px;
+            background-color: #fca311;
+            border-radius: 2px;
+            animation: bounceWave 0.8s ease-in-out infinite alternate;
+        }
+        .wave-bar:nth-child(1) { animation-delay: 0.1s; height: 5px; }
+        .wave-bar:nth-child(2) { animation-delay: 0.3s; height: 10px; }
+        .wave-bar:nth-child(3) { animation-delay: 0.0s; height: 8px; }
+        .wave-bar:nth-child(4) { animation-delay: 0.4s; height: 12px; }
+        .wave-bar:nth-child(5) { animation-delay: 0.2s; height: 6px; }
+
+        @keyframes bounceWave {
+            from { height: 3px; }
+            to { height: 14px; }
+        }
+        .tts-wave.paused .wave-bar {
+            animation-play-state: paused;
+        }
+
+        /* ── Footer ── */
+        .pie-pagina { margin-top: 0; }
     </style>
 </head>
 
-<body class="ia-page">
+<body>
 
-    <!-- ====== NAVEGACIÓN ====== -->
-    <nav class="navegacion">
-        <div class="navegacion-contenedor">
-            <a href="../../index.html" class="navegacion-logo">
-                <img src="../../imagenes/logo1.png" alt="Herencia de Maíz" width="48" height="48">
-            </a>
-            <ul class="navegacion-enlaces" id="menuEnlaces">
-                <li><a href="../../index.html">Inicio</a></li>
-                <li><a href="ia-maiz.html" class="activo">IA ñu'mu</a></li>
-                <li><a href="nutricion.html">Nutrición Mexicana</a></li>
-                <li><a href="milpa.html">Sistema Milpa</a></li>
-                <li><a href="razas-ixtenco.html">Razas en Ixtenco</a></li>
-                <li><a href="herencia.html">Herencia de Semillas</a></li>
-                <li><a href="reconocimiento.html">Reconocimiento</a></li>
-            </ul>
-            <button class="boton-menu" id="botonMenu" onclick="abrirMenu()" aria-label="Abrir menú">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- ====== HERO ====== -->
-    <header class="ia-hero">
-        <div class="ia-hero-badge">
-            <span>🌽</span> IA ñu'mu — Guardián del Conocimiento
-        </div>
-        <h1>Pregunta sobre el <span>Maíz</span></h1>
-        <p>Analiza razas, descubre historia, traduce al Otomí y Yuhmu. La IA del maíz nativo de Ixtenco, Tlaxcala.</p>
-        <div class="ia-caps">
-            <span class="ia-cap-chip">🖼️ Análisis de imagen</span>
-            <span class="ia-cap-chip">🔍 4 modos de profundidad</span>
-            <span class="ia-cap-chip">🗣️ Voz en Español</span>
-            <span class="ia-cap-chip">🌐 Traducción Otomí · Yuhmu</span>
-        </div>
-    </header>
-
-    <!-- ====== WORKSPACE ====== -->
-    <div class="ia-workspace">
-
-        <!-- ── Panel izquierdo ── -->
-        <aside class="ia-sidebar">
-
-            <!-- Modos de respuesta -->
-            <div class="ia-sidebar-section">
-                <div class="ia-sidebar-label">Modo de respuesta</div>
-                <div class="ia-mode-grid" id="modeGrid">
-                    <button class="ia-mode-card" data-mode="flash" onclick="setMode(this)">
-                        <span class="mode-icon">⚡</span>
-                        <span class="mode-name">Rápido</span>
-                        <span class="mode-desc">Solo lo esencial</span>
-                    </button>
-                    <button class="ia-mode-card active" data-mode="normal" onclick="setMode(this)">
-                        <span class="mode-icon">💬</span>
-                        <span class="mode-name">Normal</span>
-                        <span class="mode-desc">Conversacional</span>
-                    </button>
-                    <button class="ia-mode-card" data-mode="deep" onclick="setMode(this)">
-                        <span class="mode-icon">🔍</span>
-                        <span class="mode-name">Profundo</span>
-                        <span class="mode-desc">Con contexto</span>
-                    </button>
-                    <button class="ia-mode-card" data-mode="expert" onclick="setMode(this)">
-                        <span class="mode-icon">🎓</span>
-                        <span class="mode-name">Experto</span>
-                        <span class="mode-desc">Análisis completo</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Subir imagen -->
-            <div class="ia-sidebar-section">
-                <div class="ia-sidebar-label">Analizar imagen de maíz</div>
-                <div class="ia-upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-                    <span class="ia-upload-icon"><i class="fas fa-cloud-upload-alt"></i></span>
-                    <strong>Haz clic para subir</strong>
-                    <p>JPG, PNG, WEBP</p>
-                    <img id="imagePreview" alt="Vista previa">
-                    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleImage(event)">
-                </div>
-                <button class="ia-clear-img" id="clearImgBtn" onclick="clearImage()">✕ Quitar imagen</button>
-            </div>
-
-            <!-- Preguntas rápidas -->
-            <div class="ia-sidebar-section" style="flex:1; overflow-y:auto;">
-                <div class="ia-sidebar-label">Preguntas rápidas</div>
-                <div class="ia-quick-list">
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">🌽 ¿Cuántas razas de maíz hay en Ixtenco?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">🌱 ¿Qué es el sistema milpa?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">🧬 ¿Cómo se originó el maíz en México?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">🗣️ ¿Cómo se dice maíz en Otomí?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">💊 ¿Cuáles son las propiedades del maíz azul?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">🏺 ¿Qué significa la nixtamalización?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">👨‍🌾 ¿Quién es Simón Angoa?</button>
-                    <button class="ia-quick-btn" onclick="quickAsk(this)">🌍 ¿Por qué es importante conservar el maíz nativo?</button>
-                </div>
-            </div>
-
-        </aside>
-
-        <!-- ── Panel derecho: Chat ── -->
-        <div class="ia-chat-panel">
-
-            <!-- Controles móviles de modo -->
-            <div class="ia-mobile-controls" id="mobileControls">
-                <span style="font-size:0.68rem; color:var(--ia-muted); white-space:nowrap; align-self:center;">Modo:</span>
-                <button class="ia-mobile-mode-btn" data-mode="flash" onclick="setModeFromMobile(this)">⚡ Rápido</button>
-                <button class="ia-mobile-mode-btn active" data-mode="normal" onclick="setModeFromMobile(this)">💬 Normal</button>
-                <button class="ia-mobile-mode-btn" data-mode="deep" onclick="setModeFromMobile(this)">🔍 Profundo</button>
-                <button class="ia-mobile-mode-btn" data-mode="expert" onclick="setModeFromMobile(this)">🎓 Experto</button>
-            </div>
-
-            <!-- TTS bar -->
-            <div class="ia-tts-bar" id="ttsBar">
-                <span class="ia-tts-label"><i class="fas fa-volume-up"></i> Voz</span>
-                <button class="ia-tts-btn" id="ttsPlayBtn" onclick="ttsToggle()"><i class="fas fa-pause"></i> Pausar</button>
-                <button class="ia-tts-btn blue" onclick="ttsRate(-0.1)"><i class="fas fa-backward"></i></button>
-                <span id="ttsSpeedDisplay">0.9x</span>
-                <button class="ia-tts-btn blue" onclick="ttsRate(0.1)"><i class="fas fa-forward"></i></button>
-                <button class="ia-tts-btn" onclick="ttsStop()" style="margin-left:auto;">✕ Detener</button>
-            </div>
-
-            <!-- Mensajes -->
-            <div class="ia-messages" id="iaMessages">
-                <!-- Mensaje inicial de bienvenida -->
-                <div class="ia-msg ai">
-                    <div class="ia-msg-header">
-                        <div class="ia-msg-avatar">🌽</div>
-                        <span>ñu'mu</span>
-                    </div>
-                    <div class="ia-msg-bubble">
-                        Hola, soy <strong>ñu'mu</strong>. Puedo analizar imágenes de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu.
-                        <br><br>
-                        Elige un modo de respuesta y pregunta lo que quieras.
-                    </div>
-                    <div class="ia-translation" id="initTranslation"></div>
-                    <div class="ia-msg-actions">
-                        <button class="ia-action-btn" onclick="speakMsg(this)"><i class="fas fa-volume-up"></i> Escuchar</button>
-                        <button class="ia-action-btn" onclick="translateMsg(this,'otomi')">OTO</button>
-                        <button class="ia-action-btn" onclick="translateMsg(this,'yuhmu')">YUH</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Thinking indicator -->
-            <div class="ia-thinking" id="iaThinking">
-                <div class="ia-thinking-bubble">
-                    <div class="ia-thinking-dot"></div>
-                    <div class="ia-thinking-dot"></div>
-                    <div class="ia-thinking-dot"></div>
-                    <span class="ia-thinking-label" id="thinkingLabel">ñu'mu está pensando...</span>
-                </div>
-            </div>
-
-            <!-- Input -->
-            <div class="ia-input-area">
-                <div class="ia-input-row">
-                    <div class="ia-input-wrap">
-                        <input
-                            type="text"
-                            class="ia-input"
-                            id="iaInput"
-                            placeholder="Pregunta algo sobre el maíz..."
-                            autocomplete="off"
-                            maxlength="600"
-                            onkeydown="handleKey(event)"
-                            oninput="updateCharCount()"
-                        >
-                    </div>
-                    <button class="ia-send-btn" id="iaSendBtn" onclick="sendMessage()" aria-label="Enviar">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="ia-input-hints">
-                    <span>Enter para enviar · <span id="activeModeLabel" style="color:var(--ia-gold);">Modo Normal</span></span>
-                    <span class="ia-char-count"><span id="charCount">0</span>/600</span>
-                </div>
-            </div>
-
-        </div>
+<!-- NAVEGACIÓN -->
+<nav class="navegacion">
+    <div class="navegacion-contenedor">
+        <a href="../../index.html" class="navegacion-logo">
+            <img src="../../imagenes/logo1.png" alt="Herencia de Maíz" width="48" height="48">
+        </a>
+        <ul class="navegacion-enlaces" id="menuEnlaces">
+            <li><a href="../../index.html">Inicio</a></li>
+            <li><a href="ia-maiz.html" class="activo">IA ñu'mu</a></li>
+            <li><a href="nutricion.html">Nutrición Mexicana</a></li>
+            <li><a href="milpa.html">Sistema Milpa</a></li>
+            <li><a href="razas-ixtenco.html">Razas en Ixtenco</a></li>
+            <li><a href="herencia.html">Herencia de Semillas</a></li>
+            <li><a href="reconocimiento.html">Reconocimiento</a></li>
+        </ul>
+        <button class="boton-menu" id="botonMenu" onclick="toggleMenu()" aria-label="Menú">
+            <span></span><span></span><span></span>
+        </button>
     </div>
+</nav>
 
-    <!-- ====== FOOTER ====== -->
-    <footer class="pie-pagina">
-        <p class="pie-titulo">Herencia de Maíz</p>
-        <p>Proyecto-Tlaxcala · ñu'mu IA</p>
-    </footer>
+<!-- HERO -->
+<header class="ia-hero">
+    <div class="ia-badge"><i class="fas fa-microchip"></i> ñu'mu — IA del Maíz Nativo</div>
+    <h1>Pregunta a la <span>Inteligencia Artificial</span></h1>
+    <p>Analiza razas, historia, nutrición y cultura. Traduce al Otomí y Yuhmu de Ixtenco.</p>
+    <div class="ia-caps">
+        <span class="ia-cap"><i class="fas fa-image"></i> Análisis de foto</span>
+        <span class="ia-cap"><i class="fas fa-sliders-h"></i> 4 modos de respuesta</span>
+        <span class="ia-cap"><i class="fas fa-volume-up"></i> Voz en Español</span>
+        <span class="ia-cap"><i class="fas fa-language"></i> Otomí · Yuhmu</span>
+    </div>
+</header>
 
-    <!-- ====== SCRIPT ====== -->
-    <script>
-        // ─── Estado global ───────────────────────────────────────────────
-        let currentMode = 'normal';
-        let currentImageBase64 = null;
-        let isThinking = false;
-        let ttsRate_val = 0.95;
-        let ttsIsPaused = false;
-        let ttsLastText = '';
-        let ttsIsManualCancel = false;
-        const modeNames = { flash:'Rápido', normal:'Normal', deep:'Profundo', expert:'Experto' };
-        const thinkingLabels = {
-            flash: 'Buscando respuesta rápida...',
-            normal: 'ñu\'mu está pensando...',
-            deep: 'Profundizando en el tema...',
-            expert: 'Analizando en detalle... puede tomar unos segundos'
+<!-- WORKSPACE -->
+<div class="ia-layout">    <!-- SIDEBAR (desktop) -->
+    <aside class="ia-sidebar">
+
+        <!-- Historial de Conversaciones -->
+        <div class="ia-section" id="historySection">
+            <div class="ia-section-title">Historial de Conversaciones</div>
+            <button class="new-chat-btn" onclick="startNewChat()"><i class="fas fa-plus"></i> Nueva conversación</button>
+            <div class="history-list" id="historyList">
+                <!-- Se cargará dinámicamente con JS -->
+            </div>
+        </div>
+
+        <!-- Modos -->
+        <div class="ia-section">
+            <div class="ia-section-title">Modo de respuesta</div>
+            <div class="mode-grid" id="modeGrid">
+                <button class="mode-card" data-mode="flash" onclick="setMode(this)">
+                    <span class="mode-icon">⚡</span>
+                    <span class="mode-name">Rápido</span>
+                    <span class="mode-desc">Directo al punto</span>
+                </button>
+                <button class="mode-card active" data-mode="normal" onclick="setMode(this)">
+                    <span class="mode-icon">💬</span>
+                    <span class="mode-name">Normal</span>
+                    <span class="mode-desc">Conversacional</span>
+                </button>
+                <button class="mode-card" data-mode="deep" onclick="setMode(this)">
+                    <span class="mode-icon">🔍</span>
+                    <span class="mode-name">Profundo</span>
+                    <span class="mode-desc">Con contexto</span>
+                </button>
+                <button class="mode-card" data-mode="expert" onclick="setMode(this)">
+                    <span class="mode-icon">🎓</span>
+                    <span class="mode-name">Experto</span>
+                    <span class="mode-desc">Análisis completo</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mosaico Ancestral (Semillas de Ixtenco) -->
+        <div class="ia-section" id="mosaicSection">
+            <div class="ia-section-title">Mosaico Ancestral (Semillas)</div>
+            <div class="mosaic-grid">
+                <button class="mosaic-item seed-azul" onclick="selectSeed(this, 'azul', 'Maíz Azul', 'Variedad rica en antocianinas con un color azul profundo, cultivada ancestralmente en Ixtenco por su alto valor nutricional y su gran sabor en tortillas y atoles.', '¿Cuáles son las propiedades nutricionales y medicinales del maíz azul nativo de Ixtenco?')" title="Maíz Azul">🌽</button>
+                <button class="mosaic-item seed-rojo" onclick="selectSeed(this, 'rojo', 'Maíz Rojo / Sangre de Cristo', 'Variedad ceremonial de color rojo brillante a tinto, rica en antioxidantes, valorada tradicionalmente en festividades de Tlaxcala.', 'Háblame de la historia del maíz rojo ceremonial de Ixtenco y su valor en las fiestas tradicionales.')" title="Maíz Rojo">🌽</button>
+                <button class="mosaic-item seed-blanco" onclick="selectSeed(this, 'blanco', 'Maíz Blanco Nativo', 'El pilar de la alimentación diaria de grano grande, harinoso y suave, ideal para atoles, tortillas y nixtamalización.', '¿Qué ventajas gastronómicas tiene el maíz blanco nativo comparado con los híbridos industriales?')" title="Maíz Blanco">🌽</button>
+                <button class="mosaic-item seed-morado" onclick="selectSeed(this, 'morado', 'Maíz Morado', 'Grano morado oscuro casi negro, con propiedades antioxidantes excepcionales gracias a su altísima concentración de antocianinas.', '¿Por qué el maíz morado de Ixtenco es considerado un superalimento y cuáles son sus propiedades?')" title="Maíz Morado">🌽</button>
+                <button class="mosaic-item seed-jaspe" onclick="selectSeed(this, 'jaspe', 'Maíz Jaspe / Pintado', 'Maíz jaspeado con granos de múltiples colores combinados. Representa la riqueza de la hibridación genética natural y libre.', '¿Qué es el maíz jaspe de Ixtenco y qué nos enseña sobre la diversidad genética y polinización?')" title="Maíz Jaspe">🌽</button>
+            </div>
+            <!-- Detalle de semilla seleccionada -->
+            <div class="seed-detail-card" id="seedDetailCard">
+                <div class="seed-detail-title" id="seedDetailTitle">Explora Semillas</div>
+                <div class="seed-detail-desc" id="seedDetailDesc">Haz clic en los granos de colores de arriba para explorar sus secretos nutricionales e históricos.</div>
+                <button class="seed-prompt-btn" id="seedPromptBtn" style="display:none;" onclick="askAboutSeed()">Preguntar a ñu'mu</button>
+            </div>
+        </div>
+
+        <!-- Upload -->
+        <div class="ia-section">
+            <div class="ia-section-title">Analizar imagen de maíz</div>
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                <span class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                <strong>Subir foto</strong>
+                <small>JPG, PNG, WEBP</small>
+                <img id="imgPreview" alt="Vista previa">
+                <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleImage(event)">
+            </div>
+            <button class="clear-btn" id="clearBtn" onclick="clearImage()">✕ Quitar imagen</button>
+        </div>
+
+        <!-- Preguntas rápidas -->
+        <div class="ia-section" style="flex:1; overflow-y:auto;">
+            <div class="ia-section-title">Preguntas rápidas</div>
+            <div class="quick-list">
+                <button class="quick-btn" onclick="quickQ(this)">🌽 ¿Cuántas razas de maíz hay en Ixtenco?</button>
+                <button class="quick-btn" onclick="quickQ(this)">🌱 ¿Qué es el sistema milpa?</button>
+                <button class="quick-btn" onclick="quickQ(this)">🧬 ¿Cómo se originó el maíz en México?</button>
+                <button class="quick-btn" onclick="quickQ(this)">🗣️ ¿Cómo se dice maíz en Otomí?</button>
+                <button class="quick-btn" onclick="quickQ(this)">💊 ¿Qué propiedades tiene el maíz azul?</button>
+                <button class="quick-btn" onclick="quickQ(this)">🏺 ¿Qué es la nixtamalización?</button>
+                <button class="quick-btn" onclick="quickQ(this)">👨‍🌾 ¿Quién es Simón Angoa?</button>
+                <button class="quick-btn" onclick="quickQ(this)">🌍 ¿Por qué conservar el maíz nativo?</button>
+            </div>
+        </div>
+
+    </aside>
+    <!-- PANEL DERECHO -->
+    <div class="ia-chat">
+
+        <!-- Barra móvil de controles -->
+        <div class="mobile-bar" id="mobileBar">
+            <span class="mob-label">Modo:</span>
+            <button class="mob-mode" data-mode="flash" onclick="setModeM(this)">⚡ Rápido</button>
+            <button class="mob-mode active" data-mode="normal" onclick="setModeM(this)">💬 Normal</button>
+            <button class="mob-mode" data-mode="deep" onclick="setModeM(this)">🔍 Profundo</button>
+            <button class="mob-mode" data-mode="expert" onclick="setModeM(this)">🎓 Experto</button>
+            <button class="mob-upload" onclick="document.getElementById('fileInput').click()"><i class="fas fa-image"></i> Foto</button>
+        </div>
+
+        <!-- TTS -->
+        <div class="tts-bar" id="ttsBar">
+            <span class="tts-label"><i class="fas fa-volume-up"></i> Reproduciendo</span>
+            <div class="tts-wave" id="ttsWave">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+            </div>
+            <button class="tts-btn" id="ttsPlayBtn" onclick="ttsToggle()"><i class="fas fa-pause"></i> Pausar</button>
+            <button class="tts-btn blue" onclick="ttsChangeRate(-0.1)"><i class="fas fa-backward"></i></button>
+            <span id="ttsSpeed">0.9x</span>
+            <button class="tts-btn blue" onclick="ttsChangeRate(0.1)"><i class="fas fa-forward"></i></button>
+            <button class="tts-btn stop" onclick="ttsStop()">✕ Detener</button>
+        </div>
+
+        <!-- Mensajes -->
+        <div class="messages" id="messages">
+            <div class="msg ai" data-text="Hola, soy ñu'mu. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.">
+                <div class="msg-header">
+                    <div class="avatar-ia"><i class="fas fa-microchip" style="font-size:0.7rem;"></i></div>
+                    <span>ñu'mu</span>
+                </div>
+                <div class="bubble">
+                    Hola, soy <strong>ñu'mu</strong>. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.
+                </div>
+                <div class="translation-box"></div>
+                <div class="msg-actions">
+                    <button class="action-btn" onclick="listenMsg(this)"><i class="fas fa-volume-up"></i> Escuchar</button>
+                    <button class="action-btn" onclick="translateMsg(this,'otomi')"><i class="fas fa-globe"></i> Otomí</button>
+                    <button class="action-btn" onclick="translateMsg(this,'yuhmu')"><i class="fas fa-leaf"></i> Yuhmu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loader -->
+        <div class="thinking" id="thinking">
+            <div class="thinking-bubble">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                <span class="thinking-txt" id="thinkTxt">ñu'mu está pensando...</span>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-area">
+            <div class="input-row">
+                <input class="ia-input" id="iaInput" type="text"
+                    placeholder="Pregunta algo sobre el maíz..."
+                    autocomplete="off" maxlength="600"
+                    onkeydown="onKey(event)" oninput="onInput()">
+<script>
+// ─── Estado ────────────────────────────────────────────────────────────
+let currentMode  = 'normal';
+let currentImage = null;
+let busy         = false;
+let ttsRate      = 0.95;
+let ttsText      = '';
+let ttsCancelled = false;
+
+// Variables de Historial y Semillas
+let activeChatId = null;
+let selectedSeedData = null;
+
+const modeNames = { flash:'Rápido', normal:'Normal', deep:'Profundo', expert:'Experto' };
+const thinkLabels = {
+    flash: 'Respondiendo rápido...',
+    normal: 'ñu\'mu está pensando...',
+    deep: 'Analizando en profundidad...',
+    expert: 'Preparando análisis completo...'
+};
+
+// ─── Inicialización de Historial ──────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // Cargar historial al iniciar
+    renderHistoryList();
+    
+    // Iniciar con la última conversación activa o una nueva
+    const chats = loadChats();
+    if (chats.length > 0) {
+        loadChat(chats[0].id);
+    } else {
+        startNewChat();
+    }
+});
+
+// ─── Métodos del Historial (localStorage) ─────────────────────────────
+function loadChats() {
+    try {
+        const stored = localStorage.getItem('numu_chats');
+        return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+        console.error("Error al cargar chats del localStorage:", e);
+        return [];
+    }
+}
+
+function saveChats(chats) {
+    try {
+        localStorage.setItem('numu_chats', JSON.stringify(chats));
+    } catch (e) {
+        console.error("Error al guardar chats en localStorage:", e);
+    }
+}
+
+function renderHistoryList() {
+    const listContainer = document.getElementById('historyList');
+    if (!listContainer) return;
+    
+    const chats = loadChats();
+    listContainer.innerHTML = '';
+    
+    if (chats.length === 0) {
+        listContainer.innerHTML = `<div style="font-size:0.65rem; color:rgba(255,255,255,0.25); text-align:center; padding:10px;">Sin conversaciones previas.</div>`;
+        return;
+    }
+    
+    chats.forEach(chat => {
+        const item = document.createElement('div');
+        item.className = 'history-item' + (chat.id === activeChatId ? ' active' : '');
+        item.setAttribute('onclick', `loadChat('${chat.id}')`);
+        
+        item.innerHTML = `
+            <span class="history-item-title"><i class="far fa-comment-alt" style="margin-right:5px; opacity:0.6;"></i>${escapeHtml(chat.title)}</span>
+            <button class="history-item-del" onclick="deleteChat('${chat.id}', event)" title="Eliminar conversación">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        `;
+        listContainer.appendChild(item);
+    });
+}
+
+function startNewChat() {
+    activeChatId = null;
+    ttsStop();
+    clearImage();
+    
+    // Limpiar pantalla y agregar mensaje de bienvenida
+    const container = document.getElementById('messages');
+    container.innerHTML = `
+        <div class="msg ai" data-text="Hola, soy ñu'mu. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.">
+            <div class="msg-header">
+                <div class="avatar-ia"><i class="fas fa-microchip" style="font-size:0.7rem;"></i></div>
+                <span>ñu'mu</span>
+            </div>
+            <div class="bubble">
+                Hola, soy <strong>ñu'mu</strong>. Puedo analizar fotos de maíz, responder preguntas sobre historia, nutrición y cultura de Ixtenco, o traducir al Otomí y Yuhmu. Elige un modo y pregunta lo que quieras.
+            </div>
+            <div class="translation-box"></div>
+            <div class="msg-actions">
+                <button class="action-btn" onclick="listenMsg(this)"><i class="fas fa-volume-up"></i> Escuchar</button>
+                <button class="action-btn" onclick="translateMsg(this,'otomi')"><i class="fas fa-globe"></i> Otomí</button>
+                <button class="action-btn" onclick="translateMsg(this,'yuhmu')"><i class="fas fa-leaf"></i> Yuhmu</button>
+            </div>
+        </div>
+    `;
+    
+    // Deseleccionar semilla del mosaico
+    document.querySelectorAll('.mosaic-item').forEach(b => b.classList.remove('active'));
+    document.getElementById('seedDetailTitle').innerHTML = `Explora Semillas`;
+    document.getElementById('seedDetailDesc').textContent = `Haz clic en los granos de colores de arriba para explorar sus secretos nutricionales e históricos.`;
+    document.getElementById('seedPromptBtn').style.display = 'none';
+    selectedSeedData = null;
+
+    renderHistoryList();
+    document.getElementById('iaInput').focus();
+}
+
+function loadChat(id) {
+    const chats = loadChats();
+    const chat = chats.find(c => c.id === id);
+    if (!chat) return;
+    
+    activeChatId = id;
+    ttsStop();
+    clearImage();
+    
+    // Limpiar pantalla
+    const container = document.getElementById('messages');
+    container.innerHTML = '';
+    
+    // Renderizar mensajes guardados
+    chat.messages.forEach(msg => {
+        addMsg(msg.text, msg.type, msg.mode, false);
+    });
+    
+    renderHistoryList();
+    scrollDown();
+}
+
+function saveCurrentMessage(text, type, mode) {
+    const chats = loadChats();
+    
+    if (!activeChatId) {
+        // Nueva conversación
+        activeChatId = Date.now().toString();
+        // El título es el primer mensaje del usuario (cortado a 25 caracteres)
+        let title = type === 'usr' ? text : 'Conversación de ñu\'mu';
+        if (title.length > 25) title = title.slice(0, 25) + '...';
+        
+        const newChat = {
+            id: activeChatId,
+            title: title,
+            messages: [{ text, type, mode }]
         };
-        let msgCount = 0;
-
-        // ─── Menú móvil ──────────────────────────────────────────────────
-        function abrirMenu() {
-            const menu = document.getElementById('menuEnlaces');
-            const btn = document.getElementById('botonMenu');
-            const open = menu.classList.toggle('abierto');
-            btn.setAttribute('aria-expanded', open);
+        chats.unshift(newChat); // Colocar al principio
+    } else {
+        // Conversación existente
+        const chatIndex = chats.findIndex(c => c.id === activeChatId);
+        if (chatIndex !== -1) {
+            chats[chatIndex].messages.push({ text, type, mode });
+            // Mover al principio por ser la más reciente
+            const chat = chats.splice(chatIndex, 1)[0];
+            chats.unshift(chat);
         }
+    }
+    
+    saveChats(chats);
+    renderHistoryList();
+}
 
-        // ─── Modo de respuesta ───────────────────────────────────────────
-        function setMode(btn) {
-            document.querySelectorAll('.ia-mode-card').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentMode = btn.dataset.mode;
-            // Sincronizar móvil
-            document.querySelectorAll('.ia-mobile-mode-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.mode === currentMode);
-            });
-            document.getElementById('activeModeLabel').textContent = 'Modo ' + modeNames[currentMode];
+function deleteChat(id, event) {
+    if (event) event.stopPropagation();
+    
+    let chats = loadChats();
+    chats = chats.filter(c => c.id !== id);
+    saveChats(chats);
+    
+    if (activeChatId === id) {
+        startNewChat();
+    } else {
+        renderHistoryList();
+    }
+}
+
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// ─── Mosaico Ancestral (Semillas) ──────────────────────────────────────
+function selectSeed(btn, id, name, desc, prompt) {
+    // Quitar active de todos
+    document.querySelectorAll('.mosaic-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Guardar datos de la semilla
+    selectedSeedData = { id, name, desc, prompt };
+
+    // Mostrar detalle
+    document.getElementById('seedDetailTitle').innerHTML = `🌽 ${name}`;
+    document.getElementById('seedDetailDesc').textContent = desc;
+    document.getElementById('seedPromptBtn').style.display = 'block';
+}
+
+function askAboutSeed() {
+    if (!selectedSeedData || busy) return;
+    document.getElementById('iaInput').value = selectedSeedData.prompt;
+    send();
+}
+
+// ─── Menú móvil ────────────────────────────────────────────────────────
+function toggleMenu() {
+    const m = document.getElementById('menuEnlaces');
+    const b = document.getElementById('botonMenu');
+    const open = m.classList.toggle('abierto');
+    b.setAttribute('aria-expanded', open);
+}
+
+// ─── Modos (desktop y móvil sincronizados) ────────────────────────────
+function setMode(btn) {
+    document.querySelectorAll('.mode-card').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+    syncMobile();
+    updateHint();
+}
+function setModeM(btn) {
+    document.querySelectorAll('.mob-mode').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+    syncDesktop();
+    updateHint();
+}
+function syncMobile() {
+    document.querySelectorAll('.mob-mode').forEach(b =>
+        b.classList.toggle('active', b.dataset.mode === currentMode));
+}
+function syncDesktop() {
+    document.querySelectorAll('.mode-card').forEach(b =>
+        b.classList.toggle('active', b.dataset.mode === currentMode));
+}
+function updateHint() {
+    document.getElementById('modeHint').textContent = 'Modo ' + modeNames[currentMode];
+}
+
+// ─── Imagen ───────────────────────────────────────────────────────────
+function handleImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const prev = document.getElementById('imgPreview');
+        const zone = document.getElementById('uploadZone');
+        const clrBtn = document.getElementById('clearBtn');
+        prev.src = ev.target.result;
+        prev.style.display = 'block';
+        zone.classList.add('has-img');
+        clrBtn.style.display = 'block';
+        currentImage = ev.target.result.split(',')[1];
+        addMsg('He subido una imagen de maíz. ¿Puedes identificar la raza?', 'usr');
+        callIA('Analiza esta imagen de maíz: identifica la raza, características visuales, historia en Ixtenco, Tlaxcala, y valor cultural o nutricional.', currentImage, currentMode);
+    };
+    reader.readAsDataURL(file);
+}
+function clearImage() {
+    document.getElementById('imgPreview').style.display = 'none';
+    document.getElementById('imgPreview').src = '';
+    document.getElementById('uploadZone').classList.remove('has-img');
+    document.getElementById('clearBtn').style.display = 'none';
+    document.getElementById('fileInput').value = '';
+    currentImage = null;
+}
+
+// ─── Quick questions ──────────────────────────────────────────────────
+function quickQ(btn) {
+    const q = btn.textContent.replace(/^[^\w¿¡]+/, '').trim();
+    document.getElementById('iaInput').value = q;
+    send();
+}
+
+// ─── Input ────────────────────────────────────────────────────────────
+function onKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+function onInput() { document.getElementById('charCount').textContent = document.getElementById('iaInput').value.length; }
+
+// ─── Enviar ───────────────────────────────────────────────────────────
+function send() {
+    const input = document.getElementById('iaInput');
+    const txt = input.value.trim();
+    if (!txt || busy) return;
+    addMsg(txt, 'usr');
+    input.value = '';
+    onInput();
+    callIA(txt, currentImage, currentMode);
+    currentImage = null;
+}
+
+// ─── API ──────────────────────────────────────────────────────────────
+async function callIA(prompt, image, mode) {
+    busy = true;
+    document.getElementById('sendBtn').disabled = true;
+    const th = document.getElementById('thinking');
+    document.getElementById('thinkTxt').textContent = thinkLabels[mode] || thinkLabels.normal;
+    th.style.display = 'block';
+    scrollDown();
+
+    try {
+        const res = await fetch('/api/chat?t=' + Date.now(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, image, mode })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            addMsg(data.reply, 'ai', data.mode || mode);
+        } else {
+            const err = await res.json().catch(() => ({}));
+            addMsg('No pude responder: ' + (err.error || 'Error de conexión.'), 'ai');
         }
+    } catch {
+        addMsg('Sin conexión. Verifica tu internet e inténtalo de nuevo.', 'ai');
+    } finally {
+        th.style.display = 'none';
+        busy = false;
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('iaInput').focus();
+    }
+}
 
-        function setModeFromMobile(btn) {
-            document.querySelectorAll('.ia-mobile-mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentMode = btn.dataset.mode;
-            // Sincronizar sidebar
-            document.querySelectorAll('.ia-mode-card').forEach(b => {
-                b.classList.toggle('active', b.dataset.mode === currentMode);
-            });
-            document.getElementById('activeModeLabel').textContent = 'Modo ' + modeNames[currentMode];
-        }
+// ─── Renderizar mensaje ───────────────────────────────────────────────
+function addMsg(text, type, mode, saveToHistory = true) {
+    const container = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg ' + (type === 'ai' ? 'ai' : 'usr');
 
-        // ─── Imagen ──────────────────────────────────────────────────────
-        function handleImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const preview = document.getElementById('imagePreview');
-                const zone = document.getElementById('uploadZone');
-                const clearBtn = document.getElementById('clearImgBtn');
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-                zone.classList.add('has-image');
-                clearBtn.style.display = 'block';
-                currentImageBase64 = e.target.result.split(',')[1];
-                appendMsg('He subido una imagen de maíz. ¿Puedes decirme qué raza es y darme información?', 'user');
-                callIA('Analiza esta imagen de maíz. Identifica la raza, sus características visuales, historia en Ixtenco, Tlaxcala, y valor cultural o nutricional.', currentImageBase64, currentMode);
-            };
-            reader.readAsDataURL(file);
-        }
+    if (type === 'ai') {
+        const showTag = mode && mode !== 'normal';
+        const html = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>');
+        div.dataset.text = text;
+        div.innerHTML = `
+            <div class="msg-header">
+                <div class="avatar-ia"><i class="fas fa-microchip" style="font-size:0.7rem;"></i></div>
+                <span>ñu'mu</span>
+                ${showTag ? `<span class="mode-tag">${modeNames[mode] || mode}</span>` : ''}
+            </div>
+            <div class="bubble">${html}</div>
+            <div class="translation-box"></div>
+            <div class="msg-actions">
+                <button class="action-btn" onclick="listenMsg(this)"><i class="fas fa-volume-up"></i> Escuchar</button>
+                <button class="action-btn" onclick="translateMsg(this,'otomi')"><i class="fas fa-globe"></i> Otomí</button>
+                <button class="action-btn" onclick="translateMsg(this,'yuhmu')"><i class="fas fa-leaf"></i> Yuhmu</button>
+            </div>`;
+    } else {
+        div.innerHTML = `
+            <div class="msg-header" style="justify-content:flex-end;">
+                <span>Tú</span>
+                <div class="avatar-usr"><i class="fas fa-user" style="font-size:0.65rem;color:rgba(255,255,255,0.5);"></i></div>
+            </div>
+            <div class="bubble">${text}</div>`;
+    }
 
-        function clearImage() {
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('imagePreview').src = '';
-            document.getElementById('uploadZone').classList.remove('has-image');
-            document.getElementById('clearImgBtn').style.display = 'none';
-            document.getElementById('fileInput').value = '';
-            currentImageBase64 = null;
-        }
+    container.appendChild(div);
+    scrollDown();
+    
+    // Guardar en el historial de localStorage
+    if (saveToHistory) {
+        saveCurrentMessage(text, type, mode);
+    }
+}
 
-        // ─── Preguntas rápidas ───────────────────────────────────────────
-        function quickAsk(btn) {
-            const q = btn.textContent.replace(/^[^\w¿¡]+/, '').trim();
-            document.getElementById('iaInput').value = q;
-            sendMessage();
-        }
+function scrollDown() {
+    const m = document.getElementById('messages');
+    m.scrollTop = m.scrollHeight;
+}
 
-        // ─── Input helpers ───────────────────────────────────────────────
-        function handleKey(e) {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-        }
+// ─── TTS ─────────────────────────────────────────────────────────────
+function listenMsg(btn) {
+    const msg = btn.closest('.msg');
+    const rawText = msg.dataset.text || msg.querySelector('.bubble')?.textContent?.trim();
+    if (rawText) ttsPlay(rawText);
+}
 
-        function updateCharCount() {
-            const len = document.getElementById('iaInput').value.length;
-            document.getElementById('charCount').textContent = len;
-        }
-
-        // ─── Enviar mensaje ───────────────────────────────────────────────
-        function sendMessage() {
-            const input = document.getElementById('iaInput');
-            const text = input.value.trim();
-            if (!text || isThinking) return;
-            appendMsg(text, 'user');
-            input.value = '';
-            updateCharCount();
-            callIA(text, currentImageBase64, currentMode);
-            currentImageBase64 = null;
-        }
-
-        // ─── Llamada API ─────────────────────────────────────────────────
-        async function callIA(prompt, image, mode) {
-            isThinking = true;
-            document.getElementById('iaSendBtn').disabled = true;
-            const thinking = document.getElementById('iaThinking');
-            const thinkingLabel = document.getElementById('thinkingLabel');
-            thinkingLabel.textContent = thinkingLabels[mode] || thinkingLabels.normal;
-            thinking.style.display = 'block';
-            scrollToBottom();
-
-            try {
-                const res = await fetch(`/api/chat?t=${Date.now()}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt, image, mode })
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    appendMsg(data.reply, 'ai', data.mode || mode);
-                } else {
-                    const err = await res.json().catch(() => ({}));
-                    appendMsg(`No pude responder: ${err.error || 'Error de conexión.'}`, 'ai');
-                }
-            } catch {
-                appendMsg('Sin conexión. Verifica tu internet e inténtalo de nuevo.', 'ai');
-            } finally {
-                thinking.style.display = 'none';
-                isThinking = false;
-                document.getElementById('iaSendBtn').disabled = false;
-                document.getElementById('iaInput').focus();
+function ttsPlay(text, save = true) {
+    if (!('speechSynthesis' in window)) return;
+    if (save) ttsText = text;
+    
+    document.getElementById('ttsBar').classList.add('on');
+    const wave = document.getElementById('ttsWave');
+    if (wave) wave.classList.remove('paused');
+    
+    ttsCancelled = true;
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+        ttsCancelled = false;
+        updateTtsBtn('pause');
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'es-MX'; utt.rate = ttsRate;
+        utt.onend = () => { 
+            if (!ttsCancelled) {
+                updateTtsBtn('repeat'); 
+                const w = document.getElementById('ttsWave');
+                if (w) w.classList.add('paused');
             }
+        };
+        window.speechSynthesis.speak(utt);
+    }, 150);
+}
+
+function ttsToggle() {
+    const wave = document.getElementById('ttsWave');
+    if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) { 
+            window.speechSynthesis.resume(); 
+            updateTtsBtn('pause'); 
+            if (wave) wave.classList.remove('paused');
         }
-
-        // ─── Renderizar mensaje ───────────────────────────────────────────
-        function appendMsg(text, type, mode) {
-            msgCount++;
-            const messages = document.getElementById('iaMessages');
-            const div = document.createElement('div');
-            div.className = `ia-msg ${type}`;
-            div.dataset.msgId = msgCount;
-
-            if (type === 'ai') {
-                const showBadge = mode && mode !== 'normal';
-                const formatted = text
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                    .replace(/\n\n/g, '<br><br>')
-                    .replace(/\n/g, '<br>');
-
-                div.innerHTML = `
-                    <div class="ia-msg-header">
-                        <div class="ia-msg-avatar">🌽</div>
-                        <span>ñu'mu</span>
-                    </div>
-                    ${showBadge ? `<span class="ia-mode-badge">${modeNames[mode] || mode}</span>` : ''}
-                    <div class="ia-msg-bubble">${formatted}</div>
-                    <div class="ia-translation"></div>
-                    <div class="ia-msg-actions">
-                        <button class="ia-action-btn" onclick="speakMsg(this)">
-                            <i class="fas fa-volume-up"></i> Escuchar
-                        </button>
-                        <button class="ia-action-btn" onclick="translateMsg(this,'otomi')">🌐 Otomí</button>
-                        <button class="ia-action-btn" onclick="translateMsg(this,'yuhmu')">🌿 Yuhmu</button>
-                    </div>
-                `;
-            } else {
-                div.innerHTML = `
-                    <div class="ia-msg-header" style="justify-content:flex-end;">
-                        <span style="color:var(--ia-muted);">Tú</span>
-                        <div class="ia-msg-avatar" style="background:rgba(29,111,165,0.3)">👤</div>
-                    </div>
-                    <div class="ia-msg-bubble">${text}</div>
-                `;
-            }
-
-            messages.appendChild(div);
-            scrollToBottom();
+        else { 
+            window.speechSynthesis.pause(); 
+            updateTtsBtn('play'); 
+            if (wave) wave.classList.add('paused');
         }
+    } else if (ttsText) { 
+        ttsPlay(ttsText, false); 
+    }
+}
 
-        function scrollToBottom() {
-            const msgs = document.getElementById('iaMessages');
-            msgs.scrollTop = msgs.scrollHeight;
-        }
+function ttsStop() {
+    ttsCancelled = true;
+    window.speechSynthesis.cancel();
+    document.getElementById('ttsBar').classList.remove('on');
+    const wave = document.getElementById('ttsWave');
+    if (wave) wave.classList.add('paused');
+}
 
-        // ─── Voz (TTS) ────────────────────────────────────────────────────
-        function speakMsg(btn) {
-            const bubble = btn.closest('.ia-msg').querySelector('.ia-msg-bubble');
-            if (!bubble) return;
-            ttsSpeak(bubble.textContent.trim(), 'es-MX');
-        }
+function ttsChangeRate(d) {
+    ttsRate = Math.min(2, Math.max(0.5, ttsRate + d));
+    document.getElementById('ttsSpeed').textContent = ttsRate.toFixed(1) + 'x';
+    if (window.speechSynthesis.speaking && ttsText) {
+        ttsCancelled = true; window.speechSynthesis.cancel();
+        setTimeout(() => ttsPlay(ttsText, false), 150);
+    }
+}
 
-        function ttsSpeak(text, lang, save = true) {
-            if (!('speechSynthesis' in window)) return;
-            if (save) { ttsLastText = text; }
-            document.getElementById('ttsBar').classList.add('visible');
-            ttsIsManualCancel = true;
-            window.speechSynthesis.cancel();
-            setTimeout(() => {
-                ttsIsManualCancel = false;
-                ttsIsPaused = false;
-                updateTtsBtn('pause');
-                const utt = new SpeechSynthesisUtterance(text);
-                utt.lang = lang || 'es-MX';
-                utt.rate = ttsRate_val;
-                utt.onend = () => { if (!ttsIsManualCancel) updateTtsBtn('repeat'); };
-                window.speechSynthesis.speak(utt);
-            }, 150);
-        }
+function updateTtsBtn(state) {
+    const b = document.getElementById('ttsPlayBtn');
+    if (!b) return;
+    const map = { pause: '<i class="fas fa-pause"></i> Pausar', play: '<i class="fas fa-play"></i> Reanudar', repeat: '<i class="fas fa-play"></i> Repetir' };
+    b.innerHTML = map[state] || map.pause;
+}
 
-        function ttsToggle() {
-            if (window.speechSynthesis.speaking) {
-                if (window.speechSynthesis.paused) {
-                    window.speechSynthesis.resume();
-                    ttsIsPaused = false;
-                    updateTtsBtn('pause');
-                } else {
-                    window.speechSynthesis.pause();
-                    ttsIsPaused = true;
-                    updateTtsBtn('play');
-                }
-            } else if (ttsLastText) {
-                ttsSpeak(ttsLastText, 'es-MX', false);
-            }
-        }
+// ─── Traducción ───────────────────────────────────────────────────────
+async function translateMsg(btn, lang) {
+    const msg = btn.closest('.msg');
+    const rawText = msg.dataset.text || msg.querySelector('.bubble')?.textContent?.trim();
+    const box = msg.querySelector('.translation-box');
+    if (!rawText || !box) return;
 
-        function ttsStop() {
-            ttsIsManualCancel = true;
-            window.speechSynthesis.cancel();
-            document.getElementById('ttsBar').classList.remove('visible');
-        }
+    const langName = lang === 'otomi' ? 'Otomí' : 'Yuhmu de Ixtenco';
+    box.textContent = 'Traduciendo a ' + langName + '...';
+    box.classList.add('show');
 
-        function ttsRate(delta) {
-            ttsRate_val = Math.min(2.0, Math.max(0.5, ttsRate_val + delta));
-            document.getElementById('ttsSpeedDisplay').textContent = ttsRate_val.toFixed(1) + 'x';
-            if (window.speechSynthesis.speaking) {
-                ttsIsManualCancel = true;
-                window.speechSynthesis.cancel();
-                setTimeout(() => ttsSpeak(ttsLastText, 'es-MX', false), 150);
-            }
-        }
-
-        function updateTtsBtn(state) {
-            const btn = document.getElementById('ttsPlayBtn');
-            if (!btn) return;
-            if (state === 'pause')  btn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
-            if (state === 'play')   btn.innerHTML = '<i class="fas fa-play"></i> Reanudar';
-            if (state === 'repeat') btn.innerHTML = '<i class="fas fa-play"></i> Repetir';
-        }
-
-        // ─── Traducción ────────────────────────────────────────────────────
-        async function translateMsg(btn, lang) {
-            const msgDiv = btn.closest('.ia-msg');
-            const bubble = msgDiv.querySelector('.ia-msg-bubble');
-            const transDiv = msgDiv.querySelector('.ia-translation');
-            if (!bubble || !transDiv) return;
-
-            const text = bubble.textContent.trim();
-            const langName = lang === 'otomi' ? 'Otomí' : 'Yuhmu de Ixtenco';
-
-            transDiv.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Traduciendo a ${langName}...`;
-            transDiv.classList.add('visible');
-
-            try {
-                const res = await fetch(`/api/chat?t=${Date.now()}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        prompt: `Traduce el siguiente texto a ${langName}. Da solo la traducción exacta, sin notas adicionales:\n\n"${text}"`,
-                        mode: 'flash'
-                    })
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    transDiv.innerHTML = `<strong>${langName}:</strong> ${data.reply}<br><small style="opacity:0.5;font-size:0.68rem;">* Traducción generada por IA. Fonética aproximada.</small>`;
-                    ttsSpeak(data.reply, 'es-MX');
-                } else {
-                    transDiv.innerHTML = 'Error al traducir.';
-                }
-            } catch {
-                transDiv.innerHTML = 'Sin conexión para traducir.';
-            }
-        }
-    </script>
+    try {
+        const res = await fetch('/api/chat?t=' + Date.now(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt: 'Traduce el siguiente texto a ' + langName + '. Da solo la traducción exacta:\n\n"' + rawText + '"',
+                mode: 'flash'
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            box.innerHTML = '<strong>' + langName + ':</strong> ' + data.reply +
+                '<br><small style="opacity:0.5;font-size:0.66rem;">* Traducción IA · fonética aproximada</small>';
+            ttsPlay(data.reply, false);
+        } else { box.textContent = 'Error al traducir.'; }
+    } catch { box.textContent = 'Sin conexión.'; }
+}
+</script>
 
 </body>
 </html>
