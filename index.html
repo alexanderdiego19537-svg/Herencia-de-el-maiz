@@ -52,12 +52,10 @@
                 <p>Sin maíz no hay país, y en Ixtenco la semilla vive.</p>
         </header>
 
-        <!-- ====== DATO CURIOSO DEL DÍA ====== -->
+        <!-- ====== DATO CURIOSO AUTOMÁTICO ====== -->
         <div class="dato-curioso-strip" id="datoCurioso">
                 <div class="dato-curioso-inner">
-                        <span class="dato-icon">🌽</span>
                         <span class="dato-texto" id="datoTexto">Cargando dato curioso...</span>
-                        <button class="dato-refresh" id="datoRefresh" title="Otro dato">↺</button>
                 </div>
         </div>
 
@@ -242,9 +240,27 @@
                         }, 250);
                 }
 
+                let datoIndex = Math.floor(Math.random() * DATOS.length);
+
+                function mostrarSiguienteDato() {
+                        const el = document.getElementById('datoTexto');
+                        if (!el) return;
+                        el.style.opacity = '0';
+                        setTimeout(() => {
+                                datoIndex = (datoIndex + 1) % DATOS.length;
+                                el.textContent = DATOS[datoIndex];
+                                el.style.opacity = '1';
+                        }, 400);
+                }
+
                 document.addEventListener('DOMContentLoaded', () => {
-                        mostrarDatoAleatorio();
-                        document.getElementById('datoRefresh')?.addEventListener('click', mostrarDatoAleatorio);
+                        const el = document.getElementById('datoTexto');
+                        if (el) {
+                                el.textContent = DATOS[datoIndex];
+                                el.style.opacity = '1';
+                        }
+                        // Rotar automáticamente cada 40 segundos
+                        setInterval(mostrarSiguienteDato, 40000);
                 });
 
                 /* ── Contador animado de stats ── */
